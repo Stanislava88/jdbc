@@ -1,6 +1,6 @@
 package com.clouway.jdbc.task1.util;
 
-import com.clouway.ConnectionConfiguration;
+import com.clouway.practice.ConnectionConfiguration;
 
 import java.sql.Connection;
 import java.sql.SQLException;
