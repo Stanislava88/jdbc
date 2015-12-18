@@ -23,7 +23,7 @@ public class UserRepositoryTest {
         dataSource.setURL("jdbc:mysql://localhost:3306/test");
         dataSource.setUser("root");
         dataSource.setPassword("clouway.com");
-        new DatabaseCleaner("users").cleanUp();
+        new DatabaseCleaner(dataSource,"users").cleanUp();
     }
 
     @Test
