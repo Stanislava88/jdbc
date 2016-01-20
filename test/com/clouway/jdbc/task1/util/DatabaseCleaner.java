@@ -1,8 +1,5 @@
 package com.clouway.jdbc.task1.util;
 
-import com.clouway.practice.ConnectionConfiguration;
-import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;

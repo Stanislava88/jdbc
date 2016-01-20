@@ -1,8 +1,5 @@
 package com.clouway.task1;
 
-import com.clouway.task1.User;
-import com.clouway.task1.UserRepository;
-
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -58,76 +55,21 @@ public class PersistentUserRepository implements UserRepository {
 
     @Override
     public List<User> getUsers() {
-        List<User> users = new LinkedList<>();
-        Connection connection = null;
-        Statement statement=null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select email, name from users");
-            while (rs.next()) {
-                String email = rs.getString("email");
-                String name = rs.getString("name");
-                users.add(new User(email, name));
-            }
-
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection!=null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return users;
+        return selectFromUsers("");
     }
 
     @Override
     public User delete(Integer userId) {
-        Connection connection = null;
-        Statement statement=null;
+        List<User> userList= selectFromUsers("where id="+userId);
         User user=null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select email, name from users where id="+userId);
-            while (rs.next()){
-                String email = rs.getString("email");
-                String name = rs.getString("name");
-                user=new User(email, name);
-            }
-            rs.close();
-            statement.executeUpdate("delete from users where id="+userId);
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection!=null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        if (userList.size()!=0){
+            user=userList.get(0);
+            Statement statement= null;
+            try {
+                statement = dataSource.getConnection().createStatement();
+                statement.executeUpdate("delete from users where id="+userId);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
         return user;
@@ -135,38 +77,7 @@ public class PersistentUserRepository implements UserRepository {
 
     @Override
     public List<User> findUsers(String partOfName) {
-        Connection connection = null;
-        Statement statement=null;
-       List<User> users=new ArrayList<>();
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select email, name from users where name like '%"+partOfName+"%'");
-            while (rs.next()){
-                String email = rs.getString("email");
-                String name = rs.getString("name");
-                users.add(new User(email, name));
-            }
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection!=null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return users;
+        return selectFromUsers("where name like '%"+partOfName+"%'");
     }
 
     @Override
@@ -201,5 +112,42 @@ public class PersistentUserRepository implements UserRepository {
                 }
             }
         }
+    }
+
+    private List<User> selectFromUsers(String whereStatement){
+        List<User> users = new LinkedList<>();
+        Connection connection = null;
+        Statement statement=null;
+        User user=null;
+        try {
+            connection = dataSource.getConnection();
+            statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select email, name from users "+whereStatement);
+            while (rs.next()){
+                String email = rs.getString("email");
+                String name = rs.getString("name");
+                user=new User(email, name);
+                users.add(user);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection!=null){
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return users;
     }
 }
