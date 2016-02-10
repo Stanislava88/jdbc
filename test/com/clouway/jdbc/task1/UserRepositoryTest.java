@@ -3,6 +3,7 @@ package com.clouway.jdbc.task1;
 import com.clouway.jdbc.task1.util.DatabaseCleaner;
 import com.clouway.task1.PersistentUserRepository;
 import com.clouway.task1.User;
+import com.clouway.task1.UserRepository;
 import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +60,7 @@ public class UserRepositoryTest {
 
     @Test
     public void deleteUserThatWasStored() {
-        PersistentUserRepository persistentUserRepository=null;
+        UserRepository persistentUserRepository=null;
         persistentUserRepository=new PersistentUserRepository(dataSource);
         int id=persistentUserRepository.register(new User("ivangeorgiev@gmail.com","Ivan Georgiev"));
 
