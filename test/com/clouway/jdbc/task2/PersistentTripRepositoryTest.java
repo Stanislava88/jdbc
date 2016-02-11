@@ -10,7 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
 
@@ -42,7 +41,7 @@ public class PersistentTripRepositoryTest {
 
     @Test
     public void emptyRepository() {
-        assertThat(tripTableSize(dataSourceTrip), is(equalTo(0)));
+        assertThat(numberOfTrips(), is(equalTo(0)));
     }
 
     @Test
@@ -53,7 +52,7 @@ public class PersistentTripRepositoryTest {
         PersistentTripRepository persistentTripRepository = new PersistentTripRepository(dataSourceTrip);
         persistentTripRepository.register(tripRequest1);
 
-        assertThat(tripTableSize(dataSourceTrip), is(equalTo(1)));
+        assertThat(numberOfTrips(), is(equalTo(1)));
     }
 
     @Test
@@ -157,11 +156,11 @@ public class PersistentTripRepositoryTest {
         persistentTripRepository.register(tripRequest3);
         persistentTripRepository.register(tripRequest4);
 
-        assertThat(tripTableSize(dataSourceTrip), is(equalTo(4)));
+        assertThat(numberOfTrips(), is(equalTo(4)));
 
         persistentTripRepository.deleteTrips();
 
-        assertThat(tripTableSize(dataSourceTrip), is(equalTo(0)));
+        assertThat(numberOfTrips(), is(equalTo(0)));
     }
 
     @After
@@ -170,12 +169,12 @@ public class PersistentTripRepositoryTest {
         new DatabaseCleaner(dataSourcePeople, "people").cleanUp();
     }
 
-    private int tripTableSize(DataSource dataSource) {
+    private int numberOfTrips() {
         int size = 0;
         Connection connection = null;
         Statement statement = null;
         try {
-            connection = dataSource.getConnection();
+            connection = dataSourceTrip.getConnection();
             statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("select * from trip");
             while (rs.next()) {
