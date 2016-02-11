@@ -7,6 +7,6 @@ import java.util.List;
  */
 public interface PersonRepository {
     void register(Person person);
-    void updatePerson(Person peerson);
+    void update(Person person);
     List<Person> allPeopleInRepository();
 }

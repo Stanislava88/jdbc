@@ -36,7 +36,7 @@ public class PersistentPersonRepository implements PersonRepository{
     }
 
     @Override
-    public void updatePerson(Person person){
+    public void update(Person person){
         Connection connection = null;
         try {
             connection = dataSource.getConnection();

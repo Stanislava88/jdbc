@@ -54,7 +54,7 @@ public class PersistentPersonRepositoryTest {
 
         assertThat(users.get(0).name, is(equalTo("ivan")));
 
-        userRepository.updatePerson(new Person(123456789, "petyr",21,"fhfiwf@abd.vf"));
+        userRepository.update(new Person(123456789, "petyr",21,"fhfiwf@abd.vf"));
         users = userRepository.allPeopleInRepository();
 
         assertThat(users.get(0).name, is(equalTo("petyr")));
