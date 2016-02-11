@@ -41,9 +41,9 @@ public class PersistentTripRepositoryTest {
 
     @Test
     public void oneTripRegisteredInRepository() {
-        TripRequest tripRequest1 = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), new Trip("sliven", january(2010, 11), january(2010, 18)));
+        TripRequest tripRequest = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), new Trip("sliven", january(2010, 11), january(2010, 18)));
         PersistentTripRepository persistentTripRepository = new PersistentTripRepository(dataSourceTrip);
-        persistentTripRepository.register(tripRequest1);
+        persistentTripRepository.register(tripRequest);
 
         assertThat(numberOfTrips(), is(equalTo(1)));
     }
