@@ -27,7 +27,7 @@ public class PersistentPersonRepositoryTest {
     }
 
     @Test
-    public void emptyRepository() {
+    public void getAllPeopleFromEmptyRepository() {
         PersistentPersonRepository userRepository = null;
         userRepository = new PersistentPersonRepository(dataSource);
         List<Person> users = userRepository.allPeopleInRepository();
