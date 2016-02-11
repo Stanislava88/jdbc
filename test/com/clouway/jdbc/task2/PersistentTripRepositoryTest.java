@@ -159,15 +159,15 @@ public class PersistentTripRepositoryTest {
 
         assertThat(tripTableSize(dataSourceTrip), is(equalTo(4)));
 
-        persistentTripRepository.deleteRepositoryContent();
+        persistentTripRepository.deleteTrips();
 
         assertThat(tripTableSize(dataSourceTrip), is(equalTo(0)));
     }
 
     @After
     public void cleanUp() {
-//        new DatabaseCleaner(dataSourceTrip, "trip").cleanUp();
-//        new DatabaseCleaner(dataSourcePeople, "people").cleanUp();
+        new DatabaseCleaner(dataSourceTrip, "trip").cleanUp();
+        new DatabaseCleaner(dataSourcePeople, "people").cleanUp();
     }
 
     private int tripTableSize(DataSource dataSource) {

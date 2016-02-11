@@ -1,6 +1,7 @@
 package com.clouway.task2.adapter;
 
 import com.clouway.task2.domain.Person;
+import com.clouway.task2.domain.PersonRepository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * @author Slavi Dichkov (slavidichkof@gmail.com)
  */
-public class PersistentPersonRepository {
+public class PersistentPersonRepository implements PersonRepository{
 
     private final DataSource dataSource;
 
@@ -18,35 +19,39 @@ public class PersistentPersonRepository {
         this.dataSource = dataSource;
     }
 
-    public void register(int egn, String name, int age, String email){
+    @Override
+    public void register(Person person) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
             PreparedStatement statement=connection.prepareStatement("insert into people(EGN,age,name,email) values(?,?,?,?)");
-            statement.setInt(1,egn);
-            statement.setInt(2,age);
-            statement.setString(3,name);
-            statement.setString(4,email);
+            statement.setInt(1,person.getEgn());
+            statement.setInt(2,person.getAge());
+            statement.setString(3,person.getName());
+            statement.setString(4,person.getEmail());
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void updatePerson(int egn, String newName, int newAge, String newEmail){
+    @Override
+    public void updatePerson(Person person){
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
             PreparedStatement statement=connection.prepareStatement("update people set age=?, name=?,email=? where egn=?");
-            statement.setInt(1,newAge);
-            statement.setString(2,newName);
-            statement.setString(3,newEmail);
-            statement.setInt(4,egn);
+            statement.setInt(1,person.getAge());
+            statement.setString(2,person.getName());
+            statement.setString(3,person.getEmail());
+            statement.setInt(4,person.getEgn());
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    @Override
     public List<Person> allPeopleInRepository(){
         List<Person> users = new LinkedList<>();
         Connection connection = null;

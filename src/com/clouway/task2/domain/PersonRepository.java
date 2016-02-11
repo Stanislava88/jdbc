@@ -6,7 +6,7 @@ import java.util.List;
  * @author Slavi Dichkov (slavidichkof@gmail.com)
  */
 public interface PersonRepository {
-    void register(int egn, String name, int age, String email);
-    void updatePerson(int egn, String newName, int newAge, String newEmail);
+    void register(Person person);
+    void updatePerson(Person peerson);
     List<Person> allPeopleInRepository();
 }

@@ -39,7 +39,7 @@ public class PersistentPersonRepositoryTest {
     public void getStoredUser() {
         PersistentPersonRepository userRepository = null;
         userRepository = new PersistentPersonRepository(dataSource);
-        userRepository.register(123456789,"ivan",23,"dasas@abv.bg");
+        userRepository.register(new Person(123456789,"ivan",23,"dasas@abv.bg"));
         List<Person> users = userRepository.allPeopleInRepository();
 
         assertThat(users.size(), is(equalTo(1)));
@@ -49,12 +49,12 @@ public class PersistentPersonRepositoryTest {
     public void updateTest() {
         PersistentPersonRepository userRepository = null;
         userRepository = new PersistentPersonRepository(dataSource);
-        userRepository.register(123456789,"ivan",23,"dasas@abv.bg");
+        userRepository.register(new Person(123456789,"ivan",23,"dasas@abv.bg"));
         List<Person> users = userRepository.allPeopleInRepository();
 
         assertThat(users.get(0).getName(), is(equalTo("ivan")));
 
-        userRepository.updatePerson(123456789, "petyr",21,"fhfiwf@abd.vf");
+        userRepository.updatePerson(new Person(123456789, "petyr",21,"fhfiwf@abd.vf"));
         users = userRepository.allPeopleInRepository();
 
         assertThat(users.get(0).getName(), is(equalTo("petyr")));

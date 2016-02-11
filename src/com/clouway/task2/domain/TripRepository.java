@@ -10,6 +10,6 @@ public interface TripRepository {
     void register(TripRequest tripRequest);
     List<Person> getPeopleInCityOnDate(String city, Date from, Date to);
     List<String> mostVisitedCities();
-    void deleteRepositoryContent();
+    void deleteTrips();
     void deleteRepository();
 }

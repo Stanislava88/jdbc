@@ -140,7 +140,7 @@ public class PersistentTripRepository implements TripRepository {
     }
 
     @Override
-    public void deleteRepositoryContent(){
+    public void deleteTrips(){
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
