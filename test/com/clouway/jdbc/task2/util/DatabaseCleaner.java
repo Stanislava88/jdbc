@@ -12,9 +12,9 @@ public class DatabaseCleaner {
     private final DataSource dataSource;
     private final String[] tables;
 
-    public DatabaseCleaner(DataSource dataSource, String... users) {
+    public DatabaseCleaner(DataSource dataSource, String... tables) {
         this.dataSource = dataSource;
-        this.tables = users;
+        this.tables = tables;
     }
 
     public void cleanUp() {
