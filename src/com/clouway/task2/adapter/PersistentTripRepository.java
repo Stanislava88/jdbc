@@ -19,7 +19,7 @@ public class PersistentTripRepository implements TripRepository {
 
     @Override
     public void register(TripRequest tripRequest) {
-        Person person=tripRequest.getUser();
+        Person person=tripRequest.person;
         try {
             Connection connection=dataSource.getConnection();
             Statement statement=connection.createStatement();
@@ -27,7 +27,7 @@ public class PersistentTripRepository implements TripRepository {
             while (resultSet.next()){
                 int egn=resultSet.getInt("EGN");
                 if (person.egn==egn){
-                    register(tripRequest.getTrip(),person.egn);
+                    register(tripRequest.trip,person.egn);
                     return;
                 }
             }
@@ -40,7 +40,7 @@ public class PersistentTripRepository implements TripRepository {
                 statementU.setString(3,person.name);
                 statementU.setString(4,person.email);
                 statementU.execute();
-                register(tripRequest.getTrip(),person.egn);
+                register(tripRequest.trip,person.egn);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

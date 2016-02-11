@@ -49,7 +49,7 @@ public class PersistentTripRepositoryTest {
     }
 
     @Test
-    public void personInCity() {
+    public void peopleInCity() {
         TripRequest tripRequest1 = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), new Trip("sliven", january(2010, 11), january(2010, 18)));
         TripRequest tripRequest2 = new TripRequest(new Person(345676321, "simeon", 24, "simo@abv.bg"), new Trip("vraca", january(2010, 3), january(2010, 12)));
         TripRequest tripRequest3 = new TripRequest(new Person(345676321, "simeon", 24, "simo@abv.bg"), new Trip("stz", january(2010, 4), january(2010, 18)));
