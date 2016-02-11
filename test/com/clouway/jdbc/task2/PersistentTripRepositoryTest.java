@@ -42,8 +42,6 @@ public class PersistentTripRepositoryTest {
     @Test
     public void oneTripRegisteredInRepository() {
         TripRequest tripRequest1 = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), new Trip("sliven", january(2010, 11), january(2010, 18)));
-
-
         PersistentTripRepository persistentTripRepository = new PersistentTripRepository(dataSourceTrip);
         persistentTripRepository.register(tripRequest1);
 
@@ -71,36 +69,6 @@ public class PersistentTripRepositoryTest {
     }
 
     @Test
-    public void anotherTest() {
-        TripRequest tripRequest1 = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), new Trip("sofia", january(2010, 10), january(2010, 21)));
-        PersistentTripRepository persistentTripRepository = new PersistentTripRepository(dataSourceTrip);
-        persistentTripRepository.register(tripRequest1);
-
-
-
-    }
-
-    @Test
-    public void onePersonInCity() {
-        TripRequest tripRequest1 = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), new Trip("sofia", january(2010, 10), january(2010, 21)));
-        TripRequest tripRequest2 = new TripRequest(new Person(345676321, "simeon", 24, "simo@abv.bg"), new Trip("plovdiv", january(2010, 10), january(2010, 21)));
-        TripRequest tripRequest3 = new TripRequest(new Person(345676321, "simeon", 24, "simo@abv.bg"), new Trip("sofia", january(2010, 15), january(2010, 28)));
-        TripRequest tripRequest4 = new TripRequest(new Person(345676321, "simeon", 24, "simo@abv.bg"), new Trip("sofia", january(2010, 6), january(2010, 29)));
-        TripRequest tripRequest5 = new TripRequest(new Person(345676321, "simeon", 24, "simo@abv.bg"), new Trip("sofia", january(2010, 10), january(2010, 31)));
-
-        PersistentTripRepository persistentTripRepository = new PersistentTripRepository(dataSourceTrip);
-        persistentTripRepository.register(tripRequest1);
-        persistentTripRepository.register(tripRequest2);
-        persistentTripRepository.register(tripRequest3);
-        persistentTripRepository.register(tripRequest4);
-        persistentTripRepository.register(tripRequest5);
-
-        List<Person> personList = persistentTripRepository.getPeopleInCityOnDate("sofia", january(2010, 6),january(2010, 30));
-
-        assertThat(personList.size(), is(equalTo(4)));
-    }
-
-    @Test
     public void mostVisitedCities() {
         TripRequest tripRequest1 = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), new Trip("sliven", january(2010, 11), january(2010, 18)));
         TripRequest tripRequest2 = new TripRequest(new Person(345676321, "simeon", 24, "simo@abv.bg"), new Trip("vraca", january(2010, 3), january(2010, 12)));
@@ -117,25 +85,6 @@ public class PersistentTripRepositoryTest {
         List<String> mostVisitedCities = persistentTripRepository.mostVisitedCities();
 
         assertThat(mostVisitedCities.get(0), is("sliven"));
-    }
-
-    @Test
-    public void mostVisitedCities1() {
-        TripRequest tripRequest1 = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), new Trip("ssss", january(2010, 11), january(2010, 18)));
-        TripRequest tripRequest2 = new TripRequest(new Person(345676321, "simeon", 24, "simo@abv.bg"), new Trip("ssss", january(2010, 3), january(2010, 12)));
-        TripRequest tripRequest3 = new TripRequest(new Person(345676321, "simeon", 24, "simo@abv.bg"), new Trip("stz", january(2010, 4), january(2010, 18)));
-        TripRequest tripRequest4 = new TripRequest(new Person(111111111, "kristiqn", 23, "kris@abv.bg"), new Trip("sliven", january(2010, 16), january(2010, 19)));
-
-        PersistentTripRepository persistentTripRepository = new PersistentTripRepository(dataSourceTrip);
-        persistentTripRepository.register(tripRequest1);
-        persistentTripRepository.register(tripRequest2);
-        persistentTripRepository.register(tripRequest3);
-        persistentTripRepository.register(tripRequest4);
-
-
-        List<String> mostVisitedCities = persistentTripRepository.mostVisitedCities();
-
-        assertThat(mostVisitedCities.get(0), is("ssss"));
     }
 
     @Test
