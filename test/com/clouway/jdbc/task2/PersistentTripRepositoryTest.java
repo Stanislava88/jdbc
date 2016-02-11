@@ -40,11 +40,6 @@ public class PersistentTripRepositoryTest {
     }
 
     @Test
-    public void emptyRepository() {
-        assertThat(numberOfTrips(), is(equalTo(0)));
-    }
-
-    @Test
     public void oneTripRegisteredInRepository() {
         TripRequest tripRequest1 = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), new Trip("sliven", january(2010, 11), january(2010, 18)));
 
