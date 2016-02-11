@@ -26,8 +26,8 @@ public class PersistentTripRepository implements TripRepository {
             ResultSet resultSet=statement.executeQuery("select EGN from people");
             while (resultSet.next()){
                 int egn=resultSet.getInt("EGN");
-                if (person.getEgn()==egn){
-                    register(tripRequest.getTrip(),person.getEgn());
+                if (person.egn==egn){
+                    register(tripRequest.getTrip(),person.egn);
                     return;
                 }
             }
@@ -35,12 +35,12 @@ public class PersistentTripRepository implements TripRepository {
             try {
                 connectionU = dataSource.getConnection();
                 PreparedStatement statementU=connectionU.prepareStatement("insert into people(EGN,age,name,email) values(?,?,?,?)");
-                statementU.setInt(1,person.getEgn());
-                statementU.setInt(2,person.getAge());
-                statementU.setString(3,person.getName());
-                statementU.setString(4,person.getEmail());
+                statementU.setInt(1,person.egn);
+                statementU.setInt(2,person.age);
+                statementU.setString(3,person.name);
+                statementU.setString(4,person.email);
                 statementU.execute();
-                register(tripRequest.getTrip(),person.getEgn());
+                register(tripRequest.getTrip(),person.egn);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -57,9 +57,9 @@ public class PersistentTripRepository implements TripRepository {
             connection = dataSource.getConnection();
             PreparedStatement statement=connection.prepareStatement("insert into trip(EGN,city,date_arrive,departure_date) values(?,?,?,?)");
             statement.setInt(1,egn);
-            statement.setString(2,trip.getCity());
-            statement.setDate(3,new Date(trip.getDateFrom().getTime()));
-            statement.setDate(4,new Date(trip.getDateTo().getTime()));
+            statement.setString(2,trip.city);
+            statement.setDate(3,new Date(trip.dateFrom.getTime()));
+            statement.setDate(4,new Date(trip.dateTo.getTime()));
             statement.execute();
             statement.close();
         } catch (SQLException e) {

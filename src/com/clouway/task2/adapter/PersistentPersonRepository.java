@@ -25,10 +25,10 @@ public class PersistentPersonRepository implements PersonRepository{
         try {
             connection = dataSource.getConnection();
             PreparedStatement statement=connection.prepareStatement("insert into people(EGN,age,name,email) values(?,?,?,?)");
-            statement.setInt(1,person.getEgn());
-            statement.setInt(2,person.getAge());
-            statement.setString(3,person.getName());
-            statement.setString(4,person.getEmail());
+            statement.setInt(1,person.egn);
+            statement.setInt(2,person.age);
+            statement.setString(3,person.name);
+            statement.setString(4,person.email);
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,10 +41,10 @@ public class PersistentPersonRepository implements PersonRepository{
         try {
             connection = dataSource.getConnection();
             PreparedStatement statement=connection.prepareStatement("update people set age=?, name=?,email=? where egn=?");
-            statement.setInt(1,person.getAge());
-            statement.setString(2,person.getName());
-            statement.setString(3,person.getEmail());
-            statement.setInt(4,person.getEgn());
+            statement.setInt(1,person.age);
+            statement.setString(2,person.name);
+            statement.setString(3,person.email);
+            statement.setInt(4,person.egn);
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

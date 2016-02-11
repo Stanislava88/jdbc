@@ -46,17 +46,17 @@ public class PersistentPersonRepositoryTest {
     }
 
     @Test
-    public void updateTest() {
+    public void updateUserTest() {
         PersistentPersonRepository userRepository = null;
         userRepository = new PersistentPersonRepository(dataSource);
         userRepository.register(new Person(123456789,"ivan",23,"dasas@abv.bg"));
         List<Person> users = userRepository.allPeopleInRepository();
 
-        assertThat(users.get(0).getName(), is(equalTo("ivan")));
+        assertThat(users.get(0).name, is(equalTo("ivan")));
 
         userRepository.updatePerson(new Person(123456789, "petyr",21,"fhfiwf@abd.vf"));
         users = userRepository.allPeopleInRepository();
 
-        assertThat(users.get(0).getName(), is(equalTo("petyr")));
+        assertThat(users.get(0).name, is(equalTo("petyr")));
     }
 }
