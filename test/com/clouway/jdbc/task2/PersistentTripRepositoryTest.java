@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.*;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.clouway.jdbc.task2.util.CalendarUtil.january;
@@ -41,11 +43,15 @@ public class PersistentTripRepositoryTest {
 
     @Test
     public void oneTripRegisteredInRepository() {
-        TripRequest tripRequest = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), new Trip("sliven", january(2010, 11), january(2010, 18)));
+        java.util.Date dateFrom=january(2010, 11);
+        java.util.Date dateTo =january(2010, 18);
+        Trip trip=new Trip("sliven", dateFrom, dateTo);
+        TripRequest tripRequest = new TripRequest(new Person(123456789, "ivan", 23, "dasas@abv.bg"), trip);
         PersistentTripRepository persistentTripRepository = new PersistentTripRepository(dataSourceTrip);
         persistentTripRepository.register(tripRequest);
-
         assertThat(numberOfTrips(), is(equalTo(1)));
+        assertDate(getTripFromDatabase().dateFrom, dateFrom);
+        assertDate(getTripFromDatabase().dateTo, dateTo);
     }
 
     @Test
@@ -144,6 +150,50 @@ public class PersistentTripRepositoryTest {
             }
         }
         return size;
+    }
+
+    private void assertDate(java.util.Date dateFromDatabase, java.util.Date dateBeforeDatabase) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        String fromDatabase=format.format(dateFromDatabase);
+        String beforeDatabase=format.format(dateBeforeDatabase);
+        assertThat(beforeDatabase,is(equalTo(fromDatabase)));
+    }
+
+    private Trip getTripFromDatabase(){
+        Trip trip=null;
+        Connection connection = null;
+        Statement statement=null;
+        try {
+            connection = dataSourceTrip.getConnection();
+            statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select city,date_arrive,departure_date from trip");
+            while (rs.next()) {
+                String city = rs.getString("city");
+                Date date_arrive=rs.getDate("date_arrive");
+                Date departure_date=rs.getDate("departure_date");
+                trip=new Trip(city,date_arrive,departure_date);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return trip;
     }
 
 }
