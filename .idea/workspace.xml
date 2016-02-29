@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d8844fe5-b56f-459f-bd65-82410ec7aa54" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/thirdtask/BackupData.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/thirdtask/Customer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/firsttask/Demo.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/secondtask/core/Demo.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/thirdtask/Demo.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/firsttask/Display.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbcImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbvImplTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/secondtask/core/Person.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/secondtask/core/PersonDao.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/firsttask/Queries.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/secondtask/core/Trip.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/secondtask/core/TripDao.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/mysql_connector_java_5_1_18_bin.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="jdbc.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -99,8 +86,8 @@
       <file leaf-file-name="PeopleTripJdbvImplTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbvImplTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4">
-              <caret line="75" column="28" selection-start-line="75" selection-start-column="28" selection-end-line="75" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.44444445">
+              <caret line="77" column="5" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1155#1163#0" expanded="true" />
@@ -721,7 +708,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="7" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1207,8 +1194,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbvImplTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4">
-          <caret line="75" column="28" selection-start-line="75" selection-start-column="28" selection-end-line="75" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.44444445">
+          <caret line="77" column="5" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1155#1163#0" expanded="true" />
