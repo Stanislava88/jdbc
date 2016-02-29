@@ -5,7 +5,7 @@ import java.sql.*;
 /**
  * Created by clouway on 16-2-24.
  */
-public class Queries {
+public class PersonDao {
     private String DB_URL;
     private String user;
     private String password;
@@ -14,7 +14,7 @@ public class Queries {
     private Display display;
     private ResultSet resultSet;
 
-    public Queries(String DB_URL, String user, String password, Display display) {
+    public PersonDao(String DB_URL, String user, String password, Display display) {
         this.DB_URL = DB_URL;
         this.user = user;
         this.password = password;
@@ -30,7 +30,8 @@ public class Queries {
         }
     }
 
-    public void executeSelectMethod() {
+    //preimenuvan metoda na findAll i da vrystha list sys vsi4ki obekti v tablicata
+    public void select() {
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM peopleinfo");
@@ -49,7 +50,8 @@ public class Queries {
         }
     }
 
-    public void executeUpdateMethod(){
+    //podavame obekta person
+    public void update(){
         try {
             stmt = connection.createStatement();
             stmt.executeUpdate("UPDATE peopleinfo SET FirstName=\"David\", LastName=\"Bekcham\" WHERE EGN=\"1231231234\" ");
@@ -69,7 +71,8 @@ public class Queries {
         }
     }
 
-    public void executeDeleteMethod(){
+    //podavame nqkakyv paramter po koito da triem zapis
+    public void delete(){
         try {
             stmt=connection.createStatement();
             stmt.executeUpdate("DELETE FROM peopleinfo WHERE FirstName='Ivan'");
@@ -89,7 +92,8 @@ public class Queries {
         }
     }
 
-    public void executeInsertMethod(){
+    //podavame obekt ot Person
+    public void insert(){
         try {
             stmt=connection.createStatement();
             stmt.executeUpdate("INSERT INTO peopleinfo(FirstName, LastName, EGN, age) VALUES ('Ivan', 'Ivanov', '0987654321', 40)");
@@ -111,7 +115,8 @@ public class Queries {
 
     }
 
-    public void executeAlterMethod(){
+    //podavam nqkakyv string(imeto na kolonata) parameter
+    public void alter(){
         try {
             stmt=connection.createStatement();
             stmt.executeUpdate("ALTER TABLE peopleinfo ADD gender VARCHAR(6)");
@@ -132,7 +137,8 @@ public class Queries {
         }
     }
 
-    public void executeWhereMethod(){
+    //find by name i podavame za prameter godini
+    public void where(){
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM peopleinfo WHERE age<25");
@@ -151,7 +157,8 @@ public class Queries {
         }
     }
 
-    public void executeLikeMethod(){
+    //podavame wildcard kato parameter
+    public void like(){
         try{
             stmt=connection.createStatement();
             ResultSet resultSet=stmt.executeQuery("SELECT * FROM peopleinfo WHERE FirstName LIKE 'Dav%'");

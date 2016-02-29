@@ -28,12 +28,12 @@ public class Demo {
             }
         }
 
-        Queries queries = new Queries("jdbc:mysql://localhost/firsttask","root","clouway.com",new FakeDisplay());
-        queries.connectToDatabase();
+        PersonDao personDao = new PersonDao("jdbc:mysql://localhost/firsttask","root","clouway.com",new FakeDisplay());
+        personDao.connectToDatabase();
         //
 
         //
-        queries.closeAllConnections();
+        personDao.closeAllConnections();
 
 
     }
