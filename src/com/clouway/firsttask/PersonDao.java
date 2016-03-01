@@ -1,6 +1,8 @@
 package com.clouway.firsttask;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by clouway on 16-2-24.
@@ -10,15 +12,11 @@ public class PersonDao {
     private String user;
     private String password;
     private Connection connection;
-    private Statement stmt;
-    private Display display;
-    private ResultSet resultSet;
 
-    public PersonDao(String DB_URL, String user, String password, Display display) {
+    public PersonDao(String DB_URL, String user, String password) {
         this.DB_URL = DB_URL;
         this.user = user;
         this.password = password;
-        this.display=display;
     }
 
     public void connectToDatabase() {
@@ -30,157 +28,204 @@ public class PersonDao {
         }
     }
 
-    //preimenuvan metoda na findAll i da vrystha list sys vsi4ki obekti v tablicata
-    public void select() {
+    public void register(Person person) {
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement("INSERT INTO peopleinfo (egn,name,age,gender) values (?,?,?,?)");
+            stmt.setString(1, person.getEgn());
+            stmt.setString(2, person.getName());
+            stmt.setInt(3, person.getAge());
+            stmt.setString(4, person.getGender());
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public List<Person> findAll() {
+        Statement stmt = null;
+        ResultSet resultSet = null;
+        List<Person> tableContain = new ArrayList<Person>();
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM peopleinfo");
             while (resultSet.next()) {
-                String firstName = resultSet.getString("FirstName");
-                String lastName = resultSet.getString("LastName");
-                String egn = resultSet.getString("EGN");
+                String egn = resultSet.getString("egn");
+                String name = resultSet.getString("name");
                 int age = resultSet.getInt("age");
-                display.setFirstName(firstName);
-                display.setLastName(lastName);
-                display.setEgn(egn);
-                display.setAge(age);
+                String gender = resultSet.getString("gender");
+                tableContain.add(new Person(egn, name, age, gender));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return tableContain;
+    }
+
+
+    public void update(Person person) {
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement("UPDATE peopleinfo SET name=?, age=?, gender=? WHERE EGN=?");
+            stmt.setString(1, person.getName());
+            stmt.setInt(2, person.getAge());
+            stmt.setString(3, person.getGender());
+            stmt.setString(4, person.getEgn());
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    //podavame obekta person
-    public void update(){
+    public void delete(String egn) {
+        Statement stmt = null;
         try {
             stmt = connection.createStatement();
-            stmt.executeUpdate("UPDATE peopleinfo SET FirstName=\"David\", LastName=\"Bekcham\" WHERE EGN=\"1231231234\" ");
-            ResultSet resultSet=stmt.executeQuery("SELECT * FROM peopleinfo");
-            while (resultSet.next()) {
-                String firstName = resultSet.getString("FirstName");
-                String lastName = resultSet.getString("LastName");
-                String egn = resultSet.getString("EGN");
-                int age = resultSet.getInt("age");
-                display.setFirstName(firstName);
-                display.setLastName(lastName);
-                display.setEgn(egn);
-                display.setAge(age);
-            }
+            stmt.executeUpdate("DELETE FROM peopleinfo WHERE egn='" + egn + "'");
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    //podavame nqkakyv paramter po koito da triem zapis
-    public void delete(){
-        try {
-            stmt=connection.createStatement();
-            stmt.executeUpdate("DELETE FROM peopleinfo WHERE FirstName='Ivan'");
-            ResultSet resultSet=stmt.executeQuery("SELECT * FROM peopleinfo");
-            while (resultSet.next()) {
-                String firstName = resultSet.getString("FirstName");
-                String lastName = resultSet.getString("LastName");
-                String egn = resultSet.getString("EGN");
-                int age = resultSet.getInt("age");
-                display.setFirstName(firstName);
-                display.setLastName(lastName);
-                display.setEgn(egn);
-                display.setAge(age);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    //podavame obekt ot Person
-    public void insert(){
-        try {
-            stmt=connection.createStatement();
-            stmt.executeUpdate("INSERT INTO peopleinfo(FirstName, LastName, EGN, age) VALUES ('Ivan', 'Ivanov', '0987654321', 40)");
-            ResultSet resultSet=stmt.executeQuery("SELECT * FROM peopleinfo");
-            while (resultSet.next()) {
-                String firstName = resultSet.getString("FirstName");
-                String lastName = resultSet.getString("LastName");
-                String egn = resultSet.getString("EGN");
-                int age = resultSet.getInt("age");
-                display.setFirstName(firstName);
-                display.setLastName(lastName);
-                display.setEgn(egn);
-                display.setAge(age);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    //podavam nqkakyv string(imeto na kolonata) parameter
-    public void alter(){
-        try {
-            stmt=connection.createStatement();
-            stmt.executeUpdate("ALTER TABLE peopleinfo ADD gender VARCHAR(6)");
-            ResultSet resultSet=stmt.executeQuery("SELECT * FROM peopleinfo");
-            while (resultSet.next()) {
-                String firstName = resultSet.getString("FirstName");
-                String lastName = resultSet.getString("LastName");
-                String egn = resultSet.getString("EGN");
-                int age = resultSet.getInt("age");
-                display.setFirstName(firstName);
-                display.setLastName(lastName);
-                display.setEgn(egn);
-                display.setAge(age);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //find by name i podavame za prameter godini
-    public void where(){
+    public void alter(String columname, String columnType) {
+        Statement stmt = null;
         try {
             stmt = connection.createStatement();
-            resultSet = stmt.executeQuery("SELECT * FROM peopleinfo WHERE age<25");
+            stmt.executeUpdate("ALTER TABLE peopleinfo ADD " + columname + " " + columnType + "");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public Person findByEgn(String egn) {
+        Statement stmt = null;
+        ResultSet resultSet = null;
+        Person person = null;
+        try {
+            stmt = connection.createStatement();
+            resultSet = stmt.executeQuery("SELECT * FROM peopleinfo WHERE egn='" + egn + "'");
             while (resultSet.next()) {
-                String firstName = resultSet.getString("FirstName");
-                String lastName = resultSet.getString("LastName");
-                String egn = resultSet.getString("EGN");
+                String egn2 = resultSet.getString("egn");
+                String name = resultSet.getString("name");
                 int age = resultSet.getInt("age");
-                display.setFirstName(firstName);
-                display.setLastName(lastName);
-                display.setEgn(egn);
-                display.setAge(age);
+                String gender = resultSet.getString("gender");
+                person = new Person(egn2, name, age, gender);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    //podavame wildcard kato parameter
-    public void like(){
-        try{
-            stmt=connection.createStatement();
-            ResultSet resultSet=stmt.executeQuery("SELECT * FROM peopleinfo WHERE FirstName LIKE 'Dav%'");
-            while(resultSet.next()){
-                String firstName = resultSet.getString("FirstName");
-                String lastName = resultSet.getString("LastName");
-                String egn = resultSet.getString("EGN");
-                int age = resultSet.getInt("age");
-                display.setFirstName(firstName);
-                display.setLastName(lastName);
-                display.setEgn(egn);
-                display.setAge(age);
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        }catch (SQLException e){
+        }
+        return person;
+    }
+
+
+    public List<Person> like(String columName, String wildcard) {
+        Statement stmt = null;
+        ResultSet resultSet = null;
+        List<Person> tableContain = new ArrayList<Person>();
+        try {
+            stmt = connection.createStatement();
+            resultSet = stmt.executeQuery("SELECT * FROM peopleinfo WHERE " + columName + " LIKE '" + wildcard + "'");
+            while (resultSet.next()) {
+                String egn = resultSet.getString("egn");
+                String name = resultSet.getString("name");
+                int age = resultSet.getInt("age");
+                String gender = resultSet.getString("gender");
+                tableContain.add(new Person(egn, name, age, gender));
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return tableContain;
+    }
+
+    public void deleteTableContent() {
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate("DELETE FROM peopleinfo");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void closeAllConnections(){
+    public void closeConnection() {
         try {
-            resultSet.close();
-            stmt.close();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();

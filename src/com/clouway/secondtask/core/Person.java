@@ -49,6 +49,16 @@ public class Person {
     }
 
     @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", egn='" + egn + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -69,15 +79,5 @@ public class Person {
         result = 31 * result + age;
         result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", egn='" + egn + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                '}';
     }
 }

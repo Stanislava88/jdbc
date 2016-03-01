@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
  * Created by clouway on 16-2-25.
  */
 public class PeopleTripJdbvImplTest {
-    private static PeopleTripJdbcImpl peopleTripJdbc = new PeopleTripJdbcImpl("jdbc:mysql://localhost/secondtask", "root", "clouway.com");
+    private PeopleTripJdbcImpl peopleTripJdbc = new PeopleTripJdbcImpl("jdbc:mysql://localhost/secondtask", "root", "clouway.com");
 
     @Before
     public void cleanUp() {
@@ -89,8 +89,8 @@ public class PeopleTripJdbvImplTest {
         assertThat(actual.contains(myperson2), is(true));
     }
 
-    @AfterClass
-    public static void disconnecT() {
+    @After
+    public void disconnecT() {
         peopleTripJdbc.closeConnection();
     }
 }
