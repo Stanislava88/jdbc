@@ -6,10 +6,10 @@ import java.util.Date;
  * Created by clouway on 16-2-24.
  */
 public class Trip {
-    private String egn;
-    private Date arrival;
-    private Date departure;
-    private String city;
+    public final String egn;
+    public final Date arrival;
+    public final Date departure;
+    public final String city;
 
     public Trip(String egn, Date arrival, Date departure, String city) {
         this.egn = egn;
@@ -17,38 +17,6 @@ public class Trip {
         this.departure = departure;
         this.city = city;
 
-    }
-
-    public String getEgn() {
-        return egn;
-    }
-
-    public void setEgn(String egn) {
-        this.egn = egn;
-    }
-
-    public Date getArrival() {
-        return arrival;
-    }
-
-    public void setArrival(Date arrival) {
-        this.arrival = arrival;
-    }
-
-    public Date getDeparture() {
-        return departure;
-    }
-
-    public void setDeparture(Date departure) {
-        this.departure = departure;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     @Override
@@ -72,5 +40,15 @@ public class Trip {
         result = 31 * result + (departure != null ? departure.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "egn='" + egn + '\'' +
+                ", arrival=" + arrival +
+                ", departure=" + departure +
+                ", city='" + city + '\'' +
+                '}';
     }
 }

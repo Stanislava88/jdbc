@@ -5,15 +5,15 @@ import java.util.List;
 /**
  * Created by clouway on 16-2-24.
  */
-public interface PersonDao {
+public interface PersonDAO {
 
     void create(Person person);
 
     void update(Person person);
 
-    List<Person> getPeople();
+    List<Person> findAll();
 
     List<Person> getAllPeopleNameWhichStartWithSameCharacters(String phrase);
 
-    void deletePeople(String chooseTableOrContent);
+    void delete(String chooseTableOrContent);
 }

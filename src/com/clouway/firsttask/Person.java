@@ -4,47 +4,15 @@ package com.clouway.firsttask;
  * Created by clouway on 16-3-1.
  */
 public class Person {
-    private String egn;
-    private String name;
-    private int age;
-    private String gender;
+    public final String egn;
+    public final String name;
+    public final int age;
+    public final String gender;
 
     public Person(String egn, String name, int age, String gender) {
         this.egn = egn;
         this.name = name;
         this.age = age;
-        this.gender = gender;
-    }
-
-    public String getEgn() {
-        return egn;
-    }
-
-    public void setEgn(String egn) {
-        this.egn = egn;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -69,5 +37,15 @@ public class Person {
         result = 31 * result + age;
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "egn='" + egn + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
+                '}';
     }
 }

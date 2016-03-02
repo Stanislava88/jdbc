@@ -1,9 +1,9 @@
 package com.clouway.secondtask.dataaccesslayer;
 
 import com.clouway.secondtask.core.Person;
-import com.clouway.secondtask.core.PersonDao;
+import com.clouway.secondtask.core.PersonDAO;
 import com.clouway.secondtask.core.Trip;
-import com.clouway.secondtask.core.TripDao;
+import com.clouway.secondtask.core.TripDAO;
 
 import java.sql.*;
 import java.sql.Date;
@@ -12,26 +12,12 @@ import java.util.*;
 /**
  * Created by clouway on 16-2-24.
  */
-public class PeopleTripJdbcImpl implements PersonDao, TripDao {
+public class PeopleTripJdbcImpl implements PersonDAO, TripDAO {
 
-    private String DB_URL;
-    private String user;
-    private String password;
     private Connection connection;
 
-    public PeopleTripJdbcImpl(String DB_URL, String user, String password) {
-        this.DB_URL = DB_URL;
-        this.user = user;
-        this.password = password;
-    }
-
-    public void connectToDatabase() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(DB_URL, user, password);
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public PeopleTripJdbcImpl(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -39,10 +25,10 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement("INSERT INTO people (name, egn, age, email) values (?,?,?,?)");
-            preparedStatement.setString(1, person.getName());
-            preparedStatement.setString(2, person.getEgn());
-            preparedStatement.setInt(3, person.getAge());
-            preparedStatement.setString(4, person.getEmail());
+            preparedStatement.setString(1, person.name);
+            preparedStatement.setString(2, person.egn);
+            preparedStatement.setInt(3, person.age);
+            preparedStatement.setString(4, person.email);
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,10 +47,10 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement("UPDATE people SET name=?, age=?, email=? WHERE egn=?");
-            preparedStatement.setString(1, person.getName());
-            preparedStatement.setInt(2, person.getAge());
-            preparedStatement.setString(3, person.getEmail());
-            preparedStatement.setString(4, person.getEgn());
+            preparedStatement.setString(1, person.name);
+            preparedStatement.setInt(2, person.age);
+            preparedStatement.setString(3, person.email);
+            preparedStatement.setString(4, person.egn);
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,10 +70,10 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement("INSERT INTO trip (egn,arrival,departure,city) values (?,?,?,?)");
-            preparedStatement.setString(1, trip.getEgn());
-            preparedStatement.setDate(2, new Date(trip.getArrival().getTime()));
-            preparedStatement.setDate(3, new Date(trip.getDeparture().getTime()));
-            preparedStatement.setString(4, trip.getCity());
+            preparedStatement.setString(1, trip.egn);
+            preparedStatement.setDate(2, new Date(trip.arrival.getTime()));
+            preparedStatement.setDate(3, new Date(trip.departure.getTime()));
+            preparedStatement.setString(4, trip.city);
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,10 +92,10 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement("UPDATE trip SET arrival=?, departure=?, city=? WHERE egn=?");
-            preparedStatement.setDate(1, new Date(trip.getArrival().getTime()));
-            preparedStatement.setDate(2, new Date(trip.getDeparture().getTime()));
-            preparedStatement.setString(3, trip.getCity());
-            preparedStatement.setString(4, trip.getEgn());
+            preparedStatement.setDate(1, new Date(trip.arrival.getTime()));
+            preparedStatement.setDate(2, new Date(trip.departure.getTime()));
+            preparedStatement.setString(3, trip.city);
+            preparedStatement.setString(4, trip.egn);
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,7 +111,7 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
     }
 
     @Override
-    public List<Person> getPeople() {
+    public List<Person> findAll() {
         List<Person> peopleContent = new ArrayList<Person>();
         ResultSet resultSet = null;
         Statement stmt = null;
@@ -158,7 +144,7 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
     }
 
     @Override
-    public List<Trip> getTrips() {
+    public List<Trip> getAll() {
         List<Trip> tripsContent = new ArrayList<Trip>();
         ResultSet resultSet = null;
         Statement stmt = null;
@@ -191,7 +177,7 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
 
     @Override
     public List<Person> getAllPeopleNameWhichStartWithSameCharacters(String phrase) {
-        List<Person> peopleNameSameCharacters = new ArrayList<Person>();
+        List<Person> people = new ArrayList<Person>();
         ResultSet resultSet = null;
         Statement stmt = null;
         try {
@@ -202,7 +188,7 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
                 String egn = resultSet.getString("egn");
                 int age = resultSet.getInt("age");
                 String email = resultSet.getString("email");
-                peopleNameSameCharacters.add(new Person(name, egn, age, email));
+                people.add(new Person(name, egn, age, email));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -218,12 +204,12 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
                 e.printStackTrace();
             }
         }
-        return peopleNameSameCharacters;
+        return people;
     }
 
     @Override
     public List<String> getMostVisitedCities() {
-        List<String> citiesOrderedByMostVisited = new ArrayList<String>();
+        List<String> cities = new ArrayList<String>();
         ResultSet resultSet = null;
         Statement stmt = null;
         try {
@@ -231,7 +217,7 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
             resultSet = stmt.executeQuery("SELECT city, count(city) counter from trip group by city order by counter desc");
             while (resultSet.next()) {
                 String city = resultSet.getString("city");
-                citiesOrderedByMostVisited.add(city);
+                cities.add(city);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -247,12 +233,12 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
                 e.printStackTrace();
             }
         }
-        return citiesOrderedByMostVisited;
+        return cities;
     }
 
     @Override
     public List<Person> findAllPeopleInTheSameCityAtTheSameTime(java.util.Date arrival, java.util.Date departure) {
-        List<Person> peopleInSameCityAtTheSameTime = new ArrayList<Person>();
+        List<Person> people = new ArrayList<Person>();
         ResultSet resultSet = null;
         Statement statement = null;
         try {
@@ -263,7 +249,7 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
                 String egn = resultSet.getString("egn");
                 int age = resultSet.getInt("age");
                 String email = resultSet.getString("email");
-                peopleInSameCityAtTheSameTime.add(new Person(name, egn, age, email));
+                people.add(new Person(name, egn, age, email));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -279,11 +265,11 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
                 e.printStackTrace();
             }
         }
-        return peopleInSameCityAtTheSameTime;
+        return people;
     }
 
     @Override
-    public void deleteTrip(String chooseTableOrContent) {
+    public void deleteAll(String chooseTableOrContent) {
         Statement stmt = null;
         if (chooseTableOrContent.equalsIgnoreCase("table")) {
             try {
@@ -313,7 +299,7 @@ public class PeopleTripJdbcImpl implements PersonDao, TripDao {
 
 
     @Override
-    public void deletePeople(String chooseTableOrContent) {
+    public void delete(String chooseTableOrContent) {
         Statement stmt = null;
         if (chooseTableOrContent.equalsIgnoreCase("table")) {
             try {

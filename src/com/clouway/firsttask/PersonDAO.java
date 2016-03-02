@@ -7,35 +7,21 @@ import java.util.List;
 /**
  * Created by clouway on 16-2-24.
  */
-public class PersonDao {
-    private String DB_URL;
-    private String user;
-    private String password;
+public class PersonDAO {
     private Connection connection;
 
-    public PersonDao(String DB_URL, String user, String password) {
-        this.DB_URL = DB_URL;
-        this.user = user;
-        this.password = password;
-    }
-
-    public void connectToDatabase() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(DB_URL, user, password);
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public PersonDAO(Connection connection) {
+        this.connection = connection;
     }
 
     public void register(Person person) {
         PreparedStatement stmt = null;
         try {
-            stmt = connection.prepareStatement("INSERT INTO peopleinfo (egn,name,age,gender) values (?,?,?,?)");
-            stmt.setString(1, person.getEgn());
-            stmt.setString(2, person.getName());
-            stmt.setInt(3, person.getAge());
-            stmt.setString(4, person.getGender());
+            stmt = connection.prepareStatement("INSERT INTO people (egn,name,age,gender) values (?,?,?,?)");
+            stmt.setString(1, person.egn);
+            stmt.setString(2, person.name);
+            stmt.setInt(3, person.age);
+            stmt.setString(4, person.gender);
             stmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,16 +39,16 @@ public class PersonDao {
     public List<Person> findAll() {
         Statement stmt = null;
         ResultSet resultSet = null;
-        List<Person> tableContain = new ArrayList<Person>();
+        List<Person> people = new ArrayList<Person>();
         try {
             stmt = connection.createStatement();
-            resultSet = stmt.executeQuery("SELECT * FROM peopleinfo");
+            resultSet = stmt.executeQuery("SELECT * FROM people");
             while (resultSet.next()) {
                 String egn = resultSet.getString("egn");
                 String name = resultSet.getString("name");
                 int age = resultSet.getInt("age");
                 String gender = resultSet.getString("gender");
-                tableContain.add(new Person(egn, name, age, gender));
+                people.add(new Person(egn, name, age, gender));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,18 +64,18 @@ public class PersonDao {
                 e.printStackTrace();
             }
         }
-        return tableContain;
+        return people;
     }
 
 
     public void update(Person person) {
         PreparedStatement stmt = null;
         try {
-            stmt = connection.prepareStatement("UPDATE peopleinfo SET name=?, age=?, gender=? WHERE EGN=?");
-            stmt.setString(1, person.getName());
-            stmt.setInt(2, person.getAge());
-            stmt.setString(3, person.getGender());
-            stmt.setString(4, person.getEgn());
+            stmt = connection.prepareStatement("UPDATE people SET name=?, age=?, gender=? WHERE EGN=?");
+            stmt.setString(1, person.name);
+            stmt.setInt(2, person.age);
+            stmt.setString(3, person.gender);
+            stmt.setString(4, person.egn);
             stmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -104,11 +90,11 @@ public class PersonDao {
         }
     }
 
-    public void delete(String egn) {
+    public void deleteByEgn(String egn) {
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
-            stmt.executeUpdate("DELETE FROM peopleinfo WHERE egn='" + egn + "'");
+            stmt.executeUpdate("DELETE FROM people WHERE egn='" + egn + "'");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -127,7 +113,7 @@ public class PersonDao {
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
-            stmt.executeUpdate("ALTER TABLE peopleinfo ADD " + columname + " " + columnType + "");
+            stmt.executeUpdate("ALTER TABLE people ADD " + columname + " " + columnType + "");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -144,12 +130,14 @@ public class PersonDao {
 
 
     public Person findByEgn(String egn) {
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet resultSet = null;
         Person person = null;
         try {
-            stmt = connection.createStatement();
-            resultSet = stmt.executeQuery("SELECT * FROM peopleinfo WHERE egn='" + egn + "'");
+            pstmt = connection.prepareStatement("SELECT * FROM people WHERE egn=?");
+            pstmt.setString(1, egn);
+            resultSet = pstmt.executeQuery();
+
             while (resultSet.next()) {
                 String egn2 = resultSet.getString("egn");
                 String name = resultSet.getString("name");
@@ -161,8 +149,8 @@ public class PersonDao {
             e.printStackTrace();
         } finally {
             try {
-                if (stmt != null) {
-                    stmt.close();
+                if (pstmt != null) {
+                    pstmt.close();
                 }
                 if (resultSet != null) {
                     resultSet.close();
@@ -178,16 +166,16 @@ public class PersonDao {
     public List<Person> like(String columName, String wildcard) {
         Statement stmt = null;
         ResultSet resultSet = null;
-        List<Person> tableContain = new ArrayList<Person>();
+        List<Person> people = new ArrayList<Person>();
         try {
             stmt = connection.createStatement();
-            resultSet = stmt.executeQuery("SELECT * FROM peopleinfo WHERE " + columName + " LIKE '" + wildcard + "'");
+            resultSet = stmt.executeQuery("SELECT * FROM people WHERE " + columName + " LIKE '" + wildcard + "'");
             while (resultSet.next()) {
                 String egn = resultSet.getString("egn");
                 String name = resultSet.getString("name");
                 int age = resultSet.getInt("age");
                 String gender = resultSet.getString("gender");
-                tableContain.add(new Person(egn, name, age, gender));
+                people.add(new Person(egn, name, age, gender));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -203,14 +191,14 @@ public class PersonDao {
                 e.printStackTrace();
             }
         }
-        return tableContain;
+        return people;
     }
 
-    public void deleteTableContent() {
+    public void deleteAll() {
         Statement statement = null;
         try {
             statement = connection.createStatement();
-            statement.executeUpdate("DELETE FROM peopleinfo");
+            statement.executeUpdate("DELETE FROM people");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
