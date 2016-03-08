@@ -256,6 +256,45 @@ public class TravelAgencyTest {
         assertThat(travelAgency.citiesByPopularity(), is(equalTo(cities)));
     }
 
+    @Test
+    public void truncateClientTable() throws SQLException {
+        Person ralica = new Person("Ralica", "1", 84, "rali@gmail.com");
 
+        travelAgency.registerClient(ralica);
+
+        travelAgency.clearClientRepository();
+
+        Person ralicaBack = travelAgency.getClient("1");
+        assertThat(ralicaBack, is(equalTo(null)));
+    }
+
+    @Test
+    public void truncateTripTable() throws SQLException {
+        Person ivon = new Person("Ivon", "1", 23, "rali@gmail.com");
+
+        travelAgency.registerClient(ivon);
+
+        Trip ivonBurgas =new Trip(1, "1", new Date(116, 7, 12), new Date(116, 7, 20), "Burgas");
+        travelAgency.bookTrip(ivonBurgas);
+
+        travelAgency.clearTripRepository();
+
+        Trip ivonBurgasBack = travelAgency.getTrip(1);
+        assertThat(ivonBurgasBack, is(equalTo(null)));
+    }
+
+    @Test
+    public void tableExist() throws SQLException {
+        boolean tableExist = travelAgency.tableExist("trip");
+
+        assertThat(tableExist, is(equalTo(true)));
+    }
+
+    @Test
+    public void tableDoesntExist() throws SQLException {
+        boolean tableDoesntExist = travelAgency.tableExist("woble");
+
+        assertThat(tableDoesntExist, is(equalTo(false)));
+    }
 
 }
