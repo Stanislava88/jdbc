@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d8844fe5-b56f-459f-bd65-82410ec7aa54" name="Default" comment="F">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clouway/thirdtask/BackupData.java" afterPath="$PROJECT_DIR$/src/com/clouway/thirdtask/BackupData.java" />
+    <list default="true" id="d8844fe5-b56f-459f-bd65-82410ec7aa54" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="jdbc.iws" />
@@ -745,7 +744,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457424809126</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Code formated">
+      <created>1457424860356</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1457424860356</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -789,7 +794,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="third task fixed. tests added. Demo removed." />
-    <option name="LAST_COMMIT_MESSAGE" value="third task fixed. tests added. Demo removed." />
+    <MESSAGE value="Code formated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Code formated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
