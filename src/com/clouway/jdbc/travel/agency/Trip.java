@@ -7,11 +7,11 @@ import java.sql.Date;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class Trip {
-    private final int id;
-    private final String egn;
-    private final Date arrival;
-    private final Date departure;
-    private final String destination;
+    public final int id;
+    public final String egn;
+    public final Date arrival;
+    public final Date departure;
+    public final String destination;
 
     public Trip(int id, String egn, Date arrival, Date departure, String destination) {
         this.id = id;
@@ -19,26 +19,6 @@ public class Trip {
         this.arrival = arrival;
         this.departure = departure;
         this.destination = destination;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getEgn() {
-        return egn;
-    }
-
-    public Date getArrival() {
-        return arrival;
-    }
-
-    public Date getDeparture() {
-        return departure;
-    }
-
-    public String getDestination() {
-        return destination;
     }
 
     @Override
@@ -70,10 +50,10 @@ public class Trip {
     public String toString() {
         return "Trip{" +
                 "id=" + id +
-                ", egn='" + egn + '\'' +
+                ", egn='" + egn  + '\''+
                 ", arrival=" + arrival +
                 ", departure=" + departure +
-                ", destination='" + destination + '\'' +
+                ", destination='" + destination  + '\''+
                 '}';
     }
 }

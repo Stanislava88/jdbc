@@ -4,10 +4,10 @@ package com.clouway.jdbc.travel.agency;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class Person {
-    private final String name;
-    private final String egn;
-    private final int age;
-    private final String email;
+    public final String name;
+    public final String egn;
+    public final int age;
+    public final String email;
 
     public Person(String name, String egn, int age, String email) {
         this.name = name;
@@ -15,24 +15,6 @@ public class Person {
         this.age = age;
         this.email = email;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEgn() {
-        return egn;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-
 
     @Override
     public boolean equals(Object o) {

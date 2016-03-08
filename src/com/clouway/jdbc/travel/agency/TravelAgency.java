@@ -15,18 +15,18 @@ public class TravelAgency {
     }
 
     public void registerClient(Person person) throws SQLException {
-        String insertSql = "INSERT INTO people values(?, ?, ?, ?);";
+        String insertSql = "INSERT INTO people VALUES(?, ?, ?, ?);";
         PreparedStatement preparedStatement = connection.prepareStatement(insertSql);
-        preparedStatement.setString(1, person.getName());
-        preparedStatement.setString(2, person.getEgn());
-        preparedStatement.setInt(3, person.getAge());
-        preparedStatement.setString(4, person.getEmail());
+        preparedStatement.setString(1, person.name);
+        preparedStatement.setString(2, person.egn);
+        preparedStatement.setInt(3, person.age);
+        preparedStatement.setString(4, person.email);
         preparedStatement.execute();
         preparedStatement.close();
     }
 
     public Person getClient(String egn) throws SQLException {
-        String selectUser = "Select * from people where egn=?;";
+        String selectUser = "SELECT * FROM people WHERE egn=?;";
         PreparedStatement preparedStatement = connection.prepareStatement(selectUser);
         preparedStatement.setString(1, egn);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -38,7 +38,7 @@ public class TravelAgency {
             resultSet.close();
             preparedStatement.close();
             return new Person(name, egnReturned, age, email);
-        }else{
+        } else {
             resultSet.close();
             preparedStatement.close();
             return null;
@@ -52,13 +52,13 @@ public class TravelAgency {
     }
 
     public void bookTrip(Trip tripName) throws SQLException {
-        String insertTrip = "INSERT INTO trip values(?, ?, ?, ?, ?)";
+        String insertTrip = "INSERT INTO trip VALUES(?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(insertTrip);
-        preparedStatement.setInt(1, tripName.getId());
-        preparedStatement.setString(2, tripName.getEgn());
-        preparedStatement.setDate(3, tripName.getArrival());
-        preparedStatement.setDate(4, tripName.getDeparture());
-        preparedStatement.setString(5, tripName.getDestination());
+        preparedStatement.setInt(1, tripName.id);
+        preparedStatement.setString(2, tripName.egn);
+        preparedStatement.setDate(3, tripName.arrival);
+        preparedStatement.setDate(4, tripName.departure);
+        preparedStatement.setString(5, tripName.destination);
         preparedStatement.execute();
         preparedStatement.close();
     }
@@ -77,7 +77,7 @@ public class TravelAgency {
             resultSet.close();
             preparedStatement.close();
             return new Trip(id, egn, arrival, departure, destination);
-        }else{
+        } else {
             resultSet.close();
             preparedStatement.close();
             return null;
@@ -85,13 +85,13 @@ public class TravelAgency {
     }
 
     public void updateClient(Person person) throws SQLException {
-        String updatePeople = "Update people set name=?, egn=?, age=?, email=? where egn=?;";
+        String updatePeople = "UPDATE people SET name=?, egn=?, age=?, email=? WHERE egn=?;";
         PreparedStatement preparedStatement = connection.prepareStatement(updatePeople);
-        preparedStatement.setString(1, person.getName());
-        preparedStatement.setString(2, person.getEgn());
-        preparedStatement.setInt(3, person.getAge());
-        preparedStatement.setString(4, person.getEmail());
-        preparedStatement.setString(5, person.getEgn());
+        preparedStatement.setString(1, person.name);
+        preparedStatement.setString(2, person.egn);
+        preparedStatement.setInt(3, person.age);
+        preparedStatement.setString(4, person.email);
+        preparedStatement.setString(5, person.egn);
         preparedStatement.execute();
         preparedStatement.close();
     }
@@ -99,11 +99,11 @@ public class TravelAgency {
     public void updateTrip(Trip trip) throws SQLException {
         String updateTrip = "UPDATE trip SET egn=?, arrival=?, departure=?, city=? WHERE id=?";
         PreparedStatement preparedStatement = connection.prepareStatement(updateTrip);
-        preparedStatement.setString(1, trip.getEgn());
-        preparedStatement.setDate(2, trip.getArrival());
-        preparedStatement.setDate(3, trip.getDeparture());
-        preparedStatement.setString(4, trip.getDestination());
-        preparedStatement.setInt(5, trip.getId());
+        preparedStatement.setString(1, trip.egn);
+        preparedStatement.setDate(2, trip.arrival);
+        preparedStatement.setDate(3, trip.departure);
+        preparedStatement.setString(4, trip.destination);
+        preparedStatement.setInt(5, trip.id);
         preparedStatement.execute();
         preparedStatement.close();
     }
@@ -116,7 +116,7 @@ public class TravelAgency {
         List<Trip> tripsList = new ArrayList<>();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM trip;");
-        while(resultSet.next()){
+        while (resultSet.next()) {
             int id = resultSet.getInt("id");
             String egn = resultSet.getString("egn");
             Date arrival = resultSet.getDate("arrival");
@@ -130,11 +130,11 @@ public class TravelAgency {
     }
 
     public List<Person> getClientsWith(String nameBeginning) throws SQLException {
-        String clientsLike = "SELECT * FROM people WHERE name LIKE '"+nameBeginning+"%';";
+        String clientsLike = "SELECT * FROM people WHERE name LIKE '" + nameBeginning + "%';";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(clientsLike);
         List<Person> clientList = new ArrayList<>();
-        while(resultSet.next()){
+        while (resultSet.next()) {
             String name = resultSet.getString("name");
             String egn = resultSet.getString("egn");
             int age = resultSet.getInt("age");
@@ -148,19 +148,19 @@ public class TravelAgency {
 
     public List<Person> tripsOverlapBetween(Date startDate, Date endDate, String city) throws SQLException {
         String subQuery = "Select people.*, trip.arrival, trip.departure, trip.city from trip inner" +
-                " join people on trip.egn=people.egn where arrival<'"+endDate+"' and departure>'"+startDate+"' and city ='"+city+"'";
-        String query = "select * from ("+subQuery+") as a inner join ("+subQuery+") as b on a.city= b.city where "
+                " join people on trip.egn=people.egn where arrival<'" + endDate + "' and departure>'" + startDate + "' and city ='" + city + "'";
+        String query = "select * from (" + subQuery + ") as a inner join (" + subQuery + ") as b on a.city= b.city where "
                 + " a.egn!=b.egn and a.arrival<b.departure and a.departure>b.arrival;";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
         List<Person> peopleTripOverlap = new ArrayList<>();
-        while(resultSet.next()){
+        while (resultSet.next()) {
             String name = resultSet.getString("name");
             String egn = resultSet.getString("egn");
             int age = resultSet.getInt("age");
             String email = resultSet.getString("email");
             Person person = new Person(name, egn, age, email);
-            if (!peopleTripOverlap.contains(person)){
+            if (!peopleTripOverlap.contains(person)) {
                 peopleTripOverlap.add(person);
             }
         }
@@ -174,7 +174,7 @@ public class TravelAgency {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(selectCities);
         List<String> cities = new ArrayList<>();
-        while(resultSet.next()){
+        while (resultSet.next()) {
             String city = resultSet.getString("city");
             cities.add(city);
         }
@@ -190,11 +190,35 @@ public class TravelAgency {
     }
 
     public boolean tableExist(String tableName) throws SQLException {
-        String tableExists = "select exists ( select 1 from information_schema.tables where table_name = ?);";
-        PreparedStatement preparedStatement = connection.prepareStatement(tableExists);
+        String tableExistsQuery = "SELECT exists ( SELECT 1 FROM information_schema.tables WHERE table_name = ?);";
+        PreparedStatement preparedStatement = connection.prepareStatement(tableExistsQuery);
         preparedStatement.setString(1, tableName);
         ResultSet resultSet = preparedStatement.executeQuery();
         resultSet.next();
-        return resultSet.getBoolean(1);
+        boolean tableExist = resultSet.getBoolean(1);
+        resultSet.close();
+        preparedStatement.close();
+        return tableExist;
+    }
+
+    public void destroyTable(String tableName) throws SQLException {
+        String dropTable = String.format("DROP TABLE IF EXISTS %s CASCADE;", tableName);
+        Statement statement = connection.createStatement();
+        statement.execute(dropTable);
+        statement.close();
+    }
+
+    public void createClientRepository() throws SQLException {
+        String createUserTable = "CREATE TABLE people(name TEXT NOT NULL,egn TEXT PRIMARY KEY NOT NULL, age INT, email TEXT);";
+        Statement statement = connection.createStatement();
+        statement.execute(createUserTable);
+        statement.close();
+    }
+
+    public void createTripRepository() throws SQLException {
+        String createUserTable = "CREATE TABLE trip(id SERIAL PRIMARY KEY NOT NULL , egn TEXT REFERENCES people(egn), arrival DATE NOT NULL, departure DATE NOT NULL, city TEXT);";
+        Statement statement = connection.createStatement();
+        statement.execute(createUserTable);
+        statement.close();
     }
 }

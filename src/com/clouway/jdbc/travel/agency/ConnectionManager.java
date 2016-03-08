@@ -10,6 +10,6 @@ import java.sql.SQLException;
 public class ConnectionManager {
 
     public Connection getConnection(String databaseName, String username, String password) throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost/"+databaseName, username, password);
+        return DriverManager.getConnection("jdbc:postgresql://localhost/" + databaseName, username, password);
     }
 }
