@@ -96,7 +96,7 @@ public class BackupData {
     }
 
 
-    public List<Customer> findAll(){
+    public List<Customer> findAll() {
         List<Customer> customers = new ArrayList<Customer>();
         ResultSet resultSet = null;
         Statement stmt = null;
@@ -104,11 +104,11 @@ public class BackupData {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM customer");
             while (resultSet.next()) {
-                int id=resultSet.getInt("customer_id");
+                int id = resultSet.getInt("customer_id");
                 String name = resultSet.getString("customer_name");
                 String phone = resultSet.getString("phone_number");
                 String email = resultSet.getString("email");
-                customers.add(new Customer(id,name,phone,email));
+                customers.add(new Customer(id, name, phone, email));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -127,7 +127,7 @@ public class BackupData {
         return customers;
     }
 
-    public List<Customer> findAllBackUp(){
+    public List<Customer> findAllBackUp() {
         List<Customer> customers = new ArrayList<Customer>();
         ResultSet resultSet = null;
         Statement stmt = null;
@@ -135,11 +135,11 @@ public class BackupData {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM customer_backup");
             while (resultSet.next()) {
-                int id=resultSet.getInt("customer_id");
+                int id = resultSet.getInt("customer_id");
                 String name = resultSet.getString("customer_name");
                 String phone = resultSet.getString("phone_number");
                 String email = resultSet.getString("email");
-                customers.add(new Customer(id,name,phone,email));
+                customers.add(new Customer(id, name, phone, email));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -159,14 +159,14 @@ public class BackupData {
     }
 
 
-    public void deleteCustomers(){
+    public void deleteCustomers() {
         Statement statement = null;
-        try{
-            statement=connection.createStatement();
+        try {
+            statement = connection.createStatement();
             statement.executeUpdate("DELETE FROM customer");
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 if (statement != null) {
                     statement.close();
@@ -177,14 +177,14 @@ public class BackupData {
         }
     }
 
-    public void deleteCustomersBackup(){
+    public void deleteCustomersBackup() {
         Statement statement = null;
-        try{
-            statement=connection.createStatement();
+        try {
+            statement = connection.createStatement();
             statement.executeUpdate("DELETE FROM customer_backup");
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 if (statement != null) {
                     statement.close();
