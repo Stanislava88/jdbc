@@ -123,9 +123,9 @@ public class TravelAgency {
         return clientList;
     }
 
-    public List<Person> tripsOverlapBetween(Date startDate, Date endDate) throws SQLException {
+    public List<Person> tripsOverlapBetween(Date startDate, Date endDate, String city) throws SQLException {
         String subQuery = "Select people.*, trip.arrival, trip.departure, trip.city from trip inner" +
-                " join people on trip.egn=people.egn where arrival<'"+endDate+"' and departure>'"+startDate+"' ";
+                " join people on trip.egn=people.egn where arrival<'"+endDate+"' and departure>'"+startDate+"' and city ='"+city+"'";
         String query = "select * from ("+subQuery+") as a inner join ("+subQuery+") as b on a.city= b.city where "
                 + " a.egn!=b.egn and a.arrival<b.departure and a.departure>b.arrival;";
         Statement statement = connection.createStatement();
@@ -145,7 +145,7 @@ public class TravelAgency {
     }
 
     public List<String> citiesByPopularity() throws SQLException {
-        String selectCities = "SELECT city FROM trip GROUP BY city ORDER BY count(egn) DESC;";
+        String selectCities = "SELECT city FROM trip GROUP BY city ORDER BY count(egn) DESC, city ASC ;";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(selectCities);
         List<String> cities = new ArrayList<>();

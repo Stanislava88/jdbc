@@ -166,7 +166,39 @@ public class TravelAgencyTest {
 
 
 
-        assertThat(travelAgency.tripsOverlapBetween(new Date(116, 6, 4), new Date(116, 6, 20)), is(equalTo(expected)));
+        assertThat(travelAgency.tripsOverlapBetween(new Date(116, 6, 4), new Date(116, 6, 20), "Rom"), is(equalTo(expected)));
+    }
+
+    @Test
+    public void anotherCityExcluded() throws SQLException {
+        Person rosen = new Person("Rosen", "1", 50, "rosen@r.bg");
+        Person bilqn = new Person("Bilqn", "2", 30, "bilqn@b.bg");
+        Person mihail = new Person("Mihail", "3", 35, "mishkata@m.bg");
+        Person ivan = new Person("Ivan", "4", 21, "ivan@asdf.dfv");
+
+        travelAgency.registerClient(rosen);
+        travelAgency.registerClient(bilqn);
+        travelAgency.registerClient(mihail);
+        travelAgency.registerClient(ivan);
+
+        Trip rosenRom = new Trip(1, "1", new Date(116, 6, 3), new Date(116, 6, 9), "Rom");
+        Trip bilqnRom = new Trip(2, "2", new Date(116, 6, 7), new Date(116, 6, 15), "Rom");
+        Trip mihailRom = new Trip(3, "3", new Date(116, 6, 16), new Date(116, 6, 22), "Rom");
+        Trip ivanParis = new Trip(4, "4", new Date(116, 6, 5), new Date(116, 6, 10), "Paris");
+
+        travelAgency.bookTrip(rosenRom);
+        travelAgency.bookTrip(bilqnRom);
+        travelAgency.bookTrip(mihailRom);
+        travelAgency.bookTrip(ivanParis);
+
+
+        List<Person> expected =new ArrayList<>();
+        expected.add(rosen);
+        expected.add(bilqn);
+
+
+
+        assertThat(travelAgency.tripsOverlapBetween(new Date(116, 6, 4), new Date(116, 6, 20), "Rom"), is(equalTo(expected)));
     }
 
     @Test
@@ -181,6 +213,7 @@ public class TravelAgencyTest {
 
         Trip kikoSofia = new Trip(1, "1", new Date(116, 6, 3), new Date(116, 6, 9), "Sofia");
         Trip kiroSofia = new Trip(2, "2", new Date(116, 6, 7), new Date(116, 6, 15), "Sofia");
+
         Trip petkoPlovdiv = new Trip(3, "3", new Date(116, 6, 16), new Date(116, 6, 22), "Plovdiv");
 
         travelAgency.bookTrip(kikoSofia);
@@ -190,6 +223,35 @@ public class TravelAgencyTest {
         List<String> cities = new ArrayList<>();
         cities.add("Sofia");
         cities.add("Plovdiv");
+
+
+
+        assertThat(travelAgency.citiesByPopularity(), is(equalTo(cities)));
+    }
+
+    @Test
+    public void sortCitiesByNameWhenSameVisitation() throws SQLException {
+        Person kaloian = new Person("Kaloian", "1", 12, "as@sd.d");
+        Person george = new Person("George", "2", 34, "asd@w.d");
+        Person mirela = new Person("Mirela", "3", 65, "wer.t");
+
+        travelAgency.registerClient(kaloian);
+        travelAgency.registerClient(george);
+        travelAgency.registerClient(mirela);
+
+        Trip kaloianVarna = new Trip(1, "1", new Date(115, 4, 15), new Date(115, 5, 15), "Varna");
+        Trip georgeVarna = new Trip(2, "2", new Date(115, 3, 12), new Date(115, 3, 20), "Varna");
+        Trip mirelaBurgas = new Trip(3, "3", new Date(115, 3, 12), new Date(115, 3, 20), "Burgas");
+        Trip mirelaBurgasAgain = new Trip(4, "3", new Date(116, 3, 12), new Date(116, 3, 20), "Burgas");
+
+        travelAgency.bookTrip(kaloianVarna);
+        travelAgency.bookTrip(georgeVarna);
+        travelAgency.bookTrip(mirelaBurgas);
+        travelAgency.bookTrip(mirelaBurgasAgain);
+
+        List<String> cities = new ArrayList<>();
+        cities.add("Burgas");
+        cities.add("Varna");
 
         assertThat(travelAgency.citiesByPopularity(), is(equalTo(cities)));
     }
