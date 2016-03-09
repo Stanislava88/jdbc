@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by clouway on 16-2-24.
  */
-public interface TripDAO {
+public interface TripRepository {
 
     void create(Trip trip);
 

@@ -1,9 +1,9 @@
 package com.clouway.secondtask.dataaccesslayer;
 
 import com.clouway.secondtask.core.Person;
-import com.clouway.secondtask.core.PersonDAO;
+import com.clouway.secondtask.core.PersonRepository;
 import com.clouway.secondtask.core.Trip;
-import com.clouway.secondtask.core.TripDAO;
+import com.clouway.secondtask.core.TripRepository;
 
 import java.sql.*;
 import java.sql.Date;
@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Created by clouway on 16-2-24.
  */
-public class PeopleTripJdbcImpl implements PersonDAO, TripDAO {
+public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
     private Connection connection;
 

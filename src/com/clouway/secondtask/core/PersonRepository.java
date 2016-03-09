@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by clouway on 16-2-24.
  */
-public interface PersonDAO {
+public interface PersonRepository {
 
     void create(Person person);
 
