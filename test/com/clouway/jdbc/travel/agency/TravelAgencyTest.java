@@ -119,7 +119,7 @@ public class TravelAgencyTest {
         trips.add(toVegas);
         trips.add(toParis);
 
-       bookToAgency(toVegas, toParis);
+        bookToAgency(toVegas, toParis);
 
         assertThat(travelAgency.getTripsList(), is(equalTo(trips)));
     }
@@ -189,14 +189,14 @@ public class TravelAgencyTest {
     //TO DO change scenario names
     @Test
     public void twoPeopleOverlap() throws SQLException {
-        Person ivan = new Person("Ivan","1", 21, "ivan@asd.com");
-        Person petar = new Person("Petar","2", 32, "petar@asd.com");
-        Person petko = new Person("Petko","3", 18, "petko@asd.com");
+        Person ivan = new Person("Ivan", "1", 21, "ivan@asd.com");
+        Person petar = new Person("Petar", "2", 32, "petar@asd.com");
+        Person petko = new Person("Petko", "3", 18, "petko@asd.com");
         registerToAgency(ivan, petar, petko);
 
 
-        Trip sofia = new Trip(1,"1", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia");
-        Trip sofia1 = new Trip(2, "2",Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia");
+        Trip sofia = new Trip(1, "1", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia");
+        Trip sofia1 = new Trip(2, "2", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia");
         Trip plovdiv = new Trip(3, "3", Date.valueOf("2015-06-10"), Date.valueOf("2015-06-21"), "Plovdiv");
         bookToAgency(sofia, sofia1, plovdiv);
 
@@ -209,12 +209,12 @@ public class TravelAgencyTest {
 
     @Test
     public void oneIsNotInRangeAndNotInCity() throws SQLException {
-        registerToAgency(new Person("Ivan","1", 21, "ivan@asd.com"),
-                new Person("Petar","2", 32, "petar@asd.com"),
-                new Person("Petko","3", 18, "petko@asd.com"));
+        registerToAgency(new Person("Ivan", "1", 21, "ivan@asd.com"),
+                new Person("Petar", "2", 32, "petar@asd.com"),
+                new Person("Petko", "3", 18, "petko@asd.com"));
 
-        bookToAgency(new Trip(1,"1", Date.valueOf("2015-05-12"), Date.valueOf("2015-05-25"), "Sofia"),
-                new Trip(2, "2",Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia"),
+        bookToAgency(new Trip(1, "1", Date.valueOf("2015-05-12"), Date.valueOf("2015-05-25"), "Sofia"),
+                new Trip(2, "2", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia"),
                 new Trip(3, "3", Date.valueOf("2015-06-10"), Date.valueOf("2015-06-21"), "Plovdiv"));
 
         List<Person> people = travelAgency.tripsOverlapBetween(Date.valueOf("2015-05-1"), Date.valueOf("2016-5-30"), "Sofia");
@@ -225,14 +225,14 @@ public class TravelAgencyTest {
 
     @Test
     public void threeOutOfSixInRangeAndCity() throws SQLException {
-        registerToAgency(new Person("Ivan","1", 21, "ivan@asd.com"),
-                new Person("Petar","2", 32, "petar@asd.com"),
-                new Person("Petko","3", 18, "petko@asd.com"),
+        registerToAgency(new Person("Ivan", "1", 21, "ivan@asd.com"),
+                new Person("Petar", "2", 32, "petar@asd.com"),
+                new Person("Petko", "3", 18, "petko@asd.com"),
                 new Person("Dimitar", "4", 20, "asdqweqwe@asd.com"),
-                new Person("Tihomir","5",27, "Tihomir@asd.com"),
-                new Person("Panayot","6",34, "jiji@asd.com"));
+                new Person("Tihomir", "5", 27, "Tihomir@asd.com"),
+                new Person("Panayot", "6", 34, "jiji@asd.com"));
 
-        bookToAgency(new Trip(1,"1", Date.valueOf("2015-05-01"), Date.valueOf("2015-05-05"), "Sofia"),
+        bookToAgency(new Trip(1, "1", Date.valueOf("2015-05-01"), Date.valueOf("2015-05-05"), "Sofia"),
                 new Trip(2, "2", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia"),
                 new Trip(3, "3", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Plovdiv"),
                 new Trip(4, "4", Date.valueOf("2015-05-15"), Date.valueOf("2015-05-28"), "Sofia"),
@@ -247,11 +247,11 @@ public class TravelAgencyTest {
 
     @Test
     public void twoInRange() throws SQLException {
-        registerToAgency(new Person("Ivan","1", 21, "ivan@asd.com"),
-                new Person("Petar","2", 32, "petar@asd.com"),
-                new Person("Petko","3", 18, "petko@asd.com"));
+        registerToAgency(new Person("Ivan", "1", 21, "ivan@asd.com"),
+                new Person("Petar", "2", 32, "petar@asd.com"),
+                new Person("Petko", "3", 18, "petko@asd.com"));
 
-        bookToAgency(new Trip(1,"1", Date.valueOf("2015-05-01"), Date.valueOf("2015-05-06"), "Sofia"),
+        bookToAgency(new Trip(1, "1", Date.valueOf("2015-05-01"), Date.valueOf("2015-05-06"), "Sofia"),
                 new Trip(2, "2", Date.valueOf("2015-05-04"), Date.valueOf("2015-05-20"), "Sofia"),
                 new Trip(3, "3", Date.valueOf("2015-05-12"), Date.valueOf("2015-05-28"), "Sofia"));
 
@@ -262,10 +262,10 @@ public class TravelAgencyTest {
 
     @Test
     public void oneInRaneButOutsideCityParameter() throws SQLException {
-        registerToAgency(new Person("Ivan","1", 21, "ivan@asd.com"),
-                new Person("Petar","2", 32, "petar@asd.com"), new Person("Petko","3", 18, "petko@asd.com"));
+        registerToAgency(new Person("Ivan", "1", 21, "ivan@asd.com"),
+                new Person("Petar", "2", 32, "petar@asd.com"), new Person("Petko", "3", 18, "petko@asd.com"));
 
-        bookToAgency(new Trip(1,"1", Date.valueOf("2014-02-07"), Date.valueOf("2014-02-12"), "Burgas"),
+        bookToAgency(new Trip(1, "1", Date.valueOf("2014-02-07"), Date.valueOf("2014-02-12"), "Burgas"),
                 new Trip(2, "2", Date.valueOf("2014-02-08"), Date.valueOf("2014-02-14"), "Sofia"),
                 new Trip(3, "3", Date.valueOf("2014-02-10"), Date.valueOf("2014-02-16"), "Burgas"));
 
@@ -378,14 +378,14 @@ public class TravelAgencyTest {
         assertThat(tableDestroyed, is(equalTo(true)));
     }
 
-    private void registerToAgency(Person ... people) throws SQLException {
-        for(Person person: people){
+    private void registerToAgency(Person... people) throws SQLException {
+        for (Person person : people) {
             travelAgency.registerClient(person);
         }
     }
 
-    private void bookToAgency(Trip ... trips) throws SQLException {
-        for(Trip trip: trips){
+    private void bookToAgency(Trip... trips) throws SQLException {
+        for (Trip trip : trips) {
             travelAgency.bookTrip(trip);
         }
     }
