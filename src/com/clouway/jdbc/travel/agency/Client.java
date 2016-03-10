@@ -3,13 +3,13 @@ package com.clouway.jdbc.travel.agency;
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
-public class Person {
+public class Client {
     public final String name;
     public final String egn;
     public final int age;
     public final String email;
 
-    public Person(String name, String egn, int age, String email) {
+    public Client(String name, String egn, int age, String email) {
         this.name = name;
         this.egn = egn;
         this.age = age;
@@ -21,12 +21,12 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Person person = (Person) o;
+        Client client = (Client) o;
 
-        if (age != person.age) return false;
-        if (name != null ? !name.equals(person.name) : person.name != null) return false;
-        if (egn != null ? !egn.equals(person.egn) : person.egn != null) return false;
-        return !(email != null ? !email.equals(person.email) : person.email != null);
+        if (age != client.age) return false;
+        if (name != null ? !name.equals(client.name) : client.name != null) return false;
+        if (egn != null ? !egn.equals(client.egn) : client.egn != null) return false;
+        return !(email != null ? !email.equals(client.email) : client.email != null);
 
     }
 
@@ -41,7 +41,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "Client{" +
                 "name='" + name + '\'' +
                 ", egn='" + egn + '\'' +
                 ", age=" + age +

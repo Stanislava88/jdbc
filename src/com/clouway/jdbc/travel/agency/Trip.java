@@ -50,10 +50,10 @@ public class Trip {
     public String toString() {
         return "Trip{" +
                 "id=" + id +
-                ", egn='" + egn  + '\''+
+                ", egn='" + egn + '\'' +
                 ", arrival=" + arrival +
                 ", departure=" + departure +
-                ", destination='" + destination  + '\''+
+                ", destination='" + destination + '\'' +
                 '}';
     }
 }
