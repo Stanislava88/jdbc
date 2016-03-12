@@ -1,6 +1,6 @@
 package com.clouway.jdbc.travel.agency.persistence;
 
-import com.clouway.jdbc.travel.agency.ExecutionException;
+import com.clouway.jdbc.ExecutionException;
 
 import java.sql.*;
 import java.util.ArrayList;

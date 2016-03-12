@@ -1,4 +1,4 @@
-package com.clouway.jdbc.travel.agency;
+package com.clouway.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

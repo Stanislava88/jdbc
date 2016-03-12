@@ -1,5 +1,6 @@
 package com.clouway.jdbc.travel.agency;
 
+import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.travel.agency.persistence.*;
 import org.junit.After;
