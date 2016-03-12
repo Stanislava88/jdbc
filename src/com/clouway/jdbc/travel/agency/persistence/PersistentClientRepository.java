@@ -1,6 +1,5 @@
 package com.clouway.jdbc.travel.agency.persistence;
 
-import com.clouway.jdbc.travel.agency.Client;
 import com.clouway.jdbc.travel.agency.ExecutionException;
 
 import java.sql.*;
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
-public class PersistentClientRepository {
+public class PersistentClientRepository implements ClientRepository {
 
     private Connection connection;
 
@@ -18,6 +17,7 @@ public class PersistentClientRepository {
         this.connection = connection;
     }
 
+    @Override
     public void register(Client client) {
         String insertSql = "INSERT INTO people VALUES(?, ?, ?, ?);";
         PreparedStatement preparedStatement = null;
@@ -42,6 +42,7 @@ public class PersistentClientRepository {
         }
     }
 
+    @Override
     public Client getByEgn(String egn) {
         String selectUser = "SELECT * FROM people WHERE egn=?;";
         PreparedStatement preparedStatement = null;
@@ -78,6 +79,7 @@ public class PersistentClientRepository {
         }
     }
 
+    @Override
     public void update(Client client) {
         String updatePeople = "UPDATE people SET name=?, egn=?, age=?, email=? WHERE egn=?;";
         PreparedStatement preparedStatement = null;
@@ -103,10 +105,12 @@ public class PersistentClientRepository {
         }
     }
 
+    @Override
     public List<Client> getClientsList() {
         return getClientsWith("");
     }
 
+    @Override
     public List<Client> getClientsWith(String nameBeginning) {
         String clientsLike = "SELECT * FROM people WHERE name LIKE '" + nameBeginning + "%';";
         Statement statement = null;

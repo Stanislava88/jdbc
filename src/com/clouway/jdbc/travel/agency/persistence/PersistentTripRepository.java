@@ -1,7 +1,6 @@
 package com.clouway.jdbc.travel.agency.persistence;
 
 import com.clouway.jdbc.travel.agency.ExecutionException;
-import com.clouway.jdbc.travel.agency.Trip;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,13 +9,14 @@ import java.util.List;
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
-public class PersistentTripRepository {
+public class PersistentTripRepository implements TripRepository {
     private Connection connection;
 
     public PersistentTripRepository(Connection connection) {
         this.connection = connection;
     }
 
+    @Override
     public void book(Trip trip) {
         String insertTrip = "INSERT INTO trip VALUES(?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = null;
@@ -42,6 +42,7 @@ public class PersistentTripRepository {
         }
     }
 
+    @Override
     public Trip getById(int id) {
         String selectTrip = "SELECT * FROM trip WHERE id=?";
         PreparedStatement preparedStatement = null;
@@ -79,6 +80,7 @@ public class PersistentTripRepository {
         }
     }
 
+    @Override
     public void update(Trip trip) {
         String updateTrip = "UPDATE trip SET egn=?, arrival=?, departure=?, city=? WHERE id=?";
         PreparedStatement preparedStatement = null;
@@ -104,6 +106,7 @@ public class PersistentTripRepository {
         }
     }
 
+    @Override
     public List<Trip> getList() {
         List<Trip> tripsList = new ArrayList<>();
         Statement statement = null;
@@ -142,6 +145,7 @@ public class PersistentTripRepository {
         }
     }
 
+    @Override
     public List<String> citiesByPopularity() {
         String selectCities = "SELECT city FROM trip GROUP BY city ORDER BY count(egn) DESC, city ASC ;";
         Statement statement = null;

@@ -1,4 +1,6 @@
-package com.clouway.jdbc.travel.agency;
+package com.clouway.jdbc.travel.agency.persistence;
+
+import com.clouway.jdbc.travel.agency.ExecutionException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -7,14 +9,15 @@ import java.util.List;
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
-public class ClientsTripInfo {
+public class ClientTripsInfo implements ClientTrips {
 
     private Connection connection;
 
-    public ClientsTripInfo(Connection connection) {
+    public ClientTripsInfo(Connection connection) {
         this.connection = connection;
     }
 
+    @Override
     public List<Client> peopleTripsOverlapBetween(Date startDate, Date endDate, String city) {
         String subQuery = "Select people.*, trip.arrival, trip.departure, trip.city from trip inner" +
                 " join people on trip.egn=people.egn where arrival<'" + endDate + "' and departure>'" + startDate + "' and city ='" + city + "'";

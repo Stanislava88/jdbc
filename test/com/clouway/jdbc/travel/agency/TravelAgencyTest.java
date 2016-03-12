@@ -1,8 +1,7 @@
 package com.clouway.jdbc.travel.agency;
 
 import com.clouway.jdbc.DatabaseTableTool;
-import com.clouway.jdbc.travel.agency.persistence.PersistentClientRepository;
-import com.clouway.jdbc.travel.agency.persistence.PersistentTripRepository;
+import com.clouway.jdbc.travel.agency.persistence.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class TravelAgencyTest {
     public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
         connection = connectionManager.getConnection("travel_agency", "postgres", "clouway.com");
-        travelAgency = new TravelAgency(new PersistentClientRepository(connection), new PersistentTripRepository(connection), new ClientsTripInfo(connection));
+        travelAgency = new TravelAgency(new PersistentClientRepository(connection), new PersistentTripRepository(connection), new ClientTripsInfo(connection));
     }
 
     @After

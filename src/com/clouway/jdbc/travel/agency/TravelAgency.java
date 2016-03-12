@@ -1,7 +1,6 @@
 package com.clouway.jdbc.travel.agency;
 
-import com.clouway.jdbc.travel.agency.persistence.PersistentClientRepository;
-import com.clouway.jdbc.travel.agency.persistence.PersistentTripRepository;
+import com.clouway.jdbc.travel.agency.persistence.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -10,14 +9,14 @@ import java.util.List;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class TravelAgency {
-    private final PersistentClientRepository persistentClientRepository;
-    private final PersistentTripRepository persistentTripRepository;
-    private ClientsTripInfo clientsTripInfo;
+    private final ClientRepository persistentClientRepository;
+    private final TripRepository persistentTripRepository;
+    private ClientTrips clientTripsInfo;
 
-    public TravelAgency(PersistentClientRepository persistentClientRepository, PersistentTripRepository persistentTripRepository, ClientsTripInfo clientsTripInfo) {
+    public TravelAgency(ClientRepository persistentClientRepository, TripRepository persistentTripRepository, ClientTrips clientTripsInfo) {
         this.persistentClientRepository = persistentClientRepository;
         this.persistentTripRepository = persistentTripRepository;
-        this.clientsTripInfo = clientsTripInfo;
+        this.clientTripsInfo = clientTripsInfo;
     }
 
     public void registerClient(Client client) {
@@ -57,7 +56,7 @@ public class TravelAgency {
     }
 
     public List<Client> tripsOverlapBetween(Date startDate, Date endDate, String city) {
-        return clientsTripInfo.peopleTripsOverlapBetween(startDate, endDate, city);
+        return clientTripsInfo.peopleTripsOverlapBetween(startDate, endDate, city);
     }
 
     public List<String> citiesByPopularity() {
