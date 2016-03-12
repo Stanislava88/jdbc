@@ -45,15 +45,4 @@ public class Trip {
         result = 31 * result + (destination != null ? destination.hashCode() : 0);
         return result;
     }
-
-    @Override
-    public String toString() {
-        return "Trip{" +
-                "id=" + id +
-                ", egn='" + egn + '\'' +
-                ", arrival=" + arrival +
-                ", departure=" + departure +
-                ", destination='" + destination + '\'' +
-                '}';
-    }
 }

@@ -9,7 +9,11 @@ import java.sql.SQLException;
  */
 public class ConnectionManager {
 
-    public Connection getConnection(String databaseName, String username, String password) throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost/" + databaseName, username, password);
+    public Connection getConnection(String database, String username, String password) {
+        try {
+            return DriverManager.getConnection("jdbc:postgresql://localhost/" + database, username, password);
+        } catch (SQLException e) {
+            throw new ExecutionException("can't connect");
+        }
     }
 }

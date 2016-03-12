@@ -39,13 +39,4 @@ public class Client {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Client{" +
-                "name='" + name + '\'' +
-                ", egn='" + egn + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }

@@ -1,5 +1,6 @@
 package com.clouway.jdbc.travel.agency;
 
+import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.travel.agency.persistence.PersistentClientRepository;
 import com.clouway.jdbc.travel.agency.persistence.PersistentTripRepository;
 import org.junit.After;
@@ -8,7 +9,6 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,26 +20,25 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class TravelAgencyTest {
-    DatabaseTableTool tableTool = null;
     TravelAgency travelAgency = null;
     Connection connection = null;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
         connection = connectionManager.getConnection("travel_agency", "postgres", "clouway.com");
-        tableTool = new DatabaseTableTool(connection);
         travelAgency = new TravelAgency(new PersistentClientRepository(connection), new PersistentTripRepository(connection), new ClientsTripInfo(connection));
     }
 
     @After
-    public void tearDown() throws Exception {
-        tableTool.clearClientRepository();
-        tableTool.clearTripRepository();
+    public void tearDown() {
+        DatabaseTableTool tableTool = new DatabaseTableTool();
+        tableTool.clearTable(connection, "people");
+        tableTool.clearTable(connection, "trip");
     }
 
     @Test
-    public void addClient() throws SQLException {
+    public void addClient() {
         Client john = new Client("John", "1", 25, "john@johm.com");
         travelAgency.registerClient(john);
         Client johnReturned = travelAgency.getClient("1");
@@ -47,7 +46,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void updateClientInfo() throws SQLException {
+    public void updateClientInfo() {
         Client mark = new Client("Mark", "123", 20, "mark@a.d");
         travelAgency.registerClient(mark);
 
@@ -60,7 +59,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void addTrip() throws SQLException {
+    public void addTrip() {
         Client micky = new Client("Micky", "2", 31, "asfd@a.erg");
         travelAgency.registerClient(micky);
 
@@ -72,7 +71,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void updateTripInfo() throws SQLException {
+    public void updateTripInfo() {
         Client bob = new Client("Bob", "5443", 15, "q@a.we");
         travelAgency.registerClient(bob);
 
@@ -88,7 +87,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void clientList() throws SQLException {
+    public void clientList() {
         Client linch = new Client("Linch", "1", 20, "linch@a.bg");
         Client pako = new Client("Pako", "2", 27, "pako@a.bg");
         Client zoro = new Client("Zoro", "3", 50, "zoro@zoro.zoro");
@@ -104,7 +103,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void getTripList() throws SQLException {
+    public void getTripList() {
         Client malcho = new Client("Malcho", "1", 32, "malcho@a.a");
         Client mirela = new Client("Mirela", "2", 20, "mirela@m.m");
         registerToAgency(malcho, mirela);
@@ -122,7 +121,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void clientListNamesBeginning() throws SQLException {
+    public void clientListNamesBeginning() {
         Client kaloian = new Client("Kaloian", "1", 12, "kalata@k.k");
         Client krasimir = new Client("Krasimir", "2", 22, "k@k.k");
         Client petar = new Client("Petar", "3", 40, "p@k.k");
@@ -137,7 +136,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void peopleListTripOverlapOnRange() throws SQLException {
+    public void peopleListTripOverlapOnRange() {
         Client rosen = new Client("Rosen", "1", 50, "rosen@r.bg");
         Client bilqn = new Client("Bilqn", "2", 30, "bilqn@b.bg");
         Client mihail = new Client("Mihail", "3", 35, "mishkata@m.bg");
@@ -159,7 +158,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void anotherCityExcluded() throws SQLException {
+    public void anotherCityExcluded() {
         Client rosen = new Client("Rosen", "1", 50, "rosen@r.bg");
         Client bilqn = new Client("Bilqn", "2", 30, "bilqn@b.bg");
         Client mihail = new Client("Mihail", "3", 35, "mishkata@m.bg");
@@ -183,9 +182,8 @@ public class TravelAgencyTest {
         assertThat(travelAgency.tripsOverlapBetween(Date.valueOf("2016-7-4"), Date.valueOf("2016-7-20"), "Rom"), is(equalTo(expected)));
     }
 
-    //TO DO change scenario names
     @Test
-    public void twoPeopleOverlap() throws SQLException {
+    public void twoPeopleOverlap() {
         Client ivan = new Client("Ivan", "1", 21, "ivan@asd.com");
         Client petar = new Client("Petar", "2", 32, "petar@asd.com");
         Client petko = new Client("Petko", "3", 18, "petko@asd.com");
@@ -205,7 +203,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void oneIsNotInRangeAndNotInCity() throws SQLException {
+    public void oneIsNotInRangeAndNotInCity() {
         registerToAgency(new Client("Ivan", "1", 21, "ivan@asd.com"),
                 new Client("Petar", "2", 32, "petar@asd.com"),
                 new Client("Petko", "3", 18, "petko@asd.com"));
@@ -221,7 +219,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void threeOutOfSixInRangeAndCity() throws SQLException {
+    public void threeOutOfSixInRangeAndCity() {
         registerToAgency(new Client("Ivan", "1", 21, "ivan@asd.com"),
                 new Client("Petar", "2", 32, "petar@asd.com"),
                 new Client("Petko", "3", 18, "petko@asd.com"),
@@ -243,7 +241,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void twoInRange() throws SQLException {
+    public void twoInRange() {
         registerToAgency(new Client("Ivan", "1", 21, "ivan@asd.com"),
                 new Client("Petar", "2", 32, "petar@asd.com"),
                 new Client("Petko", "3", 18, "petko@asd.com"));
@@ -258,7 +256,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void oneInRaneButOutsideCityParameter() throws SQLException {
+    public void oneInRaneButOutsideCityParameter() {
         registerToAgency(new Client("Ivan", "1", 21, "ivan@asd.com"),
                 new Client("Petar", "2", 32, "petar@asd.com"), new Client("Petko", "3", 18, "petko@asd.com"));
 
@@ -272,7 +270,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void sortCitiesByVisitation() throws SQLException {
+    public void sortCitiesByVisitation() {
         Client kiko = new Client("Kristian", "1", 23, "kiko@k.k");
         Client kiro = new Client("Kircho", "2", 43, "as@as.as");
         Client petko = new Client("Petko", "3", 27, "pepo@p.p");
@@ -295,7 +293,7 @@ public class TravelAgencyTest {
     }
 
     @Test
-    public void sortCitiesByNameWhenSameVisitation() throws SQLException {
+    public void sortCitiesByNameWhenSameVisitation() {
         Client kaloian = new Client("Kaloian", "1", 12, "as@sd.d");
         Client george = new Client("George", "2", 34, "asd@w.d");
         Client mirela = new Client("Mirela", "3", 65, "wer.t");
@@ -316,13 +314,13 @@ public class TravelAgencyTest {
         assertThat(travelAgency.citiesByPopularity(), is(equalTo(cities)));
     }
 
-    private void registerToAgency(Client... people) throws SQLException {
+    private void registerToAgency(Client... people) {
         for (Client client : people) {
             travelAgency.registerClient(client);
         }
     }
 
-    private void bookToAgency(Trip... trips) throws SQLException {
+    private void bookToAgency(Trip... trips) {
         for (Trip trip : trips) {
             travelAgency.bookTrip(trip);
         }

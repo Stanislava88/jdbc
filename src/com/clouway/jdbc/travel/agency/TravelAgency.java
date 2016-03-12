@@ -4,7 +4,6 @@ import com.clouway.jdbc.travel.agency.persistence.PersistentClientRepository;
 import com.clouway.jdbc.travel.agency.persistence.PersistentTripRepository;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -21,47 +20,47 @@ public class TravelAgency {
         this.clientsTripInfo = clientsTripInfo;
     }
 
-    public void registerClient(Client client) throws SQLException {
+    public void registerClient(Client client) {
         persistentClientRepository.register(client);
     }
 
-    public Client getClient(String egn) throws SQLException {
+    public Client getClient(String egn) {
         return persistentClientRepository.getByEgn(egn);
     }
 
-    public void bookTrip(Trip trip) throws SQLException {
+    public void bookTrip(Trip trip) {
         persistentTripRepository.book(trip);
     }
 
-    public Trip getTrip(int id) throws SQLException {
+    public Trip getTrip(int id) {
         return persistentTripRepository.getById(id);
     }
 
-    public void updateClient(Client client) throws SQLException {
+    public void updateClient(Client client) {
         persistentClientRepository.update(client);
     }
 
-    public void updateTrip(Trip trip) throws SQLException {
+    public void updateTrip(Trip trip) {
         persistentTripRepository.update(trip);
     }
 
-    public List<Client> getClientsList() throws SQLException {
+    public List<Client> getClientsList() {
         return persistentClientRepository.getClientsList();
     }
 
-    public List<Trip> getTripsList() throws SQLException {
+    public List<Trip> getTripsList() {
         return persistentTripRepository.getList();
     }
 
-    public List<Client> getClientsWith(String nameBeginning) throws SQLException {
+    public List<Client> getClientsWith(String nameBeginning) {
         return persistentClientRepository.getClientsWith(nameBeginning);
     }
 
-    public List<Client> tripsOverlapBetween(Date startDate, Date endDate, String city) throws SQLException {
-        return clientsTripInfo.tripsOverlapBetween(startDate, endDate, city);
+    public List<Client> tripsOverlapBetween(Date startDate, Date endDate, String city) {
+        return clientsTripInfo.peopleTripsOverlapBetween(startDate, endDate, city);
     }
 
-    public List<String> citiesByPopularity() throws SQLException {
+    public List<String> citiesByPopularity() {
         return persistentTripRepository.citiesByPopularity();
     }
 }
