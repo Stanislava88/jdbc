@@ -1,5 +1,6 @@
 package com.clouway.jdbc.info.users;
 
+import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.info.users.persistence.Contact;
 import com.clouway.jdbc.info.users.persistence.PersistentContactRepository;
 import com.clouway.jdbc.info.users.persistence.PersistentUserRepository;
@@ -10,7 +11,6 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class PersistentContactRepositoryTest {
     PersistentContactRepository contactRepository = null;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
         connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
         userRepository = new PersistentUserRepository(connection);
@@ -40,12 +40,14 @@ public class PersistentContactRepositoryTest {
 
     @After
     public void tearDown() throws SQLException {
-        clear();
+        DatabaseTableTool tableTool = new DatabaseTableTool();
+        tableTool.clearTable(connection, "users");
+        tableTool.clearTable(connection, "contact");
         connection.close();
     }
 
     @Test
-    public void addContact() throws SQLException {
+    public void addContact() {
         Contact kaloianNumber = new Contact(1, 1, "08345");
 
         contactRepository.add(kaloianNumber);
@@ -55,7 +57,7 @@ public class PersistentContactRepositoryTest {
     }
 
     @Test
-    public void getContactList() throws SQLException {
+    public void getContactList() {
         Contact kaloianNumber = new Contact(1, 1, "08345");
         Contact kaloianSecondNumber = new Contact(2, 1, "0345");
         Contact kaloianThirdNumber = new Contact(3, 1, "099323");
@@ -73,11 +75,4 @@ public class PersistentContactRepositoryTest {
         assertThat(contactList, is(equalTo(contacts)));
     }
 
-    public void clear() throws SQLException {
-        Statement statement = connection.createStatement();
-
-        statement.execute("TRUNCATE TABLE users CASCADE;");
-        statement.execute("TRUNCATE TABLE contact;");
-        statement.close();
-    }
 }

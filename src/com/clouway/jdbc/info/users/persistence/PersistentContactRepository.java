@@ -1,5 +1,7 @@
 package com.clouway.jdbc.info.users.persistence;
 
+import com.clouway.jdbc.info.users.ExecutionException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +10,17 @@ import java.util.NoSuchElementException;
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
-public class PersistentContactRepository {
+public class PersistentContactRepository implements ContactRepository {
     private Connection connection;
 
     public PersistentContactRepository(Connection connection) {
         this.connection = connection;
     }
 
+    @Override
     public void add(Contact contact) {
         String sqlStatement = "INSERT INTO contact VALUES(?, ?, ?);";
-        PreparedStatement preparedStatement;
+        PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, contact.id);
@@ -27,41 +30,93 @@ public class PersistentContactRepository {
 
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ExecutionException("Could not add the contact: " + contact.id);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public Contact getById(int id) throws SQLException {
+    @Override
+    public Contact getById(int id) {
         String selectById = "SELECT * FROM contact WHERE id=?;";
-        PreparedStatement preparedStatement = connection.prepareStatement(selectById);
-        preparedStatement.setInt(1, id);
-        preparedStatement.execute();
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            int contactId = resultSet.getInt("id");
-            int userId = resultSet.getInt("user_id");
-            String number = resultSet.getString("phone_number");
-            return new Contact(contactId, userId, number);
-        } else {
-            resultSet.close();
-            preparedStatement.close();
-            throw new NoSuchElementException("No users with such id.");
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(selectById);
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int contactId = resultSet.getInt("id");
+                int userId = resultSet.getInt("user_id");
+                String number = resultSet.getString("phone_number");
+                return new Contact(contactId, userId, number);
+            } else {
+                resultSet.close();
+                preparedStatement.close();
+                throw new NoSuchElementException("No users with such id.");
+            }
+        } catch (SQLException e) {
+            throw new ExecutionException("could not find contact with such id: " + id);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public List<Contact> getList() throws SQLException {
+    @Override
+    public List<Contact> getList() {
         String contactQuery = "SELECT * FROM contact;";
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(contactQuery);
-        List<Contact> contactList = new ArrayList<>();
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            int userId = resultSet.getInt("user_id");
-            String number = resultSet.getString("phone_number");
-            contactList.add(new Contact(id, userId, number));
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(contactQuery);
+            List<Contact> contactList = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int userId = resultSet.getInt("user_id");
+                String number = resultSet.getString("phone_number");
+                contactList.add(new Contact(id, userId, number));
+            }
+            resultSet.close();
+            statement.close();
+            return contactList;
+        } catch (SQLException e) {
+            throw new ExecutionException("Could not load the contact list");
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        resultSet.close();
-        statement.close();
-        return contactList;
     }
 }

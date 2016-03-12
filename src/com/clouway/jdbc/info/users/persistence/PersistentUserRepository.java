@@ -1,23 +1,25 @@
 package com.clouway.jdbc.info.users.persistence;
 
+import com.clouway.jdbc.info.users.ExecutionException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
-public class PersistentUserRepository {
+public class PersistentUserRepository implements UserRepository {
     private Connection connection;
 
     public PersistentUserRepository(Connection connection) {
         this.connection = connection;
     }
 
+    @Override
     public void register(User user) {
         String sqlStatement = "INSERT INTO users VALUES(?, ?);";
-        PreparedStatement preparedStatement;
+        PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, user.id);
@@ -26,42 +28,90 @@ public class PersistentUserRepository {
 
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ExecutionException("Could not register user: " + user.id);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public User getById(int id) throws SQLException {
+    @Override
+    public User getById(int id) {
         String selectById = "SELECT * FROM users WHERE id=?;";
-        PreparedStatement preparedStatement = connection.prepareStatement(selectById);
-        preparedStatement.setInt(1, id);
-        preparedStatement.execute();
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(selectById);
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             int userId = resultSet.getInt("id");
             String name = resultSet.getString("name");
 
             preparedStatement.close();
             resultSet.close();
             return new User(userId, name);
-        } else {
-            resultSet.close();
-            preparedStatement.close();
-            throw new NoSuchElementException("No users with such id.");
+
+        } catch (SQLException e) {
+            throw new ExecutionException("Could not find address with that id.");
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public List<User> getList() throws SQLException {
+    @Override
+    public List<User> getList() {
         String usersQuery = "SELECT * FROM users";
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(usersQuery);
-        List<User> userList = new ArrayList<>();
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            userList.add(new User(id, name));
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(usersQuery);
+            List<User> userList = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                userList.add(new User(id, name));
+            }
+            resultSet.close();
+            statement.close();
+            return userList;
+        } catch (SQLException e) {
+            throw new ExecutionException("Could not get the list of addresses");
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        resultSet.close();
-        statement.close();
-        return userList;
     }
 }

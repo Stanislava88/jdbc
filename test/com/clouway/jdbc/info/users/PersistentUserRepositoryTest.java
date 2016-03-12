@@ -1,5 +1,6 @@
 package com.clouway.jdbc.info.users;
 
+import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.info.users.persistence.PersistentUserRepository;
 import com.clouway.jdbc.info.users.persistence.User;
 import org.junit.After;
@@ -8,7 +9,6 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class PersistentUserRepositoryTest {
     PersistentUserRepository userRepository = null;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
         connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
         userRepository = new PersistentUserRepository(connection);
@@ -32,12 +32,13 @@ public class PersistentUserRepositoryTest {
 
     @After
     public void tearDown() throws SQLException {
-        clear();
+        DatabaseTableTool tableTool = new DatabaseTableTool();
+        tableTool.clearTable(connection, "users");
         connection.close();
     }
 
     @Test
-    public void addUser() throws SQLException {
+    public void addUser() {
         User sisi = new User(1, "Sisi");
 
         userRepository.register(sisi);
@@ -47,7 +48,7 @@ public class PersistentUserRepositoryTest {
     }
 
     @Test
-    public void getUsersList() throws SQLException {
+    public void getUsersList() {
         User marko = new User(1, "Marko");
         User petar = new User(2, "Petar");
         User petko = new User(3, "Petko");
@@ -65,10 +66,4 @@ public class PersistentUserRepositoryTest {
         assertThat(userList, is(equalTo(users)));
     }
 
-    public void clear() throws SQLException {
-        Statement statement = connection.createStatement();
-
-        statement.execute("TRUNCATE TABLE users CASCADE;");
-        statement.close();
-    }
 }

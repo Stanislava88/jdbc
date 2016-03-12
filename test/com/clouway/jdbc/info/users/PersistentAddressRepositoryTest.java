@@ -1,5 +1,6 @@
 package com.clouway.jdbc.info.users;
 
+import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.info.users.persistence.Address;
 import com.clouway.jdbc.info.users.persistence.PersistentAddressRepository;
 import com.clouway.jdbc.info.users.persistence.PersistentUserRepository;
@@ -10,7 +11,6 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class PersistentAddressRepositoryTest {
     PersistentAddressRepository addressRepository = null;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
         connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
         userRepository = new PersistentUserRepository(connection);
@@ -38,12 +38,14 @@ public class PersistentAddressRepositoryTest {
 
     @After
     public void tearDown() throws SQLException {
-        clear();
+        DatabaseTableTool tableTool = new DatabaseTableTool();
+        tableTool.clearTable(connection, "users");
+        tableTool.clearTable(connection, "address");
         connection.close();
     }
 
     @Test
-    public void addAddress() throws SQLException {
+    public void addAddress() {
         Address ivanAddress = new Address(1, 1, "verusha 2");
         addressRepository.add(ivanAddress);
 
@@ -52,7 +54,7 @@ public class PersistentAddressRepositoryTest {
     }
 
     @Test
-    public void getAddressList() throws SQLException {
+    public void getAddressList() {
         Address ivanAddress = new Address(1, 1, "verusha 2");
         Address ivanSecondAddress = new Address(2, 1, "gabrovski 2");
         Address ivanThirdAddress = new Address(3, 1, "balgaria 1");
@@ -67,13 +69,5 @@ public class PersistentAddressRepositoryTest {
 
         List<Address> addressList = addressRepository.getList();
         assertThat(addressList, is(equalTo(addresses)));
-    }
-
-    public void clear() throws SQLException {
-        Statement statement = connection.createStatement();
-
-        statement.execute("TRUNCATE TABLE users CASCADE;");
-        statement.execute("TRUNCATE TABLE address;");
-        statement.close();
     }
 }
