@@ -1,4 +1,4 @@
-package com.clouway.jdbc.info.users;
+package com.clouway.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

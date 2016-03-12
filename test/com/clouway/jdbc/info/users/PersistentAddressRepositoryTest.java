@@ -1,5 +1,6 @@
 package com.clouway.jdbc.info.users;
 
+import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.info.users.persistence.Address;
 import com.clouway.jdbc.info.users.persistence.PersistentAddressRepository;

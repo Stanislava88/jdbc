@@ -1,4 +1,4 @@
-package com.clouway.jdbc.info.users;
+package com.clouway.jdbc;
 
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)

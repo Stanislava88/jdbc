@@ -1,6 +1,6 @@
 package com.clouway.jdbc.info.users.persistence;
 
-import com.clouway.jdbc.info.users.ExecutionException;
+import com.clouway.jdbc.ExecutionException;
 
 import java.sql.*;
 import java.util.ArrayList;
