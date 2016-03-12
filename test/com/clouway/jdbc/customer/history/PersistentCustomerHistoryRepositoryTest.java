@@ -1,5 +1,6 @@
 package com.clouway.jdbc.customer.history;
 
+import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.customer.history.persistence.Customer;
 import com.clouway.jdbc.customer.history.persistence.CustomerRecord;
