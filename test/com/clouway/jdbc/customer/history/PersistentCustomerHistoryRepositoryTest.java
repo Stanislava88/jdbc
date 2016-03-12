@@ -1,5 +1,8 @@
 package com.clouway.jdbc.customer.history;
 
+import com.clouway.jdbc.DatabaseTableTool;
+import com.clouway.jdbc.customer.history.persistence.Customer;
+import com.clouway.jdbc.customer.history.persistence.CustomerRecord;
 import com.clouway.jdbc.customer.history.persistence.PersistentCustomerHistoryRepository;
 import com.clouway.jdbc.customer.history.persistence.PersistentCustomerRepository;
 import org.junit.After;
@@ -8,7 +11,6 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -25,7 +27,7 @@ public class PersistentCustomerHistoryRepositoryTest {
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
         connection = connectionManager.getConnection("customer", "postgres", "clouway.com");
         customerRepository = new PersistentCustomerRepository(connection);
@@ -34,21 +36,20 @@ public class PersistentCustomerHistoryRepositoryTest {
 
     @After
     public void tearDown() throws SQLException {
-        clear();
+        DatabaseTableTool tableTool = new DatabaseTableTool();
+        tableTool.clearTable(connection, "customer");
+        tableTool.clearTable(connection, "customer_history");
         connection.close();
     }
 
     @Test
-    public void trackUpdateHistory() throws SQLException {
+    public void trackUpdateHistory() {
         Customer jack = new Customer(1, "Jack", "Petkovic", "123");
         customerRepository.register(jack);
-
-        customerHistory.trackUpdates(true);
 
         Customer jackUpdated = new Customer(1, "Jack", "Paskalev", "9434");
         customerRepository.update(jackUpdated);
 
-        customerHistory.trackUpdates(false);
         CustomerRecord jackUpdateRecord = customerHistory.getLastUpdate(1);
         assertThat(jackUpdateRecord.name, is(equalTo(jack.name)));
         assertThat(jackUpdateRecord.lastName, is(equalTo(jack.lastName)));
@@ -57,11 +58,9 @@ public class PersistentCustomerHistoryRepositoryTest {
     }
 
     @Test
-    public void multipleUpdatesHistory() throws SQLException {
+    public void multipleUpdatesHistory() {
         Customer jack = new Customer(1, "Jack", "Petkovic", "123");
         customerRepository.register(jack);
-
-        customerHistory.trackUpdates(true);
 
         Customer jackUpdated = new Customer(1, "Jack", "Paskalev", "9434");
         customerRepository.update(jackUpdated);
@@ -70,20 +69,18 @@ public class PersistentCustomerHistoryRepositoryTest {
         customerRepository.update(jackSecondUpdate);
 
         List<CustomerRecord> jackHistory = customerHistory.getById(1);
-        customerHistory.trackUpdates(false);
         assertThat(jackHistory.size(), is(equalTo(2)));
         assertThat(jackHistory.get(0).lastName, is(equalTo("Petkovic")));
         assertThat(jackHistory.get(1).lastName, is(equalTo("Paskalev")));
     }
 
     @Test
-    public void allCustomersUpdateHistory() throws SQLException {
+    public void allCustomersUpdateHistory() {
         Customer jack = new Customer(1, "Jack", "Petkovic", "123");
         Customer jill = new Customer(2, "Jill", "Malic", "56");
         customerRepository.register(jack);
         customerRepository.register(jill);
 
-        customerHistory.trackUpdates(true);
 
         Customer jackUpdated = new Customer(1, "Jack", "Paskalev", "9434");
         customerRepository.update(jackUpdated);
@@ -93,17 +90,9 @@ public class PersistentCustomerHistoryRepositoryTest {
 
         List<CustomerRecord> customerRecords = customerHistory.getUpdates();
 
-        customerHistory.trackUpdates(false);
         assertThat(customerRecords.size(), is(equalTo(2)));
         assertThat(customerRecords.get(0).lastName, is(equalTo("Petkovic")));
         assertThat(customerRecords.get(1).lastName, is(equalTo("Malic")));
     }
 
-
-    public void clear() throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute("TRUNCATE TABLE customer CASCADE;");
-        statement.execute("TRUNCATE TABLE customer_history CASCADE;");
-        statement.close();
-    }
 }

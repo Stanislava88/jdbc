@@ -1,6 +1,6 @@
 package com.clouway.jdbc.customer.history.persistence;
 
-import com.clouway.jdbc.customer.history.Customer;
+import com.clouway.jdbc.ExecutionException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,16 +11,17 @@ import java.util.NoSuchElementException;
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
-public class PersistentCustomerRepository {
+public class PersistentCustomerRepository implements CustomerRepository {
     private Connection connection;
 
     public PersistentCustomerRepository(Connection connection) {
         this.connection = connection;
     }
 
+    @Override
     public void register(Customer customer) {
         String sqlStatement = "INSERT INTO customer VALUES(?, ?, ?, ?);";
-        PreparedStatement preparedStatement;
+        PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, customer.id);
@@ -31,38 +32,82 @@ public class PersistentCustomerRepository {
 
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ExecutionException("Could not register customer");
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public Customer getById(int id) throws SQLException {
+    @Override
+    public Customer getById(int id) {
         String selectById = "SELECT * FROM customer WHERE id=?;";
-        PreparedStatement preparedStatement = connection.prepareStatement(selectById);
-        preparedStatement.setInt(1, id);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            int customerId = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            String lastName = resultSet.getString("last_name");
-            String egn = resultSet.getString("egn");
-            preparedStatement.close();
-            resultSet.close();
-            return new Customer(customerId, name, lastName, egn);
-        } else {
-            throw new NoSuchElementException("No users with such id.");
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(selectById);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int customerId = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String lastName = resultSet.getString("last_name");
+                String egn = resultSet.getString("egn");
+                preparedStatement.close();
+                resultSet.close();
+                return new Customer(customerId, name, lastName, egn);
+            } else {
+                throw new NoSuchElementException("No users with such id.");
+            }
+        } catch (SQLException e) {
+            throw new ExecutionException("Could not find any customer with such id" + id);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public void update(Customer customer) throws SQLException {
+    @Override
+    public void update(Customer customer) {
         String sqlStatement = "UPDATE customer SET name=?, last_name=?, egn=? WHERE id=?";
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-        preparedStatement.setString(1, customer.name);
-        preparedStatement.setString(2, customer.lastName);
-        preparedStatement.setString(3, customer.egn);
-        preparedStatement.setInt(4, customer.id);
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, customer.name);
+            preparedStatement.setString(2, customer.lastName);
+            preparedStatement.setString(3, customer.egn);
+            preparedStatement.setInt(4, customer.id);
 
 
-        preparedStatement.execute();
-        preparedStatement.close();
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new ExecutionException("Could not update customer with id: " + customer.id);
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

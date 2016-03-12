@@ -1,4 +1,4 @@
-package com.clouway.jdbc.customer.history;
+package com.clouway.jdbc.customer.history.persistence;
 
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)

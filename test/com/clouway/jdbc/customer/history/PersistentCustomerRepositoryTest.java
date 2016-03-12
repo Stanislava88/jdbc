@@ -1,5 +1,7 @@
 package com.clouway.jdbc.customer.history;
 
+import com.clouway.jdbc.DatabaseTableTool;
+import com.clouway.jdbc.customer.history.persistence.Customer;
 import com.clouway.jdbc.customer.history.persistence.PersistentCustomerRepository;
 import org.junit.After;
 import org.junit.Before;
@@ -7,7 +9,6 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -23,7 +24,7 @@ public class PersistentCustomerRepositoryTest {
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
         connection = connectionManager.getConnection("customer", "postgres", "clouway.com");
         customerRepository = new PersistentCustomerRepository(connection);
@@ -31,12 +32,13 @@ public class PersistentCustomerRepositoryTest {
 
     @After
     public void tearDown() throws SQLException {
-        clear();
+        DatabaseTableTool tableTool = new DatabaseTableTool();
+        tableTool.clearTable(connection, "customer");
         connection.close();
     }
 
     @Test
-    public void addCustomer() throws SQLException {
+    public void addCustomer() {
         Customer john = new Customer(1, "John", "Petkovic", "123");
         customerRepository.register(john);
 
@@ -44,7 +46,7 @@ public class PersistentCustomerRepositoryTest {
     }
 
     @Test
-    public void updateCustomer() throws SQLException {
+    public void updateCustomer() {
         Customer jack = new Customer(1, "Jack", "Petkovic", "123");
         customerRepository.register(jack);
 
@@ -54,9 +56,4 @@ public class PersistentCustomerRepositoryTest {
         assertThat(customerRepository.getById(1), is(equalTo(jackUpdated)));
     }
 
-    public void clear() throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute("TRUNCATE TABLE customer CASCADE;");
-        statement.close();
-    }
 }
