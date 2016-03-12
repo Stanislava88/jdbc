@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +31,11 @@ public class TravelAgencyTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException {
         DatabaseTableTool tableTool = new DatabaseTableTool();
         tableTool.clearTable(connection, "people");
         tableTool.clearTable(connection, "trip");
+        connection.close();
     }
 
     @Test
