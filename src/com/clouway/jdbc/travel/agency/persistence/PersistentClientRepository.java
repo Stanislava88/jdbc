@@ -28,7 +28,6 @@ public class PersistentClientRepository implements ClientRepository {
             preparedStatement.setInt(3, client.age);
             preparedStatement.setString(4, client.email);
             preparedStatement.execute();
-            preparedStatement.close();
         } catch (SQLException e) {
             throw new ExecutionException("Could not register client");
         } finally {
@@ -56,8 +55,6 @@ public class PersistentClientRepository implements ClientRepository {
             String egnReturned = resultSet.getString("egn");
             int age = resultSet.getInt("age");
             String email = resultSet.getString("email");
-            resultSet.close();
-            preparedStatement.close();
             return new Client(name, egnReturned, age, email);
         } catch (SQLException e) {
             throw new ExecutionException("Could not find client with such egn: " + egn);
@@ -91,7 +88,6 @@ public class PersistentClientRepository implements ClientRepository {
             preparedStatement.setString(4, client.email);
             preparedStatement.setString(5, client.egn);
             preparedStatement.execute();
-            preparedStatement.close();
         } catch (SQLException e) {
             throw new ExecutionException("Could not update client with egn " + client.egn);
         } finally {
@@ -118,7 +114,7 @@ public class PersistentClientRepository implements ClientRepository {
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(clientsLike);
-            List<Client> clientList = new ArrayList<>();
+            List<Client> clientList = new ArrayList();
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String egn = resultSet.getString("egn");
@@ -126,8 +122,6 @@ public class PersistentClientRepository implements ClientRepository {
                 String email = resultSet.getString("email");
                 clientList.add(new Client(name, egn, age, email));
             }
-            resultSet.close();
-            statement.close();
             return clientList;
         } catch (SQLException e) {
             throw new ExecutionException("Could not find clients whose names begin with: " + nameBeginning);

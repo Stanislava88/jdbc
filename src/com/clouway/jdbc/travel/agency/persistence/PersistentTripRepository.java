@@ -17,7 +17,7 @@ public class PersistentTripRepository implements TripRepository {
     }
 
     @Override
-    public void book(Trip trip) {
+    public void register(Trip trip) {
         String insertTrip = "INSERT INTO trip VALUES(?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = null;
         try {
@@ -28,9 +28,8 @@ public class PersistentTripRepository implements TripRepository {
             preparedStatement.setDate(4, trip.departure);
             preparedStatement.setString(5, trip.destination);
             preparedStatement.execute();
-            preparedStatement.close();
         } catch (SQLException e) {
-            throw new ExecutionException("Could not book a trip: " + trip.id);
+            throw new ExecutionException("Could not register a trip: " + trip.id);
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -92,7 +91,6 @@ public class PersistentTripRepository implements TripRepository {
             preparedStatement.setString(4, trip.destination);
             preparedStatement.setInt(5, trip.id);
             preparedStatement.execute();
-            preparedStatement.close();
         } catch (SQLException e) {
             throw new ExecutionException("Could not update trip [ID:" + trip.id + "]");
         } finally {
@@ -107,8 +105,8 @@ public class PersistentTripRepository implements TripRepository {
     }
 
     @Override
-    public List<Trip> getList() {
-        List<Trip> tripsList = new ArrayList<>();
+    public List<Trip> findAll() {
+        List<Trip> tripsList = new ArrayList();
         Statement statement = null;
         ResultSet resultSet = null;
         try {
@@ -122,8 +120,6 @@ public class PersistentTripRepository implements TripRepository {
                 String destination = resultSet.getString("city");
                 tripsList.add(new Trip(id, egn, arrival, departure, destination));
             }
-            resultSet.close();
-            statement.close();
             return tripsList;
         } catch (SQLException e) {
             throw new ExecutionException("Could not gather the Trips list");
@@ -153,16 +149,57 @@ public class PersistentTripRepository implements TripRepository {
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(selectCities);
-            List<String> cities = new ArrayList<>();
+            List<String> cities = new ArrayList<String>();
             while (resultSet.next()) {
                 String city = resultSet.getString("city");
                 cities.add(city);
             }
-            resultSet.close();
-            statement.close();
             return cities;
         } catch (SQLException e) {
             throw new ExecutionException("Could not load the cities by trip popularity");
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<Client> peopleTripsOverlapBetween(Date startDate, Date endDate, String city) {
+        String subQuery = "Select people.*, trip.arrival, trip.departure, trip.city from trip inner" +
+                " join people on trip.egn=people.egn where arrival<'" + endDate + "' and departure>'" + startDate + "' and city ='" + city + "'";
+        String query = "select * from (" + subQuery + ") as a inner join (" + subQuery + ") as b on a.city= b.city where "
+                + " a.egn!=b.egn and a.arrival<b.departure and a.departure>b.arrival;";
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            List<Client> peopleTripsOverlap = new ArrayList();
+            while (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String egn = resultSet.getString("egn");
+                int age = resultSet.getInt("age");
+                String email = resultSet.getString("email");
+                Client client = new Client(name, egn, age, email);
+                if (!peopleTripsOverlap.contains(client)) {
+                    peopleTripsOverlap.add(client);
+                }
+            }
+            return peopleTripsOverlap;
+        } catch (SQLException e) {
+            throw new ExecutionException("Could not load the people whose trips overlap");
         } finally {
             if (statement != null) {
                 try {

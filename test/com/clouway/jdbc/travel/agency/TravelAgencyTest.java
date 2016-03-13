@@ -28,7 +28,7 @@ public class TravelAgencyTest {
     public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
         connection = connectionManager.getConnection("travel_agency", "postgres", "clouway.com");
-        travelAgency = new TravelAgency(new PersistentClientRepository(connection), new PersistentTripRepository(connection), new ClientTripsInfo(connection));
+        travelAgency = new TravelAgency(new PersistentClientRepository(connection), new PersistentTripRepository(connection));
     }
 
     @After
@@ -66,7 +66,7 @@ public class TravelAgencyTest {
         travelAgency.registerClient(micky);
 
         Trip toRom = new Trip(1, "2", Date.valueOf("2015-3-5"), Date.valueOf("2015-3-15"), "Rom");
-        travelAgency.bookTrip(toRom);
+        travelAgency.registerTrip(toRom);
 
         Trip romBooked = travelAgency.getTrip(1);
         assertThat(romBooked, is(equalTo(toRom)));
@@ -79,7 +79,7 @@ public class TravelAgencyTest {
 
 
         Trip toRom = new Trip(1, "5443", Date.valueOf("2015-10-20"), Date.valueOf("2015-11-1"), "Rom");
-        travelAgency.bookTrip(toRom);
+        travelAgency.registerTrip(toRom);
 
         Trip toRomUpdated = new Trip(toRom.id, toRom.egn, Date.valueOf("2015-10-19"), toRom.departure, toRom.destination);
         travelAgency.updateTrip(toRomUpdated);
@@ -94,7 +94,7 @@ public class TravelAgencyTest {
         Client pako = new Client("Pako", "2", 27, "pako@a.bg");
         Client zoro = new Client("Zoro", "3", 50, "zoro@zoro.zoro");
 
-        List<Client> expectedClients = new ArrayList<>();
+        List<Client> expectedClients = new ArrayList<Client>();
         expectedClients.add(linch);
         expectedClients.add(pako);
         expectedClients.add(zoro);
@@ -113,11 +113,11 @@ public class TravelAgencyTest {
         Trip toVegas = new Trip(1, "1", Date.valueOf("2012-1-12"), Date.valueOf("2012-1-22"), "Las Vegas");
         Trip toParis = new Trip(2, "2", Date.valueOf("2014-11-21"), Date.valueOf("2014-11-22"), "Paris");
 
-        List<Trip> trips = new ArrayList<>();
+        List<Trip> trips = new ArrayList<Trip>();
         trips.add(toVegas);
         trips.add(toParis);
 
-        bookToAgency(toVegas, toParis);
+        registerToAgency(toVegas, toParis);
 
         assertThat(travelAgency.getTripsList(), is(equalTo(trips)));
     }
@@ -128,7 +128,7 @@ public class TravelAgencyTest {
         Client krasimir = new Client("Krasimir", "2", 22, "k@k.k");
         Client petar = new Client("Petar", "3", 40, "p@k.k");
 
-        List<Client> peopleWithK = new ArrayList<>();
+        List<Client> peopleWithK = new ArrayList<Client>();
         peopleWithK.add(kaloian);
         peopleWithK.add(krasimir);
 
@@ -149,9 +149,9 @@ public class TravelAgencyTest {
         Trip bilqnRom = new Trip(2, "2", Date.valueOf("2016-7-7"), Date.valueOf("2016-7-15"), "Rom");
         Trip mihailRom = new Trip(3, "3", Date.valueOf("2016-7-16"), Date.valueOf("2016-7-22"), "Rom");
 
-        bookToAgency(rosenRom, bilqnRom, mihailRom);
+        registerToAgency(rosenRom, bilqnRom, mihailRom);
 
-        List<Client> expected = new ArrayList<>();
+        List<Client> expected = new ArrayList<Client>();
         expected.add(rosen);
         expected.add(bilqn);
 
@@ -173,10 +173,10 @@ public class TravelAgencyTest {
         Trip mihailRom = new Trip(3, "3", Date.valueOf("2016-7-16"), Date.valueOf("2016-7-22"), "Rom");
         Trip ivanParis = new Trip(4, "4", Date.valueOf("2016-7-5"), Date.valueOf("2016-7-10"), "Paris");
 
-        bookToAgency(rosenRom, bilqnRom, mihailRom, ivanParis);
+        registerToAgency(rosenRom, bilqnRom, mihailRom, ivanParis);
 
 
-        List<Client> expected = new ArrayList<>();
+        List<Client> expected = new ArrayList<Client>();
         expected.add(rosen);
         expected.add(bilqn);
 
@@ -195,7 +195,7 @@ public class TravelAgencyTest {
         Trip sofia = new Trip(1, "1", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia");
         Trip sofia1 = new Trip(2, "2", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia");
         Trip plovdiv = new Trip(3, "3", Date.valueOf("2015-06-10"), Date.valueOf("2015-06-21"), "Plovdiv");
-        bookToAgency(sofia, sofia1, plovdiv);
+        registerToAgency(sofia, sofia1, plovdiv);
 
         List<Client> people = travelAgency.tripsOverlapBetween(Date.valueOf("2015-05-10"), Date.valueOf("2016-5-21"), "Sofia");
 
@@ -210,7 +210,7 @@ public class TravelAgencyTest {
                 new Client("Petar", "2", 32, "petar@asd.com"),
                 new Client("Petko", "3", 18, "petko@asd.com"));
 
-        bookToAgency(new Trip(1, "1", Date.valueOf("2015-05-12"), Date.valueOf("2015-05-25"), "Sofia"),
+        registerToAgency(new Trip(1, "1", Date.valueOf("2015-05-12"), Date.valueOf("2015-05-25"), "Sofia"),
                 new Trip(2, "2", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia"),
                 new Trip(3, "3", Date.valueOf("2015-06-10"), Date.valueOf("2015-06-21"), "Plovdiv"));
 
@@ -229,7 +229,7 @@ public class TravelAgencyTest {
                 new Client("Tihomir", "5", 27, "Tihomir@asd.com"),
                 new Client("Panayot", "6", 34, "jiji@asd.com"));
 
-        bookToAgency(new Trip(1, "1", Date.valueOf("2015-05-01"), Date.valueOf("2015-05-05"), "Sofia"),
+        registerToAgency(new Trip(1, "1", Date.valueOf("2015-05-01"), Date.valueOf("2015-05-05"), "Sofia"),
                 new Trip(2, "2", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Sofia"),
                 new Trip(3, "3", Date.valueOf("2015-05-10"), Date.valueOf("2015-05-21"), "Plovdiv"),
                 new Trip(4, "4", Date.valueOf("2015-05-15"), Date.valueOf("2015-05-28"), "Sofia"),
@@ -248,7 +248,7 @@ public class TravelAgencyTest {
                 new Client("Petar", "2", 32, "petar@asd.com"),
                 new Client("Petko", "3", 18, "petko@asd.com"));
 
-        bookToAgency(new Trip(1, "1", Date.valueOf("2015-05-01"), Date.valueOf("2015-05-06"), "Sofia"),
+        registerToAgency(new Trip(1, "1", Date.valueOf("2015-05-01"), Date.valueOf("2015-05-06"), "Sofia"),
                 new Trip(2, "2", Date.valueOf("2015-05-04"), Date.valueOf("2015-05-20"), "Sofia"),
                 new Trip(3, "3", Date.valueOf("2015-05-12"), Date.valueOf("2015-05-28"), "Sofia"));
 
@@ -262,7 +262,7 @@ public class TravelAgencyTest {
         registerToAgency(new Client("Ivan", "1", 21, "ivan@asd.com"),
                 new Client("Petar", "2", 32, "petar@asd.com"), new Client("Petko", "3", 18, "petko@asd.com"));
 
-        bookToAgency(new Trip(1, "1", Date.valueOf("2014-02-07"), Date.valueOf("2014-02-12"), "Burgas"),
+        registerToAgency(new Trip(1, "1", Date.valueOf("2014-02-07"), Date.valueOf("2014-02-12"), "Burgas"),
                 new Trip(2, "2", Date.valueOf("2014-02-08"), Date.valueOf("2014-02-14"), "Sofia"),
                 new Trip(3, "3", Date.valueOf("2014-02-10"), Date.valueOf("2014-02-16"), "Burgas"));
 
@@ -284,9 +284,9 @@ public class TravelAgencyTest {
 
         Trip petkoPlovdiv = new Trip(3, "3", Date.valueOf("2016-7-16"), Date.valueOf("2016-7-22"), "Plovdiv");
 
-        bookToAgency(kikoSofia, kiroSofia, petkoPlovdiv);
+        registerToAgency(kikoSofia, kiroSofia, petkoPlovdiv);
 
-        List<String> cities = new ArrayList<>();
+        List<String> cities = new ArrayList<String>();
         cities.add("Sofia");
         cities.add("Plovdiv");
 
@@ -307,9 +307,9 @@ public class TravelAgencyTest {
         Trip mirelaBurgas = new Trip(3, "3", Date.valueOf("2015-4-12"), Date.valueOf("2015-4-20"), "Burgas");
         Trip mirelaBurgasAgain = new Trip(4, "3", Date.valueOf("2015-4-12"), Date.valueOf("2015-4-20"), "Burgas");
 
-        bookToAgency(kaloianVarna, georgeVarna, mirelaBurgas, mirelaBurgasAgain);
+        registerToAgency(kaloianVarna, georgeVarna, mirelaBurgas, mirelaBurgasAgain);
 
-        List<String> cities = new ArrayList<>();
+        List<String> cities = new ArrayList<String>();
         cities.add("Burgas");
         cities.add("Varna");
 
@@ -322,9 +322,9 @@ public class TravelAgencyTest {
         }
     }
 
-    private void bookToAgency(Trip... trips) {
+    private void registerToAgency(Trip... trips) {
         for (Trip trip : trips) {
-            travelAgency.bookTrip(trip);
+            travelAgency.registerTrip(trip);
         }
     }
 

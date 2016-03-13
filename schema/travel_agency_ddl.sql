@@ -6,11 +6,9 @@ create TABLE people (
     PRIMARY KEY (egn)
 );
 create TABLE trip (
-    id integer not null default nextval('trip_id_seq'::regclass),
+    id serial primary key not null,
     egn text References people(egn),
     arrival date not null,
     departure date not null,
-    city text,
-PRIMARY KEY (id)
+    city text
 );
-CREATE UNIQUE INDEX trip_pkey ON trip (id);

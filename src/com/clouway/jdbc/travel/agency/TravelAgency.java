@@ -11,12 +11,10 @@ import java.util.List;
 public class TravelAgency {
     private final ClientRepository persistentClientRepository;
     private final TripRepository persistentTripRepository;
-    private ClientTrips clientTripsInfo;
 
-    public TravelAgency(ClientRepository persistentClientRepository, TripRepository persistentTripRepository, ClientTrips clientTripsInfo) {
+    public TravelAgency(ClientRepository persistentClientRepository, TripRepository persistentTripRepository) {
         this.persistentClientRepository = persistentClientRepository;
         this.persistentTripRepository = persistentTripRepository;
-        this.clientTripsInfo = clientTripsInfo;
     }
 
     public void registerClient(Client client) {
@@ -27,8 +25,8 @@ public class TravelAgency {
         return persistentClientRepository.getByEgn(egn);
     }
 
-    public void bookTrip(Trip trip) {
-        persistentTripRepository.book(trip);
+    public void registerTrip(Trip trip) {
+        persistentTripRepository.register(trip);
     }
 
     public Trip getTrip(int id) {
@@ -48,7 +46,7 @@ public class TravelAgency {
     }
 
     public List<Trip> getTripsList() {
-        return persistentTripRepository.getList();
+        return persistentTripRepository.findAll();
     }
 
     public List<Client> getClientsWith(String nameBeginning) {
@@ -56,7 +54,7 @@ public class TravelAgency {
     }
 
     public List<Client> tripsOverlapBetween(Date startDate, Date endDate, String city) {
-        return clientTripsInfo.peopleTripsOverlapBetween(startDate, endDate, city);
+        return persistentTripRepository.peopleTripsOverlapBetween(startDate, endDate, city);
     }
 
     public List<String> citiesByPopularity() {
