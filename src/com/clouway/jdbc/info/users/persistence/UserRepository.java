@@ -10,5 +10,5 @@ public interface UserRepository {
 
     User getById(int id);
 
-    List<User> getList();
+    List<User> findAll();
 }

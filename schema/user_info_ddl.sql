@@ -13,8 +13,6 @@ create TABLE contact (
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 create TABLE users (
-    id integer not null,
-    name text not null,
-    PRIMARY KEY (id)
+    id integer PRIMARY KEY not null,
+    name text not null
 );
-CREATE UNIQUE INDEX users_pkey ON users (id);

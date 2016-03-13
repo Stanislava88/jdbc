@@ -79,14 +79,14 @@ public class PersistentUserRepository implements UserRepository {
     }
 
     @Override
-    public List<User> getList() {
+    public List<User> findAll() {
         String usersQuery = "SELECT * FROM users";
         Statement statement = null;
         ResultSet resultSet = null;
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(usersQuery);
-            List<User> userList = new ArrayList<>();
+            List<User> userList = new ArrayList<User>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");

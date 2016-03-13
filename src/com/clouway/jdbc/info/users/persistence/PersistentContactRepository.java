@@ -83,14 +83,14 @@ public class PersistentContactRepository implements ContactRepository {
     }
 
     @Override
-    public List<Contact> getList() {
+    public List<Contact> findAll() {
         String contactQuery = "SELECT * FROM contact;";
         Statement statement = null;
         ResultSet resultSet = null;
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(contactQuery);
-            List<Contact> contactList = new ArrayList<>();
+            List<Contact> contactList = new ArrayList<Contact>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 int userId = resultSet.getInt("user_id");

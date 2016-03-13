@@ -63,12 +63,12 @@ public class PersistentAddressRepositoryTest {
         addressRepository.add(ivanSecondAddress);
         addressRepository.add(ivanThirdAddress);
 
-        List<Address> addresses = new ArrayList<>();
-        addresses.add(ivanAddress);
-        addresses.add(ivanSecondAddress);
-        addresses.add(ivanThirdAddress);
+        List<Address> expectedAddresses = new ArrayList<Address>();
+        expectedAddresses.add(ivanAddress);
+        expectedAddresses.add(ivanSecondAddress);
+        expectedAddresses.add(ivanThirdAddress);
 
-        List<Address> addressList = addressRepository.getList();
-        assertThat(addressList, is(equalTo(addresses)));
+        List<Address> addressList = addressRepository.findAll();
+        assertThat(addressList, is(equalTo(expectedAddresses)));
     }
 }

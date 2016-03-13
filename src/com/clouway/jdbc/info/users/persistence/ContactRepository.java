@@ -10,5 +10,5 @@ public interface ContactRepository {
 
     Contact getById(int id);
 
-    List<Contact> getList();
+    List<Contact> findAll();
 }

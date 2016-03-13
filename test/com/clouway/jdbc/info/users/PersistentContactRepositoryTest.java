@@ -67,12 +67,12 @@ public class PersistentContactRepositoryTest {
         contactRepository.add(kaloianSecondNumber);
         contactRepository.add(kaloianThirdNumber);
 
-        List<Contact> contacts = new ArrayList<>();
+        List<Contact> contacts = new ArrayList<Contact>();
         contacts.add(kaloianNumber);
         contacts.add(kaloianSecondNumber);
         contacts.add(kaloianThirdNumber);
 
-        List<Contact> contactList = contactRepository.getList();
+        List<Contact> contactList = contactRepository.findAll();
         assertThat(contactList, is(equalTo(contacts)));
     }
 

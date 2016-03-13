@@ -11,5 +11,5 @@ public interface AddressRepository {
 
     Address getById(int id);
 
-    List<Address> getList();
+    List<Address> findAll();
 }

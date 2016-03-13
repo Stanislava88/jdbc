@@ -83,14 +83,14 @@ public class PersistentAddressRepository implements AddressRepository {
     }
 
     @Override
-    public List<Address> getList() {
+    public List<Address> findAll() {
         String addressQuery = "SELECT * FROM address;";
         Statement statement = null;
         ResultSet resultSet = null;
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(addressQuery);
-            List<Address> addressList = new ArrayList<>();
+            List<Address> addressList = new ArrayList<Address>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 int userId = resultSet.getInt("user_id");

@@ -58,12 +58,12 @@ public class PersistentUserRepositoryTest {
         userRepository.register(petar);
         userRepository.register(petko);
 
-        List<User> users = new ArrayList<>();
+        List<User> users = new ArrayList<User>();
         users.add(marko);
         users.add(petar);
         users.add(petko);
 
-        List<User> userList = userRepository.getList();
+        List<User> userList = userRepository.findAll();
         assertThat(userList, is(equalTo(users)));
     }
 
