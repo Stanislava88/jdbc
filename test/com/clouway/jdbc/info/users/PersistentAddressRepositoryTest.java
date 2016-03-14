@@ -2,6 +2,7 @@ package com.clouway.jdbc.info.users;
 
 import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
+import com.clouway.jdbc.ExecutionException;
 import com.clouway.jdbc.info.users.persistence.Address;
 import com.clouway.jdbc.info.users.persistence.PersistentAddressRepository;
 import com.clouway.jdbc.info.users.persistence.PersistentUserRepository;
@@ -70,5 +71,19 @@ public class PersistentAddressRepositoryTest {
 
         List<Address> addressList = addressRepository.findAll();
         assertThat(addressList, is(equalTo(expectedAddresses)));
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void addAddressWithTakenId() {
+        Address pavelAddress = new Address(1, 1, "Pavel");
+
+        addressRepository.add(pavelAddress);
+        Address margaretAddress = new Address(1, 1, "Margaret");
+        addressRepository.add(margaretAddress);
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void getAddressByUnregisteredId() {
+        addressRepository.getById(1);
     }
 }

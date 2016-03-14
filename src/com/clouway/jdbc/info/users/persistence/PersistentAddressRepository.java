@@ -5,7 +5,6 @@ import com.clouway.jdbc.ExecutionException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
@@ -60,7 +59,7 @@ public class PersistentAddressRepository implements AddressRepository {
             } else {
                 resultSet.close();
                 preparedStatement.close();
-                throw new NoSuchElementException("No users with such id.");
+                throw new ExecutionException("No users with such id.");
             }
         } catch (SQLException e) {
             throw new ExecutionException("Could not find address with that id.");
