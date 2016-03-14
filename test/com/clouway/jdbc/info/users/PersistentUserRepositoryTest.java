@@ -2,6 +2,7 @@ package com.clouway.jdbc.info.users;
 
 import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
+import com.clouway.jdbc.ExecutionException;
 import com.clouway.jdbc.info.users.persistence.PersistentUserRepository;
 import com.clouway.jdbc.info.users.persistence.User;
 import org.junit.After;
@@ -65,6 +66,20 @@ public class PersistentUserRepositoryTest {
 
         List<User> userList = userRepository.findAll();
         assertThat(userList, is(equalTo(users)));
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void addUserWithTakenId() {
+        User pavel = new User(1, "Pavel");
+
+        userRepository.register(pavel);
+        User margaret = new User(1, "Margaret");
+        userRepository.register(margaret);
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void getUserByUnregisteredId() {
+        userRepository.getById(1);
     }
 
 }
