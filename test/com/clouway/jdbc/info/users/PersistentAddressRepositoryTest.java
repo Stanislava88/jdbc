@@ -48,11 +48,11 @@ public class PersistentAddressRepositoryTest {
 
     @Test
     public void addAddress() {
-        Address ivanAddress = new Address(1, 1, "verusha 2");
-        addressRepository.add(ivanAddress);
+        Address expectedAddress = new Address(1, 1, "verusha 2");
+        addressRepository.add(expectedAddress);
 
-        Address ivanAddressReturned = addressRepository.getById(1);
-        assertThat(ivanAddressReturned, is(equalTo(ivanAddress)));
+        Address actualAddress = addressRepository.getById(1);
+        assertThat(actualAddress, is(equalTo(expectedAddress)));
     }
 
     @Test
@@ -83,7 +83,7 @@ public class PersistentAddressRepositoryTest {
     }
 
     @Test(expected = ExecutionException.class)
-    public void getAddressByUnregisteredId() {
+    public void getUnexistingAddress() {
         addressRepository.getById(1);
     }
 }
