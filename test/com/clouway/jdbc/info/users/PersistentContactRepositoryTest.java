@@ -2,6 +2,7 @@ package com.clouway.jdbc.info.users;
 
 import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
+import com.clouway.jdbc.ExecutionException;
 import com.clouway.jdbc.info.users.persistence.Contact;
 import com.clouway.jdbc.info.users.persistence.PersistentContactRepository;
 import com.clouway.jdbc.info.users.persistence.PersistentUserRepository;
@@ -74,6 +75,20 @@ public class PersistentContactRepositoryTest {
 
         List<Contact> contactList = contactRepository.findAll();
         assertThat(contactList, is(equalTo(contacts)));
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void getConctactByUnregisteredId() {
+        contactRepository.getById(1);
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void addContactWithTakenId() {
+        Contact kaloianNumber = new Contact(1, 1, "3456");
+        contactRepository.add(kaloianNumber);
+
+        Contact veronikaNumber = new Contact(1, 1, "89745");
+        contactRepository.add(veronikaNumber);
     }
 
 }
