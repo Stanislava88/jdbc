@@ -17,18 +17,18 @@ public class PersistentCustomerHistoryRepository implements CustomerHistoryRepos
     }
 
     @Override
-    public CustomerRecord getLastUpdate(int id) {
+    public CustomerRecord getLastUpdate(long id) {
         String selectById = "SELECT * FROM customer_history WHERE customer_id=?;";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             preparedStatement = connection.prepareStatement(selectById);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            int recordId = resultSet.getInt("id");
+            long recordId = resultSet.getLong("id");
             Timestamp changeDate = resultSet.getTimestamp("change_date");
-            int customerId = resultSet.getInt("customer_id");
+            long customerId = resultSet.getLong("customer_id");
             String name = resultSet.getString("name");
             String lastName = resultSet.getString("last_name");
             String egn = resultSet.getString("egn");
@@ -54,12 +54,12 @@ public class PersistentCustomerHistoryRepository implements CustomerHistoryRepos
     }
 
     @Override
-    public List<CustomerRecord> getById(int id) {
+    public List<CustomerRecord> getByCustomerId(long id) {
         String selectById = "SELECT * FROM customer_history WHERE customer_id=?;";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(selectById);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             return getRecords(resultSet);
         } catch (SQLException e) {
@@ -102,9 +102,9 @@ public class PersistentCustomerHistoryRepository implements CustomerHistoryRepos
         List<CustomerRecord> customerRecords = new ArrayList<>();
         try {
             while (resultSet.next()) {
-                int recordId = resultSet.getInt("id");
+                long recordId = resultSet.getLong("id");
                 Timestamp changeDate = resultSet.getTimestamp("change_date");
-                int customerId = resultSet.getInt("customer_id");
+                long customerId = resultSet.getLong("customer_id");
                 String name = resultSet.getString("name");
                 String lastName = resultSet.getString("last_name");
                 String egn = resultSet.getString("egn");

@@ -7,9 +7,9 @@ import java.util.List;
  */
 public interface CustomerHistoryRepository {
 
-    CustomerRecord getLastUpdate(int id);
+    CustomerRecord getLastUpdate(long id);
 
-    List<CustomerRecord> getById(int id);
+    List<CustomerRecord> getByCustomerId(long id);
 
     List<CustomerRecord> getUpdates();
 }

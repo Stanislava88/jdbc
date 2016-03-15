@@ -4,12 +4,12 @@ package com.clouway.jdbc.customer.history.persistence;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class Customer {
-    public final int id;
+    public final long id;
     public final String name;
     public final String lastName;
     public final String egn;
 
-    public Customer(int id, String name, String lastName, String egn) {
+    public Customer(long id, String name, String lastName, String egn) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -32,7 +32,7 @@ public class Customer {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (egn != null ? egn.hashCode() : 0);

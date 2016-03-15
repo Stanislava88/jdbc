@@ -1,5 +1,5 @@
 CREATE TABLE customer (
-  id        INTEGER NOT NULL,
+  id        BIGINT NOT NULL,
   name      TEXT    NOT NULL,
   last_name TEXT,
   egn       TEXT,
@@ -7,9 +7,9 @@ CREATE TABLE customer (
 );
 
 CREATE TABLE customer_history (
-  id          INTEGER NOT NULL DEFAULT nextval('customer_history_id_seq' :: REGCLASS),
+  id          BIGINT NOT NULL DEFAULT nextval('customer_history_id_seq' :: REGCLASS),
   change_date TIMESTAMP WITH TIME ZONE,
-  customer_id INTEGER NOT NULL,
+  customer_id BIGINT NOT NULL,
   name        TEXT,
   last_name   TEXT,
   egn         TEXT,

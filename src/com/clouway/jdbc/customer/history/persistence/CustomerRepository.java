@@ -6,7 +6,7 @@ package com.clouway.jdbc.customer.history.persistence;
 public interface CustomerRepository {
     void register(Customer customer);
 
-    Customer getById(int id);
+    Customer getById(long id);
 
     void update(Customer customer);
 }

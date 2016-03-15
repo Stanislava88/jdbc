@@ -24,13 +24,11 @@ public class PersistentCustomerRepository implements CustomerRepository {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1, customer.id);
+            preparedStatement.setLong(1, customer.id);
             preparedStatement.setString(2, customer.name);
             preparedStatement.setString(3, customer.lastName);
             preparedStatement.setString(4, customer.egn);
             preparedStatement.execute();
-
-            preparedStatement.close();
         } catch (SQLException e) {
             throw new ExecutionException("Could not register customer");
         } finally {
@@ -45,21 +43,19 @@ public class PersistentCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public Customer getById(int id) {
+    public Customer getById(long id) {
         String selectById = "SELECT * FROM customer WHERE id=?;";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             preparedStatement = connection.prepareStatement(selectById);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                int customerId = resultSet.getInt("id");
+                long customerId = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 String lastName = resultSet.getString("last_name");
                 String egn = resultSet.getString("egn");
-                preparedStatement.close();
-                resultSet.close();
                 return new Customer(customerId, name, lastName, egn);
             } else {
                 throw new NoSuchElementException("No users with such id.");
@@ -93,11 +89,10 @@ public class PersistentCustomerRepository implements CustomerRepository {
             preparedStatement.setString(1, customer.name);
             preparedStatement.setString(2, customer.lastName);
             preparedStatement.setString(3, customer.egn);
-            preparedStatement.setInt(4, customer.id);
-
-
-            preparedStatement.execute();
-            preparedStatement.close();
+            preparedStatement.setLong(4, customer.id);
+            if(preparedStatement.executeUpdate()==0){
+                throw new ExecutionException("Can't update customer with id: "+customer.id);
+            }
         } catch (SQLException e) {
             throw new ExecutionException("Could not update customer with id: " + customer.id);
         } finally {

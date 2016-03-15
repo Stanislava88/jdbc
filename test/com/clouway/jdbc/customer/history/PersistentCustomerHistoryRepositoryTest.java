@@ -2,6 +2,7 @@ package com.clouway.jdbc.customer.history;
 
 import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
+import com.clouway.jdbc.ExecutionException;
 import com.clouway.jdbc.customer.history.persistence.Customer;
 import com.clouway.jdbc.customer.history.persistence.CustomerRecord;
 import com.clouway.jdbc.customer.history.persistence.PersistentCustomerHistoryRepository;
@@ -45,31 +46,36 @@ public class PersistentCustomerHistoryRepositoryTest {
 
     @Test
     public void trackUpdateHistory() {
-        Customer jack = new Customer(1, "Jack", "Petkovic", "123");
-        customerRepository.register(jack);
+        Customer customer = new Customer(1, "Jack", "Petkovic", "123");
+        customerRepository.register(customer);
 
-        Customer jackUpdated = new Customer(1, "Jack", "Paskalev", "9434");
-        customerRepository.update(jackUpdated);
+        Customer customerUpdated = new Customer(1, "Jack", "Paskalev", "9434");
+        customerRepository.update(customerUpdated);
 
-        CustomerRecord jackUpdateRecord = customerHistory.getLastUpdate(1);
-        assertThat(jackUpdateRecord.name, is(equalTo(jack.name)));
-        assertThat(jackUpdateRecord.lastName, is(equalTo(jack.lastName)));
-        assertThat(jackUpdateRecord.egn, is(equalTo(jack.egn)));
-        assertThat(customerRepository.getById(1), is(equalTo(jackUpdated)));
+        CustomerRecord customerLastUpdate = customerHistory.getLastUpdate(1);
+        assertThat(customerLastUpdate.name, is(equalTo(customer.name)));
+        assertThat(customerLastUpdate.lastName, is(equalTo(customer.lastName)));
+        assertThat(customerLastUpdate.egn, is(equalTo(customer.egn)));
+        assertThat(customerRepository.getById(1), is(equalTo(customerUpdated)));
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void lastUpdateWithoutAnyUpdates() {
+        CustomerRecord customerLastUpdate = customerHistory.getLastUpdate(1);
     }
 
     @Test
     public void multipleUpdatesHistory() {
-        Customer jack = new Customer(1, "Jack", "Petkovic", "123");
-        customerRepository.register(jack);
+        Customer customer = new Customer(1, "Jack", "Petkovic", "123");
+        customerRepository.register(customer);
 
-        Customer jackUpdated = new Customer(1, "Jack", "Paskalev", "9434");
-        customerRepository.update(jackUpdated);
+        Customer customerFirstUpdate = new Customer(1, "Jack", "Paskalev", "9434");
+        customerRepository.update(customerFirstUpdate);
 
-        Customer jackSecondUpdate = new Customer(1, "Jack", "Malkovic", "9434");
-        customerRepository.update(jackSecondUpdate);
+        Customer customerSecondUpdate = new Customer(1, "Jack", "Malkovic", "9434");
+        customerRepository.update(customerSecondUpdate);
 
-        List<CustomerRecord> jackHistory = customerHistory.getById(1);
+        List<CustomerRecord> jackHistory = customerHistory.getByCustomerId(1);
         assertThat(jackHistory.size(), is(equalTo(2)));
         assertThat(jackHistory.get(0).lastName, is(equalTo("Petkovic")));
         assertThat(jackHistory.get(1).lastName, is(equalTo("Paskalev")));
@@ -77,17 +83,17 @@ public class PersistentCustomerHistoryRepositoryTest {
 
     @Test
     public void allCustomersUpdateHistory() {
-        Customer jack = new Customer(1, "Jack", "Petkovic", "123");
-        Customer jill = new Customer(2, "Jill", "Malic", "56");
-        customerRepository.register(jack);
-        customerRepository.register(jill);
+        Customer customer = new Customer(1, "Jack", "Petkovic", "123");
+        Customer secondCustomer = new Customer(2, "Jill", "Malic", "56");
+        customerRepository.register(customer);
+        customerRepository.register(secondCustomer);
 
 
-        Customer jackUpdated = new Customer(1, "Jack", "Paskalev", "9434");
-        customerRepository.update(jackUpdated);
+        Customer customerUpdate = new Customer(1, "Jack", "Paskalev", "9434");
+        customerRepository.update(customerUpdate);
 
-        Customer jillUpdated = new Customer(2, "Jill", "Petrovic", "9434");
-        customerRepository.update(jillUpdated);
+        Customer secondCustomerUpdate = new Customer(2, "Jill", "Petrovic", "9434");
+        customerRepository.update(secondCustomerUpdate);
 
         List<CustomerRecord> customerRecords = customerHistory.getUpdates();
 
