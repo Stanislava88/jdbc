@@ -17,7 +17,7 @@ public class PersistentAddressRepository implements AddressRepository {
     }
 
     @Override
-    public void add(Address address) {
+    public void register(Address address) {
         String sqlStatement = "INSERT INTO address VALUES(?, ?, ?);";
         PreparedStatement preparedStatement = null;
         try {
@@ -27,7 +27,7 @@ public class PersistentAddressRepository implements AddressRepository {
             preparedStatement.setString(3, address.address);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new ExecutionException("Could not add the address");
+            throw new ExecutionException("Could not register the address");
         } finally {
             if (preparedStatement != null) {
                 try {

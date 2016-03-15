@@ -17,7 +17,7 @@ public class PersistentContactRepository implements ContactRepository {
     }
 
     @Override
-    public void add(Contact contact) {
+    public void register(Contact contact) {
         String sqlStatement = "INSERT INTO contact VALUES(?, ?, ?);";
         PreparedStatement preparedStatement = null;
         try {
@@ -27,7 +27,7 @@ public class PersistentContactRepository implements ContactRepository {
             preparedStatement.setString(3, contact.number);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new ExecutionException("Could not add the contact: " + contact.id);
+            throw new ExecutionException("Could not register the contact: " + contact.id);
         } finally {
             if (preparedStatement != null) {
                 try {

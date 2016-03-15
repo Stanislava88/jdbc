@@ -52,7 +52,7 @@ public class PersistentContactRepositoryTest {
     public void addContact() {
         Contact userNumberExpected = new Contact(1, 1, "08345");
 
-        contactRepository.add(userNumberExpected);
+        contactRepository.register(userNumberExpected);
 
         Contact userNumberActual = contactRepository.findById(1);
         assertThat(userNumberActual, is(equalTo(userNumberExpected)));
@@ -61,10 +61,10 @@ public class PersistentContactRepositoryTest {
     @Test
     public void addAnotherContact() {
         Contact userNumberExpected = new Contact(1, 1, "08345");
-        contactRepository.add(userNumberExpected);
+        contactRepository.register(userNumberExpected);
 
         Contact userSecondExpectedNumber = new Contact(2, 1, "08345");
-        contactRepository.add(userSecondExpectedNumber);
+        contactRepository.register(userSecondExpectedNumber);
 
         Contact userNumberActual = contactRepository.findById(1);
         Contact userSecondActualNumber = contactRepository.findById(2);
@@ -91,17 +91,17 @@ public class PersistentContactRepositoryTest {
     @Test(expected = ExecutionException.class)
     public void addContactWithTakenId() {
         Contact userNumber = new Contact(1, 1, "3456");
-        contactRepository.add(userNumber);
+        contactRepository.register(userNumber);
 
         User secondUser = new User(1, "Veronika");
         userRepository.register(secondUser);
         Contact secondUserNumber = new Contact(1, 2, "89745");
-        contactRepository.add(secondUserNumber);
+        contactRepository.register(secondUserNumber);
     }
 
     private void pretendAddedContactsAre(Contact... contacts) {
         for (Contact contact : contacts) {
-            contactRepository.add(contact);
+            contactRepository.register(contact);
         }
     }
 

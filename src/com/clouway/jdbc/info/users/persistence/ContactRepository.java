@@ -6,7 +6,7 @@ import java.util.List;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public interface ContactRepository {
-    void add(Contact contact);
+    void register(Contact contact);
 
     Contact findById(long id);
 

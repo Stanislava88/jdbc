@@ -49,7 +49,7 @@ public class PersistentAddressRepositoryTest {
     @Test
     public void addAddress() {
         Address expectedAddress = new Address(1, 1, "verusha 2");
-        addressRepository.add(expectedAddress);
+        addressRepository.register(expectedAddress);
 
         Address actualAddress = addressRepository.findById(1);
         assertThat(actualAddress, is(expectedAddress));
@@ -58,10 +58,10 @@ public class PersistentAddressRepositoryTest {
     @Test
     public void addAnotherAddress() {
         Address expectedAddress = new Address(1, 1, "verusha 2");
-        addressRepository.add(expectedAddress);
+        addressRepository.register(expectedAddress);
 
         Address expectedSecondAddress = new Address(2, 1, "bulgaria 1");
-        addressRepository.add(expectedSecondAddress);
+        addressRepository.register(expectedSecondAddress);
 
         Address actualAddress = addressRepository.findById(1);
         Address actualSecondAddress = addressRepository.findById(2);
@@ -83,9 +83,9 @@ public class PersistentAddressRepositoryTest {
     public void addAddressWithTakenId() {
         Address pavelAddress = new Address(1, 1, "Pavel");
 
-        addressRepository.add(pavelAddress);
+        addressRepository.register(pavelAddress);
         Address margaretAddress = new Address(1, 1, "Margaret");
-        addressRepository.add(margaretAddress);
+        addressRepository.register(margaretAddress);
     }
 
     @Test(expected = ExecutionException.class)
@@ -95,7 +95,7 @@ public class PersistentAddressRepositoryTest {
 
     private void pretendAddedAddressesAre(Address... addresses) {
         for (Address address : addresses) {
-            addressRepository.add(address);
+            addressRepository.register(address);
         }
     }
 

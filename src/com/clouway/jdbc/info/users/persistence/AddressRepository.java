@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface AddressRepository {
 
-    void add(Address address);
+    void register(Address address);
 
     Address findById(long id);
 
