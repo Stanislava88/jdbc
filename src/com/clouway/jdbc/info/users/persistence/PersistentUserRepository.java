@@ -25,8 +25,6 @@ public class PersistentUserRepository implements UserRepository {
             preparedStatement.setInt(1, user.id);
             preparedStatement.setString(2, user.name);
             preparedStatement.execute();
-
-            preparedStatement.close();
         } catch (SQLException e) {
             throw new ExecutionException("Could not register user: " + user.id);
         } finally {
@@ -53,9 +51,6 @@ public class PersistentUserRepository implements UserRepository {
             resultSet.next();
             int userId = resultSet.getInt("id");
             String name = resultSet.getString("name");
-
-            preparedStatement.close();
-            resultSet.close();
             return new User(userId, name);
 
         } catch (SQLException e) {
@@ -92,8 +87,6 @@ public class PersistentUserRepository implements UserRepository {
                 String name = resultSet.getString("name");
                 userList.add(new User(id, name));
             }
-            resultSet.close();
-            statement.close();
             return userList;
         } catch (SQLException e) {
             throw new ExecutionException("Could not get the list of addresses");

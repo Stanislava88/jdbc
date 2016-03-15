@@ -26,8 +26,6 @@ public class PersistentAddressRepository implements AddressRepository {
             preparedStatement.setInt(2, address.userId);
             preparedStatement.setString(3, address.address);
             preparedStatement.execute();
-
-            preparedStatement.close();
         } catch (SQLException e) {
             throw new ExecutionException("Could not add the address");
         } finally {
@@ -57,8 +55,6 @@ public class PersistentAddressRepository implements AddressRepository {
                 String address = resultSet.getString("address");
                 return new Address(addressId, userId, address);
             } else {
-                resultSet.close();
-                preparedStatement.close();
                 throw new ExecutionException("No users with such id.");
             }
         } catch (SQLException e) {
@@ -96,8 +92,6 @@ public class PersistentAddressRepository implements AddressRepository {
                 String address = resultSet.getString("address");
                 addressList.add(new Address(id, userId, address));
             }
-            resultSet.close();
-            statement.close();
             return addressList;
         } catch (SQLException e) {
             throw new ExecutionException("Could not get the list of addresses");

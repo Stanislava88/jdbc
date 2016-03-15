@@ -26,8 +26,6 @@ public class PersistentContactRepository implements ContactRepository {
             preparedStatement.setInt(2, contact.userId);
             preparedStatement.setString(3, contact.number);
             preparedStatement.execute();
-
-            preparedStatement.close();
         } catch (SQLException e) {
             throw new ExecutionException("Could not add the contact: " + contact.id);
         } finally {
@@ -57,8 +55,6 @@ public class PersistentContactRepository implements ContactRepository {
                 String number = resultSet.getString("phone_number");
                 return new Contact(contactId, userId, number);
             } else {
-                resultSet.close();
-                preparedStatement.close();
                 throw new ExecutionException("could not find contact with such id: " + id);
             }
         } catch (SQLException e) {
@@ -96,8 +92,6 @@ public class PersistentContactRepository implements ContactRepository {
                 String number = resultSet.getString("phone_number");
                 contactList.add(new Contact(id, userId, number));
             }
-            resultSet.close();
-            statement.close();
             return contactList;
         } catch (SQLException e) {
             throw new ExecutionException("Could not load the contact list");
