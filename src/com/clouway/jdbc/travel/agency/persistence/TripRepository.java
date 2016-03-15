@@ -9,13 +9,13 @@ import java.util.List;
 public interface TripRepository {
     void register(Trip trip);
 
-    Trip getById(int id);
+    Trip getById(long id);
 
     void update(Trip trip);
 
-    List<Trip> findAll();
+    List<Trip> getAll();
 
     List<String> citiesByPopularity();
 
-    List<Client> peopleTripsOverlapBetween(Date startDate, Date endDate, String city);
+    List<Client> clientTripsOverlapBetween(Date startDate, Date endDate, String city);
 }

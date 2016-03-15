@@ -7,13 +7,13 @@ import java.sql.Date;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class Trip {
-    public final int id;
+    public final long id;
     public final String egn;
     public final Date arrival;
     public final Date departure;
     public final String destination;
 
-    public Trip(int id, String egn, Date arrival, Date departure, String destination) {
+    public Trip(long id, String egn, Date arrival, Date departure, String destination) {
         this.id = id;
         this.egn = egn;
         this.arrival = arrival;
@@ -38,7 +38,7 @@ public class Trip {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (egn != null ? egn.hashCode() : 0);
         result = 31 * result + (arrival != null ? arrival.hashCode() : 0);
         result = 31 * result + (departure != null ? departure.hashCode() : 0);

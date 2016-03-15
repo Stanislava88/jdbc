@@ -87,7 +87,9 @@ public class PersistentClientRepository implements ClientRepository {
             preparedStatement.setInt(3, client.age);
             preparedStatement.setString(4, client.email);
             preparedStatement.setString(5, client.egn);
-            preparedStatement.execute();
+            if (preparedStatement.executeUpdate() == 0) {
+                throw new ExecutionException("could not update user with id: " + client.egn);
+            }
         } catch (SQLException e) {
             throw new ExecutionException("Could not update client with egn " + client.egn);
         } finally {
@@ -102,12 +104,12 @@ public class PersistentClientRepository implements ClientRepository {
     }
 
     @Override
-    public List<Client> getClientsList() {
-        return getClientsWith("");
+    public List<Client> getAll() {
+        return getWithNameBeggining("");
     }
 
     @Override
-    public List<Client> getClientsWith(String nameBeginning) {
+    public List<Client> getWithNameBeggining(String nameBeginning) {
         String clientsLike = "SELECT * FROM people WHERE name LIKE '" + nameBeginning + "%';";
         Statement statement = null;
         ResultSet resultSet = null;

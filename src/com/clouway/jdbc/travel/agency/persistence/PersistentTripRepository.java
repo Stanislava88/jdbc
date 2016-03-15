@@ -22,7 +22,7 @@ public class PersistentTripRepository implements TripRepository {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(insertTrip);
-            preparedStatement.setInt(1, trip.id);
+            preparedStatement.setLong(1, trip.id);
             preparedStatement.setString(2, trip.egn);
             preparedStatement.setDate(3, trip.arrival);
             preparedStatement.setDate(4, trip.departure);
@@ -42,22 +42,20 @@ public class PersistentTripRepository implements TripRepository {
     }
 
     @Override
-    public Trip getById(int id) {
+    public Trip getById(long id) {
         String selectTrip = "SELECT * FROM trip WHERE id=?";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             preparedStatement = connection.prepareStatement(selectTrip);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            int tripId = resultSet.getInt("id");
+            long tripId = resultSet.getLong("id");
             String egn = resultSet.getString("egn");
             Date arrival = resultSet.getDate("arrival");
             Date departure = resultSet.getDate("departure");
             String destination = resultSet.getString("city");
-            resultSet.close();
-            preparedStatement.close();
             return new Trip(tripId, egn, arrival, departure, destination);
         } catch (SQLException e) {
             throw new ExecutionException("Could not find trip with ID: " + id);
@@ -89,8 +87,10 @@ public class PersistentTripRepository implements TripRepository {
             preparedStatement.setDate(2, trip.arrival);
             preparedStatement.setDate(3, trip.departure);
             preparedStatement.setString(4, trip.destination);
-            preparedStatement.setInt(5, trip.id);
-            preparedStatement.execute();
+            preparedStatement.setLong(5, trip.id);
+            if (preparedStatement.executeUpdate() == 0) {
+                throw new ExecutionException("could not update user with id: " + trip.id);
+            }
         } catch (SQLException e) {
             throw new ExecutionException("Could not update trip [ID:" + trip.id + "]");
         } finally {
@@ -105,7 +105,7 @@ public class PersistentTripRepository implements TripRepository {
     }
 
     @Override
-    public List<Trip> findAll() {
+    public List<Trip> getAll() {
         List<Trip> tripsList = new ArrayList();
         Statement statement = null;
         ResultSet resultSet = null;
@@ -113,7 +113,7 @@ public class PersistentTripRepository implements TripRepository {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM trip;");
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
+                long id = resultSet.getLong("id");
                 String egn = resultSet.getString("egn");
                 Date arrival = resultSet.getDate("arrival");
                 Date departure = resultSet.getDate("departure");
@@ -176,7 +176,7 @@ public class PersistentTripRepository implements TripRepository {
     }
 
     @Override
-    public List<Client> peopleTripsOverlapBetween(Date startDate, Date endDate, String city) {
+    public List<Client> clientTripsOverlapBetween(Date startDate, Date endDate, String city) {
         String subQuery = "Select people.*, trip.arrival, trip.departure, trip.city from trip inner" +
                 " join people on trip.egn=people.egn where arrival<'" + endDate + "' and departure>'" + startDate + "' and city ='" + city + "'";
         String query = "select * from (" + subQuery + ") as a inner join (" + subQuery + ") as b on a.city= b.city where "

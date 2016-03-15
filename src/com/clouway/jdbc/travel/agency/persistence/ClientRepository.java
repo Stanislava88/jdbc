@@ -12,7 +12,7 @@ public interface ClientRepository {
 
     void update(Client client);
 
-    List<Client> getClientsList();
+    List<Client> getAll();
 
-    List<Client> getClientsWith(String nameBeginning);
+    List<Client> getWithNameBeggining(String nameBeginning);
 }
