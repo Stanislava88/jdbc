@@ -9,7 +9,7 @@ public interface AddressRepository {
 
     void add(Address address);
 
-    Address getById(int id);
+    Address findById(long id);
 
     List<Address> findAll();
 }

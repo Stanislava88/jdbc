@@ -51,26 +51,32 @@ public class PersistentAddressRepositoryTest {
         Address expectedAddress = new Address(1, 1, "verusha 2");
         addressRepository.add(expectedAddress);
 
-        Address actualAddress = addressRepository.getById(1);
+        Address actualAddress = addressRepository.findById(1);
+        assertThat(actualAddress, is(expectedAddress));
+    }
+
+    @Test
+    public void addAnotherAddress() {
+        Address expectedAddress = new Address(1, 1, "verusha 2");
+        addressRepository.add(expectedAddress);
+
+        Address expectedSecondAddress = new Address(2, 1, "bulgaria 1");
+        addressRepository.add(expectedSecondAddress);
+
+        Address actualAddress = addressRepository.findById(1);
+        Address actualSecondAddress = addressRepository.findById(2);
         assertThat(actualAddress, is(equalTo(expectedAddress)));
+        assertThat(actualSecondAddress, is(equalTo(expectedSecondAddress)));
+
     }
 
     @Test
     public void getAddressList() {
-        Address ivanAddress = new Address(1, 1, "verusha 2");
-        Address ivanSecondAddress = new Address(2, 1, "gabrovski 2");
-        Address ivanThirdAddress = new Address(3, 1, "balgaria 1");
-        addressRepository.add(ivanAddress);
-        addressRepository.add(ivanSecondAddress);
-        addressRepository.add(ivanThirdAddress);
+        pretendAddedAddressesAre(new Address(1, 1, "verusha 2"), new Address(2, 1, "gabrovski 2"));
 
-        List<Address> expectedAddresses = new ArrayList<Address>();
-        expectedAddresses.add(ivanAddress);
-        expectedAddresses.add(ivanSecondAddress);
-        expectedAddresses.add(ivanThirdAddress);
-
-        List<Address> addressList = addressRepository.findAll();
-        assertThat(addressList, is(equalTo(expectedAddresses)));
+        List<Address> actualAddresses = addressRepository.findAll();
+        List<Address> expectedAddresses = listAddresses(new Address(1, 1, "verusha 2"), new Address(2, 1, "gabrovski 2"));
+        assertThat(actualAddresses, is(equalTo(expectedAddresses)));
     }
 
     @Test(expected = ExecutionException.class)
@@ -84,6 +90,21 @@ public class PersistentAddressRepositoryTest {
 
     @Test(expected = ExecutionException.class)
     public void getUnexistingAddress() {
-        addressRepository.getById(1);
+        addressRepository.findById(1);
+    }
+
+    private void pretendAddedAddressesAre(Address... addresses) {
+        for (Address address : addresses) {
+            addressRepository.add(address);
+        }
+    }
+
+
+    private List<Address> listAddresses(Address... addresses) {
+        List<Address> addressesList = new ArrayList<>();
+        for (Address address : addresses) {
+            addressesList.add(address);
+        }
+        return addressesList;
     }
 }

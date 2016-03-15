@@ -22,8 +22,8 @@ public class PersistentContactRepository implements ContactRepository {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1, contact.id);
-            preparedStatement.setInt(2, contact.userId);
+            preparedStatement.setLong(1, contact.id);
+            preparedStatement.setLong(2, contact.userId);
             preparedStatement.setString(3, contact.number);
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -40,18 +40,18 @@ public class PersistentContactRepository implements ContactRepository {
     }
 
     @Override
-    public Contact getById(int id) {
+    public Contact findById(long id) {
         String selectById = "SELECT * FROM contact WHERE id=?;";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             preparedStatement = connection.prepareStatement(selectById);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             preparedStatement.execute();
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                int contactId = resultSet.getInt("id");
-                int userId = resultSet.getInt("user_id");
+                long contactId = resultSet.getLong("id");
+                long userId = resultSet.getLong("user_id");
                 String number = resultSet.getString("phone_number");
                 return new Contact(contactId, userId, number);
             } else {
@@ -87,8 +87,8 @@ public class PersistentContactRepository implements ContactRepository {
             resultSet = statement.executeQuery(contactQuery);
             List<Contact> contactList = new ArrayList<Contact>();
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                int userId = resultSet.getInt("user_id");
+                long id = resultSet.getLong("id");
+                long userId = resultSet.getLong("user_id");
                 String number = resultSet.getString("phone_number");
                 contactList.add(new Contact(id, userId, number));
             }

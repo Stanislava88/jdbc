@@ -35,9 +35,9 @@ public class PersistentContactRepositoryTest {
         connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
         userRepository = new PersistentUserRepository(connection);
         contactRepository = new PersistentContactRepository(connection);
-        User kaloian = new User(1, "Kaloian");
+        User user = new User(1, "Kaloian");
 
-        userRepository.register(kaloian);
+        userRepository.register(user);
     }
 
     @After
@@ -50,45 +50,66 @@ public class PersistentContactRepositoryTest {
 
     @Test
     public void addContact() {
-        Contact kaloianNumber = new Contact(1, 1, "08345");
+        Contact userNumberExpected = new Contact(1, 1, "08345");
 
-        contactRepository.add(kaloianNumber);
+        contactRepository.add(userNumberExpected);
 
-        Contact kaloianNumberReturned = contactRepository.getById(1);
-        assertThat(kaloianNumberReturned, is(equalTo(kaloianNumber)));
+        Contact userNumberActual = contactRepository.findById(1);
+        assertThat(userNumberActual, is(equalTo(userNumberExpected)));
+    }
+
+    @Test
+    public void addAnotherContact() {
+        Contact userNumberExpected = new Contact(1, 1, "08345");
+        contactRepository.add(userNumberExpected);
+
+        Contact userSecondExpectedNumber = new Contact(2, 1, "08345");
+        contactRepository.add(userSecondExpectedNumber);
+
+        Contact userNumberActual = contactRepository.findById(1);
+        Contact userSecondActualNumber = contactRepository.findById(2);
+
+        assertThat(userNumberActual, is(equalTo(userNumberExpected)));
+        assertThat(userSecondActualNumber, is(equalTo(userSecondExpectedNumber)));
     }
 
     @Test
     public void getContactList() {
-        Contact kaloianNumber = new Contact(1, 1, "08345");
-        Contact kaloianSecondNumber = new Contact(2, 1, "0345");
-        Contact kaloianThirdNumber = new Contact(3, 1, "099323");
+        pretendAddedContactsAre(new Contact(2, 1, "0345"), new Contact(3, 1, "099323"));
 
-        contactRepository.add(kaloianNumber);
-        contactRepository.add(kaloianSecondNumber);
-        contactRepository.add(kaloianThirdNumber);
+        List<Contact> actualContacts = contactRepository.findAll();
+        List<Contact> expectedContacts = listContacts(new Contact(2, 1, "0345"), new Contact(3, 1, "099323"));
+        assertThat(actualContacts, is(equalTo(expectedContacts)));
 
-        List<Contact> contacts = new ArrayList<Contact>();
-        contacts.add(kaloianNumber);
-        contacts.add(kaloianSecondNumber);
-        contacts.add(kaloianThirdNumber);
-
-        List<Contact> contactList = contactRepository.findAll();
-        assertThat(contactList, is(equalTo(contacts)));
     }
 
     @Test(expected = ExecutionException.class)
     public void getConctactByUnregisteredId() {
-        contactRepository.getById(1);
+        contactRepository.findById(1);
     }
 
     @Test(expected = ExecutionException.class)
     public void addContactWithTakenId() {
-        Contact kaloianNumber = new Contact(1, 1, "3456");
-        contactRepository.add(kaloianNumber);
+        Contact userNumber = new Contact(1, 1, "3456");
+        contactRepository.add(userNumber);
 
-        Contact veronikaNumber = new Contact(1, 1, "89745");
-        contactRepository.add(veronikaNumber);
+        User secondUser = new User(1, "Veronika");
+        userRepository.register(secondUser);
+        Contact secondUserNumber = new Contact(1, 2, "89745");
+        contactRepository.add(secondUserNumber);
     }
 
+    private void pretendAddedContactsAre(Contact... contacts) {
+        for (Contact contact : contacts) {
+            contactRepository.add(contact);
+        }
+    }
+
+    private List<Contact> listContacts(Contact... contacts) {
+        List<Contact> contactList = new ArrayList<>();
+        for (Contact contact : contacts) {
+            contactList.add(contact);
+        }
+        return contactList;
+    }
 }

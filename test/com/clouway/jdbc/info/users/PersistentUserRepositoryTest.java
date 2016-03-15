@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,45 +40,60 @@ public class PersistentUserRepositoryTest {
 
     @Test
     public void addUser() {
-        User sisi = new User(1, "Sisi");
+        User user = new User(1, "Sisi");
 
-        userRepository.register(sisi);
+        userRepository.register(user);
 
-        User sisiReturned = userRepository.getById(sisi.id);
-        assertThat(sisiReturned, is(equalTo(sisi)));
+        User sisiReturned = userRepository.findById(user.id);
+        assertThat(sisiReturned.id, is(equalTo(user.id)));
+        assertThat(sisiReturned.name, is(equalTo(user.name)));
+    }
+
+    @Test
+    public void addSecondUser() {
+        User user = new User(1, "Sisi");
+        userRepository.register(user);
+
+        User secondUser = new User(2, "Simona");
+        userRepository.register(secondUser);
+
+        User userActual = userRepository.findById(user.id);
+        User secondUserActual = userRepository.findById(secondUser.id);
+        assertThat(userActual.id, is(equalTo(user.id)));
+        assertThat(userActual.name, is(equalTo(user.name)));
+        assertThat(secondUserActual.id, is(equalTo(secondUser.id)));
+        assertThat(secondUserActual.name, is(equalTo(secondUser.name)));
     }
 
     @Test
     public void getUsersList() {
-        User marko = new User(1, "Marko");
-        User petar = new User(2, "Petar");
-        User petko = new User(3, "Petko");
+        pretendRegisteredUsersAre(new User(1, "Marko"), new User(2, "Petar"));
 
-        userRepository.register(marko);
-        userRepository.register(petar);
-        userRepository.register(petko);
+        List<User> users = userRepository.findAll();
 
-        List<User> users = new ArrayList<User>();
-        users.add(marko);
-        users.add(petar);
-        users.add(petko);
-
-        List<User> userList = userRepository.findAll();
-        assertThat(userList, is(equalTo(users)));
+        assertThat(users.get(0).id, is(equalTo(1L)));
+        assertThat(users.get(0).name, is(equalTo("Marko")));
+        assertThat(users.get(1).id, is(equalTo(2L)));
+        assertThat(users.get(1).name, is(equalTo("Petar")));
     }
 
     @Test(expected = ExecutionException.class)
     public void addUserWithTakenId() {
-        User pavel = new User(1, "Pavel");
+        User user = new User(1, "Pavel");
 
-        userRepository.register(pavel);
-        User margaret = new User(1, "Margaret");
-        userRepository.register(margaret);
+        userRepository.register(user);
+        User user2 = new User(1, "Margaret");
+        userRepository.register(user2);
     }
 
     @Test(expected = ExecutionException.class)
     public void getUserByUnregisteredId() {
-        userRepository.getById(1);
+        userRepository.findById(1);
     }
 
+    private void pretendRegisteredUsersAre(User... users) {
+        for (User user : users) {
+            userRepository.register(user);
+        }
+    }
 }

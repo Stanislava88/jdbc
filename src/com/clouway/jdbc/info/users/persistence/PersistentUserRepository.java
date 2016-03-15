@@ -22,7 +22,7 @@ public class PersistentUserRepository implements UserRepository {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1, user.id);
+            preparedStatement.setLong(1, user.id);
             preparedStatement.setString(2, user.name);
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -39,17 +39,17 @@ public class PersistentUserRepository implements UserRepository {
     }
 
     @Override
-    public User getById(int id) {
+    public User findById(long id) {
         String selectById = "SELECT * FROM users WHERE id=?;";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             preparedStatement = connection.prepareStatement(selectById);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             preparedStatement.execute();
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            int userId = resultSet.getInt("id");
+            long userId = resultSet.getLong("id");
             String name = resultSet.getString("name");
             return new User(userId, name);
 
@@ -83,7 +83,7 @@ public class PersistentUserRepository implements UserRepository {
             resultSet = statement.executeQuery(usersQuery);
             List<User> userList = new ArrayList<User>();
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
+                long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 userList.add(new User(id, name));
             }

@@ -4,11 +4,11 @@ package com.clouway.jdbc.info.users.persistence;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class Address {
-    public final int id;
-    public final int userId;
+    public final long id;
+    public final long userId;
     public final String address;
 
-    public Address(int id, int userId, String address) {
+    public Address(long id, long userId, String address) {
         this.id = id;
         this.userId = userId;
         this.address = address;
@@ -29,8 +29,8 @@ public class Address {
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + userId;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (int) (userId ^ (userId >>> 32));
         result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
     }

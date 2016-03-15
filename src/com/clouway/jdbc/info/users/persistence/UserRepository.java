@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserRepository {
     void register(User user);
 
-    User getById(int id);
+    User findById(long id);
 
     List<User> findAll();
 }

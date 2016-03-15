@@ -22,8 +22,8 @@ public class PersistentAddressRepository implements AddressRepository {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1, address.id);
-            preparedStatement.setInt(2, address.userId);
+            preparedStatement.setLong(1, address.id);
+            preparedStatement.setLong(2, address.userId);
             preparedStatement.setString(3, address.address);
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -40,18 +40,18 @@ public class PersistentAddressRepository implements AddressRepository {
     }
 
     @Override
-    public Address getById(int id) {
+    public Address findById(long id) {
         String selectById = "SELECT * FROM address WHERE id=?;";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             preparedStatement = connection.prepareStatement(selectById);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             preparedStatement.execute();
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                int addressId = resultSet.getInt("id");
-                int userId = resultSet.getInt("user_id");
+                long addressId = resultSet.getLong("id");
+                long userId = resultSet.getLong("user_id");
                 String address = resultSet.getString("address");
                 return new Address(addressId, userId, address);
             } else {
@@ -87,8 +87,8 @@ public class PersistentAddressRepository implements AddressRepository {
             resultSet = statement.executeQuery(addressQuery);
             List<Address> addressList = new ArrayList<Address>();
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                int userId = resultSet.getInt("user_id");
+                long id = resultSet.getLong("id");
+                long userId = resultSet.getLong("user_id");
                 String address = resultSet.getString("address");
                 addressList.add(new Address(id, userId, address));
             }

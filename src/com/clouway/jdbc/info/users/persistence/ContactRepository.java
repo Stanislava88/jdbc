@@ -8,7 +8,7 @@ import java.util.List;
 public interface ContactRepository {
     void add(Contact contact);
 
-    Contact getById(int id);
+    Contact findById(long id);
 
     List<Contact> findAll();
 }
