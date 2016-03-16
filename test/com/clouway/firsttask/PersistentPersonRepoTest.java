@@ -1,5 +1,6 @@
 package com.clouway.firsttask;
 
+import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,9 +48,7 @@ public class PersistentPersonRepoTest {
         persistentPersonRepository.register(myperson2);
 
         List<Person> got = persistentPersonRepository.findAll();
-        List<Person> want = new ArrayList<Person>();
-        want.add(myperson);
-        want.add(myperson2);
+        List<Person> want = Lists.newArrayList(myperson, myperson2);
 
         assertThat(got.size(), is(2));
         assertThat(got, is(want));
@@ -65,8 +64,7 @@ public class PersistentPersonRepoTest {
         persistentPersonRepository.update(myperson2);
 
         List<Person> tableContain = persistentPersonRepository.findAll();
-        List<Person> expected = new ArrayList<Person>();
-        expected.add(myperson2);
+        List<Person> expected = Lists.newArrayList(myperson2);
 
         assertThat(tableContain, is(expected));
     }
@@ -111,10 +109,8 @@ public class PersistentPersonRepoTest {
         persistentPersonRepository.register(myperson3);
 
         List<Person> got = persistentPersonRepository.like("name", "Kr%");
-        List<Person> want = new ArrayList<Person>();
+        List<Person> want = Lists.newArrayList(myperson,myperson2);
 
-        want.add(myperson);
-        want.add(myperson2);
         assertThat(got.size(), is(2));
         assertThat(got, is(want));
     }

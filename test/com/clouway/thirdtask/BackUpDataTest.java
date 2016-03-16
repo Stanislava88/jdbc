@@ -1,5 +1,6 @@
 package com.clouway.thirdtask;
 
+import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +42,7 @@ public class BackUpDataTest {
     public void happyPath() {
 
         Customer customer = new Customer(1, "Georgi Georgiev", "+359883497253", "ggeorgiev@abv.bg");
-        Customer updatecustomer = new Customer(1, "Ivan Ivanov", "+359883497253", "iivanov@abv.bg");
+        Customer updatedCustomer = new Customer(1, "Ivan Ivanov", "+359883497253", "iivanov@abv.bg");
 
         backupData.register(customer);
         List<Customer> customers = backupData.findAll();
@@ -49,10 +50,10 @@ public class BackUpDataTest {
         expected.add(customer);
         assertThat(expected, is(customers));
 
-        backupData.update(updatecustomer);
+        backupData.update(updatedCustomer);
         List<Customer> customers2 = backupData.findAll();
-        List<Customer> expected2 = new ArrayList<Customer>();
-        expected2.add(updatecustomer);
+        List<Customer> expected2 = Lists.newArrayList(updatedCustomer);
+
         assertThat(expected2, is(customers2));
 
         List<Customer> customersBackUp = backupData.findAllBackUp();
