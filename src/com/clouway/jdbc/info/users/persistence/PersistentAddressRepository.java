@@ -10,14 +10,15 @@ import java.util.List;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentAddressRepository implements AddressRepository {
-    private Connection connection;
+    private ConnectionPool connectionPool;
 
-    public PersistentAddressRepository(Connection connection) {
-        this.connection = connection;
+    public PersistentAddressRepository(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
 
     @Override
     public void register(Address address) {
+        Connection connection = connectionPool.aquire();
         String sqlStatement = "INSERT INTO address VALUES(?, ?, ?);";
         PreparedStatement preparedStatement = null;
         try {
@@ -36,11 +37,13 @@ public class PersistentAddressRepository implements AddressRepository {
                     e.printStackTrace();
                 }
             }
+            connectionPool.release(connection);
         }
     }
 
     @Override
     public Address findById(Long id) {
+        Connection connection = connectionPool.aquire();
         String selectById = "SELECT * FROM address WHERE id=?;";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -74,11 +77,13 @@ public class PersistentAddressRepository implements AddressRepository {
                     e.printStackTrace();
                 }
             }
+            connectionPool.release(connection);
         }
     }
 
     @Override
     public List<Address> findAll() {
+        Connection connection = connectionPool.aquire();
         String addressQuery = "SELECT * FROM address;";
         Statement statement = null;
         ResultSet resultSet = null;
@@ -110,6 +115,7 @@ public class PersistentAddressRepository implements AddressRepository {
                     e.printStackTrace();
                 }
             }
+            connectionPool.release(connection);
         }
     }
 }

@@ -3,10 +3,7 @@ package com.clouway.jdbc.info.users;
 import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.ExecutionException;
-import com.clouway.jdbc.info.users.persistence.Address;
-import com.clouway.jdbc.info.users.persistence.PersistentAddressRepository;
-import com.clouway.jdbc.info.users.persistence.PersistentUserRepository;
-import com.clouway.jdbc.info.users.persistence.User;
+import com.clouway.jdbc.info.users.persistence.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,16 +21,17 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentAddressRepositoryTest {
-    Connection connection;
     PersistentUserRepository userRepository;
     PersistentAddressRepository addressRepository;
 
     @Before
     public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
-        connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
-        userRepository = new PersistentUserRepository(connection);
-        addressRepository = new PersistentAddressRepository(connection);
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        connectionPool.initialSetUp(connectionManager);
+        connectionPool.connectionInfoSetUp("user_info", "postgres", "clouway.com");
+        userRepository = new PersistentUserRepository(connectionPool);
+        addressRepository = new PersistentAddressRepository(connectionPool);
         User ivan = new User(1, "Ivan");
         userRepository.register(ivan);
     }
@@ -41,6 +39,8 @@ public class PersistentAddressRepositoryTest {
     @After
     public void tearDown() throws SQLException {
         DatabaseTableTool tableTool = new DatabaseTableTool();
+        ConnectionManager connectionManager = new ConnectionManager();
+        Connection connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
         tableTool.clearTable(connection, "users");
         tableTool.clearTable(connection, "address");
         connection.close();

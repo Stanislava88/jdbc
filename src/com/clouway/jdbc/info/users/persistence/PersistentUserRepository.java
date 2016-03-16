@@ -10,14 +10,15 @@ import java.util.List;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentUserRepository implements UserRepository {
-    private Connection connection;
+    private ConnectionPool connectionPool;
 
-    public PersistentUserRepository(Connection connection) {
-        this.connection = connection;
+    public PersistentUserRepository(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
 
     @Override
     public void register(User user) {
+        Connection connection = connectionPool.aquire();
         String sqlStatement = "INSERT INTO users VALUES(?, ?);";
         PreparedStatement preparedStatement = null;
         try {
@@ -35,11 +36,13 @@ public class PersistentUserRepository implements UserRepository {
                     e.printStackTrace();
                 }
             }
+            connectionPool.release(connection);
         }
     }
 
     @Override
     public User findById(long id) {
+        Connection connection = connectionPool.aquire();
         String selectById = "SELECT * FROM users WHERE id=?;";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -70,11 +73,13 @@ public class PersistentUserRepository implements UserRepository {
                     e.printStackTrace();
                 }
             }
+            connectionPool.release(connection);
         }
     }
 
     @Override
     public List<User> findAll() {
+        Connection connection = connectionPool.aquire();
         String usersQuery = "SELECT * FROM users";
         Statement statement = null;
         ResultSet resultSet = null;
@@ -105,6 +110,7 @@ public class PersistentUserRepository implements UserRepository {
                     e.printStackTrace();
                 }
             }
+            connectionPool.release(connection);
         }
     }
 }

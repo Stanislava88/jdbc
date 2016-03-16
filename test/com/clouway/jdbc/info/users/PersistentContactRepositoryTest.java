@@ -21,18 +21,20 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentContactRepositoryTest {
-    private Connection connection;
     private PersistentUserRepository userRepository;
     private PersistentAddressRepository addressRepository;
     private PersistentContactRepository contactRepository;
 
+
     @Before
     public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
-        connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
-        userRepository = new PersistentUserRepository(connection);
-        addressRepository = new PersistentAddressRepository(connection);
-        contactRepository = new PersistentContactRepository(connection);
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        connectionPool.initialSetUp(connectionManager);
+        connectionPool.connectionInfoSetUp("user_info", "postgres", "clouway.com");
+        userRepository = new PersistentUserRepository(connectionPool);
+        addressRepository = new PersistentAddressRepository(connectionPool);
+        contactRepository = new PersistentContactRepository(connectionPool);
         User user = new User(1L, "Kaloian");
         Address address = new Address(1L, "Berlin", "bull str.");
 
@@ -43,10 +45,12 @@ public class PersistentContactRepositoryTest {
     @After
     public void tearDown() throws SQLException {
         DatabaseTableTool tableTool = new DatabaseTableTool();
+        ConnectionManager connectionManager = new ConnectionManager();
+        Connection connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
         tableTool.clearTable(connection, "users");
         tableTool.clearTable(connection, "contact");
         tableTool.clearTable(connection, "address");
-        connection.close();
+
     }
 
     @Test

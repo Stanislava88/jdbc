@@ -10,14 +10,17 @@ import java.util.List;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentContactRepository implements ContactRepository {
-    private Connection connection;
 
-    public PersistentContactRepository(Connection connection) {
-        this.connection = connection;
+
+    private ConnectionPool connectionPool;
+
+    public PersistentContactRepository(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
 
     @Override
     public void register(Long contactId, Long userId, Long addressId) {
+        Connection connection = connectionPool.aquire();
         String sqlStatement = "INSERT INTO contact VALUES(?, ?, ?);";
         PreparedStatement preparedStatement = null;
         try {
@@ -36,11 +39,14 @@ public class PersistentContactRepository implements ContactRepository {
                     e.printStackTrace();
                 }
             }
+            connectionPool.release(connection);
         }
+
     }
 
     @Override
     public Contact findById(Long id) {
+        Connection connection = connectionPool.aquire();
         String selectById = "SELECT contact.id as id, users.name as name, " +
                 "address.residence as residence, address.street as street FROM contact " +
                 "INNER JOIN users on contact.user_id = users.id " +
@@ -78,11 +84,14 @@ public class PersistentContactRepository implements ContactRepository {
                     e.printStackTrace();
                 }
             }
+            connectionPool.release(connection);
         }
+
     }
 
     @Override
     public List<Contact> findAll() {
+        Connection connection = connectionPool.aquire();
         String contactQuery = "SELECT contact.id as id, users.name as name, " +
                 "address.residence as residence, address.street as street FROM contact " +
                 "INNER JOIN users on contact.user_id = users.id " +
@@ -118,6 +127,7 @@ public class PersistentContactRepository implements ContactRepository {
                     e.printStackTrace();
                 }
             }
+            connectionPool.release(connection);
         }
     }
 }

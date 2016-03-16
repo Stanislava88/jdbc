@@ -3,6 +3,7 @@ package com.clouway.jdbc.info.users;
 import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.ExecutionException;
+import com.clouway.jdbc.info.users.persistence.ConnectionPool;
 import com.clouway.jdbc.info.users.persistence.PersistentUserRepository;
 import com.clouway.jdbc.info.users.persistence.User;
 import org.junit.After;
@@ -21,18 +22,21 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentUserRepositoryTest {
-    private Connection connection;
     private PersistentUserRepository userRepository;
 
     @Before
     public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
-        connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
-        userRepository = new PersistentUserRepository(connection);
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        connectionPool.initialSetUp(connectionManager);
+        connectionPool.connectionInfoSetUp("user_info", "postgres", "clouway.com");
+        userRepository = new PersistentUserRepository(connectionPool);
     }
 
     @After
     public void tearDown() throws SQLException {
+        ConnectionManager connectionManager = new ConnectionManager();
+        Connection connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
         DatabaseTableTool tableTool = new DatabaseTableTool();
         tableTool.clearTable(connection, "users");
         connection.close();
