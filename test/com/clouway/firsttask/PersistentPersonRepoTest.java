@@ -40,15 +40,14 @@ public class PersistentPersonRepoTest {
 
     @Test
     public void findAll() {
+        Person person = new Person("9109232202", "Kristiyan Petkov", 24, "male");
+        persistentPersonRepository.register(person);
 
-        Person myperson = new Person("9109232202", "Kristiyan Petkov", 24, "male");
-        persistentPersonRepository.register(myperson);
-
-        Person myperson2 = new Person("9209232201", "Ivan Ivanov", 23, "male");
-        persistentPersonRepository.register(myperson2);
+        Person person2 = new Person("9209232201", "Ivan Ivanov", 23, "male");
+        persistentPersonRepository.register(person2);
 
         List<Person> got = persistentPersonRepository.findAll();
-        List<Person> want = Lists.newArrayList(myperson, myperson2);
+        List<Person> want = Lists.newArrayList(person, person2);
 
         assertThat(got.size(), is(2));
         assertThat(got, is(want));
@@ -56,24 +55,22 @@ public class PersistentPersonRepoTest {
 
     @Test
     public void update() {
+        Person person = new Person("9109232202", "Kristiyan Petkov", 24, "male");
+        persistentPersonRepository.register(person);
 
-        Person myperson = new Person("9109232202", "Kristiyan Petkov", 24, "male");
-        persistentPersonRepository.register(myperson);
-
-        Person myperson2 = new Person("9109232202", "Ivan Ivanov", 23, "male");
-        persistentPersonRepository.update(myperson2);
+        Person person2 = new Person("9109232202", "Ivan Ivanov", 23, "male");
+        persistentPersonRepository.update(person2);
 
         List<Person> tableContain = persistentPersonRepository.findAll();
-        List<Person> expected = Lists.newArrayList(myperson2);
+        List<Person> expected = Lists.newArrayList(person2);
 
         assertThat(tableContain, is(expected));
     }
 
     @Test
     public void delete() {
-
-        Person myperson = new Person("9109232202", "Kristiyan Petkov", 24, "male");
-        persistentPersonRepository.register(myperson);
+        Person person = new Person("9109232202", "Kristiyan Petkov", 24, "male");
+        persistentPersonRepository.register(person);
 
         List<Person> actual = persistentPersonRepository.findAll();
         assertThat(actual.size(), is(1));
@@ -87,13 +84,12 @@ public class PersistentPersonRepoTest {
 
     @Test
     public void findByEgn() {
-
-        Person myperson = new Person("9109232202", "Kristiyan Petkov", 24, "male");
-        persistentPersonRepository.register(myperson);
+        Person person = new Person("9109232202", "Kristiyan Petkov", 24, "male");
+        persistentPersonRepository.register(person);
 
         Person foundByEgn = persistentPersonRepository.find("9109232202");
 
-        assertThat(myperson, is(foundByEgn));
+        assertThat(person, is(foundByEgn));
     }
 
     @Test

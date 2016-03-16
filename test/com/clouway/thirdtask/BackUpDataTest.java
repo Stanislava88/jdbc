@@ -40,7 +40,6 @@ public class BackUpDataTest {
 
     @Test
     public void happyPath() {
-
         Customer customer = new Customer(1, "Georgi Georgiev", "+359883497253", "ggeorgiev@abv.bg");
         Customer updatedCustomer = new Customer(1, "Ivan Ivanov", "+359883497253", "iivanov@abv.bg");
 

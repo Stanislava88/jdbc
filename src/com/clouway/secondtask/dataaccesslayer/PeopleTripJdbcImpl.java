@@ -189,7 +189,7 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
     }
 
     @Override
-    public List<Person> getAllPeopleNameWhichStartWithSameCharacters(String phrase) {
+    public List<Person> findByPartialName(String phrase) {
 
         List<Person> people = new ArrayList<Person>();
 

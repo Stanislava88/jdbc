@@ -14,7 +14,7 @@ public interface PersonRepository {
 
     List<Person> findAll();
 
-    List<Person> getAllPeopleNameWhichStartWithSameCharacters(String phrase);
+    List<Person> findByPartialName(String phrase);
 
     List<Person> findAllPeopleInTheSameCityAtTheSameTime(Date arrival, Date departure);
 
