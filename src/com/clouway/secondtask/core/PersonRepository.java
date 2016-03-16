@@ -1,5 +1,6 @@
 package com.clouway.secondtask.core;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,5 +16,7 @@ public interface PersonRepository {
 
     List<Person> getAllPeopleNameWhichStartWithSameCharacters(String phrase);
 
-    void delete(String chooseTableOrContent);
+    List<Person> findAllPeopleInTheSameCityAtTheSameTime(Date arrival, Date departure);
+
+    void delete();
 }

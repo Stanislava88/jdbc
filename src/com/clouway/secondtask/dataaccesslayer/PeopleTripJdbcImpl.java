@@ -269,17 +269,8 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
     }
 
     @Override
-    public void deleteAll(String chooseTableOrContent) {
+    public void deleteAll() {
         Statement stmt = null;
-        if (chooseTableOrContent.equalsIgnoreCase("table")) {
-            try {
-                stmt = connection.createStatement();
-                stmt.executeUpdate("DROP TABLE trip");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        if (chooseTableOrContent.equalsIgnoreCase("content")) {
             try {
                 stmt = connection.createStatement();
                 stmt.executeUpdate("DELETE FROM trip");
@@ -295,29 +286,12 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
                 }
             }
         }
-    }
+
 
 
     @Override
-    public void delete(String chooseTableOrContent) {
+    public void delete() {
         Statement stmt = null;
-        if (chooseTableOrContent.equalsIgnoreCase("table")) {
-            try {
-                stmt = connection.createStatement();
-                stmt.executeUpdate("DROP TABLE people");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (stmt != null) {
-                        stmt.close();
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        if (chooseTableOrContent.equalsIgnoreCase("content")) {
             try {
                 stmt = connection.createStatement();
                 stmt.executeUpdate("DELETE FROM people");
@@ -333,7 +307,7 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
                 }
             }
         }
-    }
+
 
 
     public void closeConnection() {

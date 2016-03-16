@@ -1,6 +1,5 @@
 package com.clouway.secondtask.core;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,7 +15,6 @@ public interface TripRepository {
 
     List<String> getMostVisitedCities();
 
-    void deleteAll(String chooseTableOrContent);
+    void deleteAll();
 
-    List<Person> findAllPeopleInTheSameCityAtTheSameTime(Date arrival, Date departure);
 }

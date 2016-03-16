@@ -29,8 +29,8 @@ public class PeopleTripJdbvImplTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        peopleTripJdbc.deleteAll("content");
-        peopleTripJdbc.delete("content");
+        peopleTripJdbc.deleteAll();
+        peopleTripJdbc.delete();
     }
 
 
