@@ -23,11 +23,11 @@ public class PersistentAddressRepository implements AddressRepository {
         try {
             preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setLong(1, address.id);
-            preparedStatement.setLong(2, address.userId);
-            preparedStatement.setString(3, address.address);
+            preparedStatement.setString(2, address.residence);
+            preparedStatement.setString(3, address.street);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new ExecutionException("Could not register the address");
+            throw new ExecutionException("Could not register the street with id: " + address.id);
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -40,7 +40,7 @@ public class PersistentAddressRepository implements AddressRepository {
     }
 
     @Override
-    public Address findById(long id) {
+    public Address findById(Long id) {
         String selectById = "SELECT * FROM address WHERE id=?;";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -51,14 +51,14 @@ public class PersistentAddressRepository implements AddressRepository {
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 long addressId = resultSet.getLong("id");
-                long userId = resultSet.getLong("user_id");
-                String address = resultSet.getString("address");
-                return new Address(addressId, userId, address);
+                String residence = resultSet.getString("residence");
+                String street = resultSet.getString("street");
+                return new Address(addressId, residence, street);
             } else {
                 throw new ExecutionException("No users with such id.");
             }
         } catch (SQLException e) {
-            throw new ExecutionException("Could not find address with that id.");
+            throw new ExecutionException("Could not find street with that id.");
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -88,9 +88,9 @@ public class PersistentAddressRepository implements AddressRepository {
             List<Address> addressList = new ArrayList<Address>();
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
-                long userId = resultSet.getLong("user_id");
-                String address = resultSet.getString("address");
-                addressList.add(new Address(id, userId, address));
+                String residence = resultSet.getString("residence");
+                String address = resultSet.getString("street");
+                addressList.add(new Address(id, residence, address));
             }
             return addressList;
         } catch (SQLException e) {

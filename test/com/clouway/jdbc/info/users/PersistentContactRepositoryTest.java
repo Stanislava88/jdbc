@@ -3,10 +3,7 @@ package com.clouway.jdbc.info.users;
 import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.ExecutionException;
-import com.clouway.jdbc.info.users.persistence.Contact;
-import com.clouway.jdbc.info.users.persistence.PersistentContactRepository;
-import com.clouway.jdbc.info.users.persistence.PersistentUserRepository;
-import com.clouway.jdbc.info.users.persistence.User;
+import com.clouway.jdbc.info.users.persistence.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,20 +21,23 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentContactRepositoryTest {
-
-    Connection connection = null;
-    PersistentUserRepository userRepository = null;
-    PersistentContactRepository contactRepository = null;
+    private Connection connection;
+    private PersistentUserRepository userRepository;
+    private PersistentAddressRepository addressRepository;
+    private PersistentContactRepository contactRepository;
 
     @Before
     public void setUp() {
         ConnectionManager connectionManager = new ConnectionManager();
         connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
         userRepository = new PersistentUserRepository(connection);
+        addressRepository = new PersistentAddressRepository(connection);
         contactRepository = new PersistentContactRepository(connection);
-        User user = new User(1, "Kaloian");
+        User user = new User(1L, "Kaloian");
+        Address address = new Address(1L, "Berlin", "bull str.");
 
         userRepository.register(user);
+        addressRepository.register(address);
     }
 
     @After
@@ -45,71 +45,62 @@ public class PersistentContactRepositoryTest {
         DatabaseTableTool tableTool = new DatabaseTableTool();
         tableTool.clearTable(connection, "users");
         tableTool.clearTable(connection, "contact");
+        tableTool.clearTable(connection, "address");
         connection.close();
     }
 
     @Test
     public void addContact() {
-        Contact userNumberExpected = new Contact(1, 1, "08345");
+        contactRepository.register(1L, 1L, 1L);
 
-        contactRepository.register(userNumberExpected);
+        Contact userContactExpected = new Contact(1L, "Kaloian", "Berlin", "bull str.");
 
-        Contact userNumberActual = contactRepository.findById(1);
-        assertThat(userNumberActual, is(equalTo(userNumberExpected)));
+        Contact userContactActual = contactRepository.findById(1L);
+        assertThat(userContactActual, is(equalTo(userContactExpected)));
     }
 
     @Test
     public void addAnotherContact() {
-        Contact userNumberExpected = new Contact(1, 1, "08345");
-        contactRepository.register(userNumberExpected);
+        Address userAddress = new Address(2L, "paris", "what str.");
+        addressRepository.register(userAddress);
 
-        Contact userSecondExpectedNumber = new Contact(2, 1, "08345");
-        contactRepository.register(userSecondExpectedNumber);
+        contactRepository.register(1L, 1L, 2L);
 
-        Contact userNumberActual = contactRepository.findById(1);
-        Contact userSecondActualNumber = contactRepository.findById(2);
-
-        assertThat(userNumberActual, is(equalTo(userNumberExpected)));
-        assertThat(userSecondActualNumber, is(equalTo(userSecondExpectedNumber)));
+        Contact userContactExpected = new Contact(1L, "Kaloian", "paris", "what str.");
+        Contact userContactActual = contactRepository.findById(1L);
+        assertThat(userContactActual, is(equalTo(userContactExpected)));
     }
 
     @Test
     public void getContactList() {
-        pretendAddedContactsAre(new Contact(2, 1, "0345"), new Contact(3, 1, "099323"));
+        Address userSecondAddress = new Address(2L, "mondo", "ben str.");
+        addressRepository.register(userSecondAddress);
+        contactRepository.register(1L, 1L, 1L);
+        contactRepository.register(2L, 1L, 2L);
+
+        List<Contact> expectedContacts = new ArrayList<>();
+        expectedContacts.add(new Contact(1L, "Kaloian", "Berlin", "bull str."));
+        expectedContacts.add(new Contact(2L, "Kaloian", "mondo", "ben str."));
 
         List<Contact> actualContacts = contactRepository.findAll();
-        List<Contact> expectedContacts = listContacts(new Contact(2, 1, "0345"), new Contact(3, 1, "099323"));
+
         assertThat(actualContacts, is(equalTo(expectedContacts)));
 
     }
 
     @Test(expected = ExecutionException.class)
-    public void getConctactByUnregisteredId() {
-        contactRepository.findById(1);
+    public void getUnexistingContact() {
+        contactRepository.findById(1L);
     }
 
     @Test(expected = ExecutionException.class)
-    public void addContactWithTakenId() {
-        Contact userNumber = new Contact(1, 1, "3456");
-        contactRepository.register(userNumber);
+    public void addExistingContact() {
+        contactRepository.register(1L, 1L, 1L);
 
         User secondUser = new User(1, "Veronika");
         userRepository.register(secondUser);
-        Contact secondUserNumber = new Contact(1, 2, "89745");
-        contactRepository.register(secondUserNumber);
+
+        contactRepository.register(1L, 2L, 1L);
     }
 
-    private void pretendAddedContactsAre(Contact... contacts) {
-        for (Contact contact : contacts) {
-            contactRepository.register(contact);
-        }
-    }
-
-    private List<Contact> listContacts(Contact... contacts) {
-        List<Contact> contactList = new ArrayList<>();
-        for (Contact contact : contacts) {
-            contactList.add(contact);
-        }
-        return contactList;
-    }
 }

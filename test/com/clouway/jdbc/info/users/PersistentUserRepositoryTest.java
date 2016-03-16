@@ -21,8 +21,8 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentUserRepositoryTest {
-    Connection connection = null;
-    PersistentUserRepository userRepository = null;
+    private Connection connection;
+    private PersistentUserRepository userRepository;
 
     @Before
     public void setUp() {

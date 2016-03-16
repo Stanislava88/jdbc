@@ -54,7 +54,7 @@ public class PersistentUserRepository implements UserRepository {
             return new User(userId, name);
 
         } catch (SQLException e) {
-            throw new ExecutionException("Could not find address with that id.");
+            throw new ExecutionException("Could not find street with that id.");
         } finally {
             if (preparedStatement != null) {
                 try {

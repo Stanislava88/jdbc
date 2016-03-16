@@ -4,14 +4,18 @@ package com.clouway.jdbc.info.users.persistence;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class Contact {
-    public final long id;
-    public final long userId;
-    public final String number;
 
-    public Contact(long id, long userId, String number) {
+    public final Long id;
+    public final String userName;
+    public final String residence;
+    public final String street;
+
+    public Contact(Long id, String userName, String residence, String street) {
+
         this.id = id;
-        this.userId = userId;
-        this.number = number;
+        this.userName = userName;
+        this.residence = residence;
+        this.street = street;
     }
 
     @Override
@@ -21,17 +25,19 @@ public class Contact {
 
         Contact contact = (Contact) o;
 
-        if (id != contact.id) return false;
-        if (userId != contact.userId) return false;
-        return !(number != null ? !number.equals(contact.number) : contact.number != null);
+        if (id != null ? !id.equals(contact.id) : contact.id != null) return false;
+        if (userName != null ? !userName.equals(contact.userName) : contact.userName != null) return false;
+        if (residence != null ? !residence.equals(contact.residence) : contact.residence != null) return false;
+        return !(street != null ? !street.equals(contact.street) : contact.street != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (int) (userId ^ (userId >>> 32));
-        result = 31 * result + (number != null ? number.hashCode() : 0);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (residence != null ? residence.hashCode() : 0);
+        result = 31 * result + (street != null ? street.hashCode() : 0);
         return result;
     }
 }

@@ -24,9 +24,9 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentAddressRepositoryTest {
-    Connection connection = null;
-    PersistentUserRepository userRepository = null;
-    PersistentAddressRepository addressRepository = null;
+    Connection connection;
+    PersistentUserRepository userRepository;
+    PersistentAddressRepository addressRepository;
 
     @Before
     public void setUp() {
@@ -48,23 +48,23 @@ public class PersistentAddressRepositoryTest {
 
     @Test
     public void addAddress() {
-        Address expectedAddress = new Address(1, 1, "verusha 2");
+        Address expectedAddress = new Address(1L, "turnovo", "verusha 2");
         addressRepository.register(expectedAddress);
 
-        Address actualAddress = addressRepository.findById(1);
+        Address actualAddress = addressRepository.findById(1L);
         assertThat(actualAddress, is(expectedAddress));
     }
 
     @Test
     public void addAnotherAddress() {
-        Address expectedAddress = new Address(1, 1, "verusha 2");
+        Address expectedAddress = new Address(1L, "sofia", "verusha 2");
         addressRepository.register(expectedAddress);
 
-        Address expectedSecondAddress = new Address(2, 1, "bulgaria 1");
+        Address expectedSecondAddress = new Address(2L, "Burgas", "bulgaria 1");
         addressRepository.register(expectedSecondAddress);
 
-        Address actualAddress = addressRepository.findById(1);
-        Address actualSecondAddress = addressRepository.findById(2);
+        Address actualAddress = addressRepository.findById(1L);
+        Address actualSecondAddress = addressRepository.findById(2L);
         assertThat(actualAddress, is(equalTo(expectedAddress)));
         assertThat(actualSecondAddress, is(equalTo(expectedSecondAddress)));
 
@@ -72,25 +72,25 @@ public class PersistentAddressRepositoryTest {
 
     @Test
     public void getAddressList() {
-        pretendAddedAddressesAre(new Address(1, 1, "verusha 2"), new Address(2, 1, "gabrovski 2"));
+        pretendAddedAddressesAre(new Address(1L, "rom", "verusha 2"), new Address(2L, "Paris", "gabrovski 2"));
 
         List<Address> actualAddresses = addressRepository.findAll();
-        List<Address> expectedAddresses = listAddresses(new Address(1, 1, "verusha 2"), new Address(2, 1, "gabrovski 2"));
+        List<Address> expectedAddresses = listAddresses(new Address(1L, "rom", "verusha 2"), new Address(2L, "Paris", "gabrovski 2"));
         assertThat(actualAddresses, is(equalTo(expectedAddresses)));
     }
 
     @Test(expected = ExecutionException.class)
     public void addAddressWithTakenId() {
-        Address pavelAddress = new Address(1, 1, "Pavel");
+        Address pavelAddress = new Address(1L, "London", "Pavel");
 
         addressRepository.register(pavelAddress);
-        Address margaretAddress = new Address(1, 1, "Margaret");
+        Address margaretAddress = new Address(1L, "Dimitrovgrad", "Margaret");
         addressRepository.register(margaretAddress);
     }
 
     @Test(expected = ExecutionException.class)
     public void getUnexistingAddress() {
-        addressRepository.findById(1);
+        addressRepository.findById(1L);
     }
 
     private void pretendAddedAddressesAre(Address... addresses) {
@@ -102,8 +102,8 @@ public class PersistentAddressRepositoryTest {
 
     private List<Address> listAddresses(Address... addresses) {
         List<Address> addressesList = new ArrayList<>();
-        for (Address address : addresses) {
-            addressesList.add(address);
+        for (Address street : addresses) {
+            addressesList.add(street);
         }
         return addressesList;
     }

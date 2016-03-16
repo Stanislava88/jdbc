@@ -17,17 +17,17 @@ public class PersistentContactRepository implements ContactRepository {
     }
 
     @Override
-    public void register(Contact contact) {
+    public void register(Long contactId, Long userId, Long addressId) {
         String sqlStatement = "INSERT INTO contact VALUES(?, ?, ?);";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setLong(1, contact.id);
-            preparedStatement.setLong(2, contact.userId);
-            preparedStatement.setString(3, contact.number);
+            preparedStatement.setLong(1, contactId);
+            preparedStatement.setLong(2, userId);
+            preparedStatement.setLong(3, addressId);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new ExecutionException("Could not register the contact: " + contact.id);
+            throw new ExecutionException("Could not register the contact: " + userId);
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -40,8 +40,11 @@ public class PersistentContactRepository implements ContactRepository {
     }
 
     @Override
-    public Contact findById(long id) {
-        String selectById = "SELECT * FROM contact WHERE id=?;";
+    public Contact findById(Long id) {
+        String selectById = "SELECT contact.id as id, users.name as name, " +
+                "address.residence as residence, address.street as street FROM contact " +
+                "INNER JOIN users on contact.user_id = users.id " +
+                "INNER JOIN address ON contact.address_id = address.id WHERE contact.id=?;";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
@@ -50,10 +53,11 @@ public class PersistentContactRepository implements ContactRepository {
             preparedStatement.execute();
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                long contactId = resultSet.getLong("id");
-                long userId = resultSet.getLong("user_id");
-                String number = resultSet.getString("phone_number");
-                return new Contact(contactId, userId, number);
+                Long contactId = resultSet.getLong("id");
+                String userName = resultSet.getString("name");
+                String residence = resultSet.getString("residence");
+                String street = resultSet.getString("street");
+                return new Contact(contactId, userName, residence, street);
             } else {
                 throw new ExecutionException("could not find contact with such id: " + id);
             }
@@ -79,7 +83,10 @@ public class PersistentContactRepository implements ContactRepository {
 
     @Override
     public List<Contact> findAll() {
-        String contactQuery = "SELECT * FROM contact;";
+        String contactQuery = "SELECT contact.id as id, users.name as name, " +
+                "address.residence as residence, address.street as street FROM contact " +
+                "INNER JOIN users on contact.user_id = users.id " +
+                "INNER JOIN address ON contact.address_id = address.id;";
         Statement statement = null;
         ResultSet resultSet = null;
         try {
@@ -87,10 +94,11 @@ public class PersistentContactRepository implements ContactRepository {
             resultSet = statement.executeQuery(contactQuery);
             List<Contact> contactList = new ArrayList<Contact>();
             while (resultSet.next()) {
-                long id = resultSet.getLong("id");
-                long userId = resultSet.getLong("user_id");
-                String number = resultSet.getString("phone_number");
-                contactList.add(new Contact(id, userId, number));
+                Long contactId = resultSet.getLong("id");
+                String userName = resultSet.getString("name");
+                String residence = resultSet.getString("residence");
+                String street = resultSet.getString("street");
+                contactList.add(new Contact(contactId, userName, residence, street));
             }
             return contactList;
         } catch (SQLException e) {

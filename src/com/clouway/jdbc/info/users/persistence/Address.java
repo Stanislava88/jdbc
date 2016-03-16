@@ -4,14 +4,14 @@ package com.clouway.jdbc.info.users.persistence;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class Address {
-    public final long id;
-    public final long userId;
-    public final String address;
+    public final Long id;
+    public final String residence;
+    public final String street;
 
-    public Address(long id, long userId, String address) {
+    public Address(Long id, String residence, String street) {
         this.id = id;
-        this.userId = userId;
-        this.address = address;
+        this.residence = residence;
+        this.street = street;
     }
 
     @Override
@@ -19,19 +19,19 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Address address1 = (Address) o;
+        Address address = (Address) o;
 
-        if (id != address1.id) return false;
-        if (userId != address1.userId) return false;
-        return !(address != null ? !address.equals(address1.address) : address1.address != null);
+        if (id != null ? !id.equals(address.id) : address.id != null) return false;
+        if (residence != null ? !residence.equals(address.residence) : address.residence != null) return false;
+        return !(street != null ? !street.equals(address.street) : address.street != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (int) (userId ^ (userId >>> 32));
-        result = 31 * result + (address != null ? address.hashCode() : 0);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (residence != null ? residence.hashCode() : 0);
+        result = 31 * result + (street != null ? street.hashCode() : 0);
         return result;
     }
 }

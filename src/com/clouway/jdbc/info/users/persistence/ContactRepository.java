@@ -6,9 +6,9 @@ import java.util.List;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public interface ContactRepository {
-    void register(Contact contact);
+    void register(Long contactId, Long userId, Long addressId);
 
-    Contact findById(long id);
+    Contact findById(Long id);
 
     List<Contact> findAll();
 }
