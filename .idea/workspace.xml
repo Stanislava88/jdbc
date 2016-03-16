@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d8844fe5-b56f-459f-bd65-82410ec7aa54" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/firsttask/PersonRepository.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/clouway/firsttask/PersonDAO.java" afterPath="$PROJECT_DIR$/src/com/clouway/firsttask/PersistentPersonRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clouway/thirdtask/BackupData.java" afterPath="$PROJECT_DIR$/src/com/clouway/thirdtask/BackupData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clouway/thirdtask/Customer.java" afterPath="$PROJECT_DIR$/src/com/clouway/thirdtask/Customer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbcImpl.java" afterPath="$PROJECT_DIR$/src/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbcImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clouway/firsttask/Person.java" afterPath="$PROJECT_DIR$/src/com/clouway/firsttask/Person.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clouway/secondtask/core/Person.java" afterPath="$PROJECT_DIR$/src/com/clouway/secondtask/core/Person.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/clouway/firsttask/Tests.java" afterPath="$PROJECT_DIR$/test/com/clouway/firsttask/Tests.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/test/com/clouway/firsttask/Tests.java" afterPath="$PROJECT_DIR$/test/com/clouway/firsttask/PersistentPersonRepoTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbvImplTest.java" afterPath="$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbvImplTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="jdbc.iws" />
@@ -31,10 +25,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PersistentPersonRepository.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PersistentPersonRepository.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/clouway/firsttask/PersistentPersonRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.77389985">
+            <state vertical-scroll-proportion="0.0">
               <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -67,16 +61,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TripRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/core/TripRepository.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="37" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Trip.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/core/Trip.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -87,21 +71,63 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Person.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/clouway/firsttask/Person.java">
+      <file leaf-file-name="BackupData.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/clouway/thirdtask/BackupData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="35" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
-              <folding />
+            <state vertical-scroll-proportion="0.4097117">
+              <caret line="21" column="51" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
+              <folding>
+                <element signature="e#3493#3503#0" expanded="true" />
+                <element signature="e#4603#4613#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PersonRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/clouway/firsttask/PersonRepository.java">
+      <file leaf-file-name="PersistentPersonRepoTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/com/clouway/firsttask/PersistentPersonRepoTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
+              <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
+              <folding>
+                <element signature="e#950#951#0" expanded="true" />
+                <element signature="e#1010#1011#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PeopleTripJdbvImplTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbvImplTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BackUpDataTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/com/clouway/thirdtask/BackUpDataTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1310#1320#0" expanded="true" />
+                <element signature="e#1551#1561#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TripRepository.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/core/TripRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="37" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -112,29 +138,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BackupData.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/clouway/thirdtask/BackupData.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
-              <folding>
-                <element signature="e#3493#3503#0" expanded="true" />
-                <element signature="e#4603#4613#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Person.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/core/Person.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="3" column="33" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -186,11 +189,9 @@
         <option value="$PROJECT_DIR$/src/com/clouway/secondtask/core/PersonDao.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/secondtask/core/Trip.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/firsttask/PersonDAO.java" />
-        <option value="$PROJECT_DIR$/test/com/clouway/firsttask/Tests.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/secondtask/core/TripDao.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/secondtask/core/TripDAO.java" />
         <option value="$PROJECT_DIR$/test/com/clouway/thirdtask/BackUpDataTest.java" />
-        <option value="$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbvImplTest.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/secondtask/core/PersonRepository.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/secondtask/core/TripRepository.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/firsttask/Person.java" />
@@ -200,6 +201,9 @@
         <option value="$PROJECT_DIR$/src/com/clouway/thirdtask/BackupData.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/thirdtask/Customer.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/secondtask/core/Person.java" />
+        <option value="$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbvImplTest.java" />
+        <option value="$PROJECT_DIR$/test/com/clouway/firsttask/Tests.java" />
+        <option value="$PROJECT_DIR$/test/com/clouway/firsttask/PersistentPersonRepoTest.java" />
       </list>
     </option>
   </component>
@@ -461,7 +465,7 @@
     </key>
   </component>
   <component name="RunManager" selected="JUnit.PeopleTripJdbvImplTest">
-    <configuration default="false" name="Tests.like" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="PersistentPersonRepoTest.like" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="com.clouway.firsttask.*" />
@@ -472,7 +476,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="com.clouway.firsttask" />
-      <option name="MAIN_CLASS_NAME" value="com.clouway.firsttask.Tests" />
+      <option name="MAIN_CLASS_NAME" value="com.clouway.firsttask.PersistentPersonRepoTest" />
       <option name="METHOD_NAME" value="like" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -565,7 +569,7 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="false" name="Tests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="PersistentPersonRepoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="com.clouway.firsttask.*" />
@@ -576,7 +580,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="com.clouway.firsttask" />
-      <option name="MAIN_CLASS_NAME" value="com.clouway.firsttask.Tests" />
+      <option name="MAIN_CLASS_NAME" value="com.clouway.firsttask.PersistentPersonRepoTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -740,19 +744,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.Tests.like" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.PersistentPersonRepoTest.like" />
       <item index="1" class="java.lang.String" itemvalue="JUnit.PeopleTripJdbvImplTest.updatePerson" />
       <item index="2" class="java.lang.String" itemvalue="JUnit.BackUpDataTest" />
       <item index="3" class="java.lang.String" itemvalue="JUnit.PeopleTripJdbvImplTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.Tests" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.PersistentPersonRepoTest" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="JUnit.PeopleTripJdbvImplTest" />
         <item index="1" class="java.lang.String" itemvalue="JUnit.BackUpDataTest" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.Tests" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.PersistentPersonRepoTest" />
         <item index="3" class="java.lang.String" itemvalue="JUnit.PeopleTripJdbvImplTest.updatePerson" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.Tests.like" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.PersistentPersonRepoTest.like" />
       </list>
     </recent_temporary>
   </component>
@@ -797,7 +801,13 @@
       <option name="project" value="LOCAL" />
       <updated>1458115189325</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add rows between logic">
+      <created>1458117900018</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1458117900018</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -844,7 +854,8 @@
     <MESSAGE value="Code formated" />
     <MESSAGE value="TripDAO and PersonDAO inerface name changed to TripRepository and PersonRepository" />
     <MESSAGE value="findAllPeopleInTheSameCityAtTheSameTime method moved from TripRepository to PersonRepository" />
-    <option name="LAST_COMMIT_MESSAGE" value="findAllPeopleInTheSameCityAtTheSameTime method moved from TripRepository to PersonRepository" />
+    <MESSAGE value="add rows between logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="add rows between logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -894,11 +905,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/clouway/firsttask/Tests.java">
+    <entry file="file://$PROJECT_DIR$/test/com/clouway/firsttask/PersistentPersonRepoTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
-          <folding />
+          <folding>
+            <element signature="e#950#951#0" expanded="true" />
+            <element signature="e#1010#1011#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -951,11 +965,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/clouway/firsttask/Tests.java">
+    <entry file="file://$PROJECT_DIR$/test/com/clouway/firsttask/PersistentPersonRepoTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
-          <folding />
+          <folding>
+            <element signature="e#950#951#0" expanded="true" />
+            <element signature="e#1010#1011#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1156,36 +1173,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/clouway/firsttask/Tests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/clouway/thirdtask/BackUpDataTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1310#1320#0" expanded="true" />
-            <element signature="e#1551#1561#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbvImplTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="30" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/clouway/firsttask/Person.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1202,48 +1189,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/core/TripRepository.java">
+    <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/core/Person.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="37" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="37" />
+          <caret line="3" column="33" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/clouway/thirdtask/Customer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/core/Trip.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/clouway/thirdtask/BackupData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
-          <folding>
-            <element signature="e#3493#3503#0" expanded="true" />
-            <element signature="e#4603#4613#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbcImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1257,20 +1207,90 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/core/Person.java">
+    <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/core/Trip.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="33" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
+          <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/core/TripRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="37" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbcImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/clouway/firsttask/PersistentPersonRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.77389985">
+        <state vertical-scroll-proportion="0.0">
           <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/clouway/firsttask/PersistentPersonRepoTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
+          <folding>
+            <element signature="e#950#951#0" expanded="true" />
+            <element signature="e#1010#1011#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbvImplTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/clouway/thirdtask/BackUpDataTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1310#1320#0" expanded="true" />
+            <element signature="e#1551#1561#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/clouway/thirdtask/Customer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/clouway/thirdtask/BackupData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4097117">
+          <caret line="21" column="51" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
+          <folding>
+            <element signature="e#3493#3503#0" expanded="true" />
+            <element signature="e#4603#4613#0" expanded="true" />
           </folding>
         </state>
       </provider>
