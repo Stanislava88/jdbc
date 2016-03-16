@@ -22,7 +22,9 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
     @Override
     public void create(Person person) {
+
         PreparedStatement preparedStatement = null;
+
         try {
             preparedStatement = connection.prepareStatement("INSERT INTO people (name, egn, age, email) values (?,?,?,?)");
             preparedStatement.setString(1, person.name);
@@ -44,6 +46,7 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
     }
 
     public void update(Person person) {
+
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement("UPDATE people SET name=?, age=?, email=? WHERE egn=?");
@@ -67,7 +70,9 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
     @Override
     public void create(Trip trip) {
+
         PreparedStatement preparedStatement = null;
+
         try {
             preparedStatement = connection.prepareStatement("INSERT INTO trip (egn,arrival,departure,city) values (?,?,?,?)");
             preparedStatement.setString(1, trip.egn);
@@ -89,7 +94,9 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
     }
 
     public void update(Trip trip) {
+
         PreparedStatement preparedStatement = null;
+
         try {
             preparedStatement = connection.prepareStatement("UPDATE trip SET arrival=?, departure=?, city=? WHERE egn=?");
             preparedStatement.setDate(1, new Date(trip.arrival.getTime()));
@@ -112,9 +119,12 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
     @Override
     public List<Person> findAll() {
+
         List<Person> peopleContent = new ArrayList<Person>();
+
         ResultSet resultSet = null;
         Statement stmt = null;
+
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM people");
@@ -145,9 +155,12 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
     @Override
     public List<Trip> getAll() {
+
         List<Trip> tripsContent = new ArrayList<Trip>();
+
         ResultSet resultSet = null;
         Statement stmt = null;
+
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM trip");
@@ -177,9 +190,12 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
     @Override
     public List<Person> getAllPeopleNameWhichStartWithSameCharacters(String phrase) {
+
         List<Person> people = new ArrayList<Person>();
+
         ResultSet resultSet = null;
         Statement stmt = null;
+
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM people WHERE name LIKE '" + phrase + "%'");
@@ -209,9 +225,12 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
     @Override
     public List<String> getMostVisitedCities() {
+
         List<String> cities = new ArrayList<String>();
+
         ResultSet resultSet = null;
         Statement stmt = null;
+
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT city, count(city) counter from trip group by city order by counter desc");
@@ -238,9 +257,12 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
     @Override
     public List<Person> findAllPeopleInTheSameCityAtTheSameTime(java.util.Date arrival, java.util.Date departure) {
+
         List<Person> people = new ArrayList<Person>();
+
         ResultSet resultSet = null;
         Statement statement = null;
+
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM people INNER JOIN trip ON people.egn=trip.egn WHERE arrival>='" + arrival + "' AND departure<='" + departure + "'");
@@ -270,7 +292,9 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
     @Override
     public void deleteAll() {
+
         Statement stmt = null;
+
             try {
                 stmt = connection.createStatement();
                 stmt.executeUpdate("DELETE FROM trip");
@@ -291,7 +315,9 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
     @Override
     public void delete() {
+
         Statement stmt = null;
+
             try {
                 stmt = connection.createStatement();
                 stmt.executeUpdate("DELETE FROM people");

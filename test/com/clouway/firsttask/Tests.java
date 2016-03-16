@@ -19,32 +19,32 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class Tests {
 
 
-    private PersonDAO personDAO;
+    private PersistentPersonRepository persistentPersonRepository;
 
     @Before
     public void connectToDatabaseAndCleanUp() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/firsttask", "root", "clouway.com");
-            personDAO = new PersonDAO(connection);
+            persistentPersonRepository = new PersistentPersonRepository(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        personDAO.deleteAll();
+        persistentPersonRepository.deleteAll();
     }
 
     @After
     public void disconnect() {
-        personDAO.closeConnection();
+        persistentPersonRepository.closeConnection();
     }
 
 
     @Test
     public void findAll() {
         Person myperson = new Person("9109232202", "Kristiyan Petkov", 24, "male");
-        personDAO.register(myperson);
+        persistentPersonRepository.register(myperson);
         Person myperson2 = new Person("9209232201", "Ivan Ivanov", 23, "male");
-        personDAO.register(myperson2);
-        List<Person> got = personDAO.findAll();
+        persistentPersonRepository.register(myperson2);
+        List<Person> got = persistentPersonRepository.findAll();
         List<Person> want = new ArrayList<Person>();
         want.add(myperson);
         want.add(myperson2);
@@ -55,10 +55,10 @@ public class Tests {
     @Test
     public void update() {
         Person myperson = new Person("9109232202", "Kristiyan Petkov", 24, "male");
-        personDAO.register(myperson);
+        persistentPersonRepository.register(myperson);
         Person myperson2 = new Person("9109232202", "Ivan Ivanov", 23, "male");
-        personDAO.update(myperson2);
-        List<Person> tableContain = personDAO.findAll();
+        persistentPersonRepository.update(myperson2);
+        List<Person> tableContain = persistentPersonRepository.findAll();
         List<Person> expected = new ArrayList<Person>();
         expected.add(myperson2);
         assertThat(tableContain, is(expected));
@@ -67,11 +67,11 @@ public class Tests {
     @Test
     public void delete() {
         Person myperson = new Person("9109232202", "Kristiyan Petkov", 24, "male");
-        personDAO.register(myperson);
-        List<Person> actual = personDAO.findAll();
+        persistentPersonRepository.register(myperson);
+        List<Person> actual = persistentPersonRepository.findAll();
         assertThat(actual.size(), is(1));
-        personDAO.deleteByEgn("9109232202");
-        List<Person> actual2 = personDAO.findAll();
+        persistentPersonRepository.delete("9109232202");
+        List<Person> actual2 = persistentPersonRepository.findAll();
         assertThat(actual2.size(), is(0));
     }
 
@@ -79,20 +79,20 @@ public class Tests {
     @Test
     public void findByEgn() {
         Person myperson = new Person("9109232202", "Kristiyan Petkov", 24, "male");
-        personDAO.register(myperson);
-        Person foundByEgn = personDAO.findByEgn("9109232202");
+        persistentPersonRepository.register(myperson);
+        Person foundByEgn = persistentPersonRepository.find("9109232202");
         assertThat(myperson, is(foundByEgn));
     }
 
     @Test
     public void like() {
         Person myperson = new Person("9109232202", "Kristiyan Petkov", 24, "male");
-        personDAO.register(myperson);
+        persistentPersonRepository.register(myperson);
         Person myperson2 = new Person("9109232203", "Krasimir Ivanov", 24, "male");
-        personDAO.register(myperson2);
+        persistentPersonRepository.register(myperson2);
         Person myperson3 = new Person("9109232204", "Stefan Petkov", 24, "male");
-        personDAO.register(myperson3);
-        List<Person> got = personDAO.like("name", "Kr%");
+        persistentPersonRepository.register(myperson3);
+        List<Person> got = persistentPersonRepository.like("name", "Kr%");
         List<Person> want = new ArrayList<Person>();
         want.add(myperson);
         want.add(myperson2);

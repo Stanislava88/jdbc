@@ -18,7 +18,9 @@ public class BackupData {
     }
 
     public void register(Customer customer) {
+
         PreparedStatement preparedStatement = null;
+
         try {
             preparedStatement = connection.prepareStatement("INSERT INTO customer (customer_id, customer_name, phone_number, email) values (?,?,?,?)");
             preparedStatement.setInt(1, customer.id);
@@ -40,7 +42,9 @@ public class BackupData {
     }
 
     public void update(Customer customer) {
+
         PreparedStatement preparedStatement = null;
+
         try {
             preparedStatement = connection.prepareStatement("UPDATE customer SET customer_name=?, phone_number=?, email=? WHERE customer_id=?");
             preparedStatement.setString(1, customer.name);
@@ -62,11 +66,13 @@ public class BackupData {
     }
 
     public void insertThousandCustomers() {
+
         int id = 12027;
         String name = "John Doe";
         String email = "johndoe@abv.bg";
         PreparedStatement preparedStatement = null;
         String characters = "1234567890";
+
         try {
             for (int i = 0; i < 1000; i++) {
                 char[] text = new char[characters.length()];
@@ -97,9 +103,12 @@ public class BackupData {
 
 
     public List<Customer> findAll() {
+
         List<Customer> customers = new ArrayList<Customer>();
+
         ResultSet resultSet = null;
         Statement stmt = null;
+
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM customer");
@@ -128,9 +137,11 @@ public class BackupData {
     }
 
     public List<Customer> findAllBackUp() {
+
         List<Customer> customers = new ArrayList<Customer>();
         ResultSet resultSet = null;
         Statement stmt = null;
+
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM customer_backup");
@@ -160,7 +171,9 @@ public class BackupData {
 
 
     public void deleteCustomers() {
+
         Statement statement = null;
+
         try {
             statement = connection.createStatement();
             statement.executeUpdate("DELETE FROM customer");
@@ -178,7 +191,9 @@ public class BackupData {
     }
 
     public void deleteCustomersBackup() {
+
         Statement statement = null;
+
         try {
             statement = connection.createStatement();
             statement.executeUpdate("DELETE FROM customer_backup");

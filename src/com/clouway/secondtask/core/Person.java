@@ -6,7 +6,7 @@ package com.clouway.secondtask.core;
 public class Person {
     public final String name;
     public final String egn;
-    public final int age;
+    public final Integer age;
     public final String email;
 
     public Person(String name, String egn, int age, String email) {

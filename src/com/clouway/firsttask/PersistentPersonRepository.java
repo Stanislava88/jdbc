@@ -7,15 +7,17 @@ import java.util.List;
 /**
  * Created by clouway on 16-2-24.
  */
-public class PersonDAO {
+public class PersistentPersonRepository implements PersonRepository {
     private Connection connection;
 
-    public PersonDAO(Connection connection) {
+    public PersistentPersonRepository(Connection connection) {
         this.connection = connection;
     }
 
     public void register(Person person) {
+
         PreparedStatement stmt = null;
+
         try {
             stmt = connection.prepareStatement("INSERT INTO people (egn,name,age,gender) values (?,?,?,?)");
             stmt.setString(1, person.egn);
@@ -37,9 +39,12 @@ public class PersonDAO {
     }
 
     public List<Person> findAll() {
+
         Statement stmt = null;
         ResultSet resultSet = null;
+
         List<Person> people = new ArrayList<Person>();
+
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM people");
@@ -69,7 +74,9 @@ public class PersonDAO {
 
 
     public void update(Person person) {
+
         PreparedStatement stmt = null;
+
         try {
             stmt = connection.prepareStatement("UPDATE people SET name=?, age=?, gender=? WHERE EGN=?");
             stmt.setString(1, person.name);
@@ -90,8 +97,10 @@ public class PersonDAO {
         }
     }
 
-    public void deleteByEgn(String egn) {
+    public void delete(String egn) {
+
         Statement stmt = null;
+
         try {
             stmt = connection.createStatement();
             stmt.executeUpdate("DELETE FROM people WHERE egn='" + egn + "'");
@@ -110,7 +119,9 @@ public class PersonDAO {
 
 
     public void alter(String columname, String columnType) {
+
         Statement stmt = null;
+
         try {
             stmt = connection.createStatement();
             stmt.executeUpdate("ALTER TABLE people ADD " + columname + " " + columnType + "");
@@ -129,10 +140,12 @@ public class PersonDAO {
     }
 
 
-    public Person findByEgn(String egn) {
+    public Person find(String egn) {
+
         PreparedStatement pstmt = null;
         ResultSet resultSet = null;
         Person person = null;
+
         try {
             pstmt = connection.prepareStatement("SELECT * FROM people WHERE egn=?");
             pstmt.setString(1, egn);
@@ -164,16 +177,19 @@ public class PersonDAO {
 
 
     public List<Person> like(String columName, String wildcard) {
+
         Statement stmt = null;
         ResultSet resultSet = null;
+
         List<Person> people = new ArrayList<Person>();
+
         try {
             stmt = connection.createStatement();
             resultSet = stmt.executeQuery("SELECT * FROM people WHERE " + columName + " LIKE '" + wildcard + "'");
             while (resultSet.next()) {
                 String egn = resultSet.getString("egn");
                 String name = resultSet.getString("name");
-                int age = resultSet.getInt("age");
+                Integer age = resultSet.getInt("age");
                 String gender = resultSet.getString("gender");
                 people.add(new Person(egn, name, age, gender));
             }
@@ -195,7 +211,9 @@ public class PersonDAO {
     }
 
     public void deleteAll() {
+
         Statement statement = null;
+
         try {
             statement = connection.createStatement();
             statement.executeUpdate("DELETE FROM people");

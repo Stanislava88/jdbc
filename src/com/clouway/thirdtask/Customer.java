@@ -4,7 +4,7 @@ package com.clouway.thirdtask;
  * Created by clouway on 16-2-25.
  */
 public class Customer {
-    public final int id;
+    public final Integer id;
     public final String name;
     public final String phoneNumber;
     public final String email;

@@ -6,7 +6,7 @@ package com.clouway.firsttask;
 public class Person {
     public final String egn;
     public final String name;
-    public final int age;
+    public final Integer age;
     public final String gender;
 
     public Person(String egn, String name, int age, String gender) {
@@ -23,9 +23,9 @@ public class Person {
 
         Person person = (Person) o;
 
-        if (age != person.age) return false;
         if (egn != null ? !egn.equals(person.egn) : person.egn != null) return false;
         if (name != null ? !name.equals(person.name) : person.name != null) return false;
+        if (age != null ? !age.equals(person.age) : person.age != null) return false;
         return !(gender != null ? !gender.equals(person.gender) : person.gender != null);
 
     }
@@ -34,7 +34,7 @@ public class Person {
     public int hashCode() {
         int result = egn != null ? egn.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + age;
+        result = 31 * result + (age != null ? age.hashCode() : 0);
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         return result;
     }
