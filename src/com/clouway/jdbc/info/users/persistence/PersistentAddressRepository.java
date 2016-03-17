@@ -30,13 +30,7 @@ public class PersistentAddressRepository implements AddressRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not register the street with id: " + address.id);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
             connectionPool.release(connection);
         }
     }
@@ -63,20 +57,7 @@ public class PersistentAddressRepository implements AddressRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not find street with that id.");
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
             connectionPool.release(connection);
         }
     }
@@ -101,21 +82,18 @@ public class PersistentAddressRepository implements AddressRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not get the list of addresses");
         } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(statement);
             connectionPool.release(connection);
+        }
+    }
+
+    private void closeStatement(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

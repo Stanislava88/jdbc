@@ -32,13 +32,7 @@ public class PersistentContactRepository implements ContactRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not register the contact: " + userId);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
             connectionPool.release(connection);
         }
 
@@ -70,20 +64,7 @@ public class PersistentContactRepository implements ContactRepository {
         } catch (SQLException e) {
             throw new ExecutionException("could not find contact with such id: " + id);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
             connectionPool.release(connection);
         }
 
@@ -113,21 +94,18 @@ public class PersistentContactRepository implements ContactRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not load the contact list");
         } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(statement);
             connectionPool.release(connection);
+        }
+    }
+
+    private void closeStatement(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

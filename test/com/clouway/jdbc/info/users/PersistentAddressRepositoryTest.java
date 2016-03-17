@@ -7,6 +7,7 @@ import com.clouway.jdbc.info.users.persistence.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.postgresql.jdbc3.Jdbc3ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.SQLException;
