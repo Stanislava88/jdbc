@@ -2,10 +2,7 @@ package com.clouway.jdbc.customer.history.persistence;
 
 import com.clouway.jdbc.ExecutionException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.NoSuchElementException;
 
 /**
@@ -32,13 +29,7 @@ public class PersistentCustomerRepository implements CustomerRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not register customer");
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
         }
     }
 
@@ -63,20 +54,7 @@ public class PersistentCustomerRepository implements CustomerRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not find any customer with such id" + id);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
         }
     }
 
@@ -90,18 +68,22 @@ public class PersistentCustomerRepository implements CustomerRepository {
             preparedStatement.setString(2, customer.lastName);
             preparedStatement.setString(3, customer.egn);
             preparedStatement.setLong(4, customer.id);
-            if(preparedStatement.executeUpdate()==0){
-                throw new ExecutionException("Can't update customer with id: "+customer.id);
+            if (preparedStatement.executeUpdate() == 0) {
+                throw new ExecutionException("Can't update customer with id: " + customer.id);
             }
         } catch (SQLException e) {
             throw new ExecutionException("Could not update customer with id: " + customer.id);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            closeStatement(preparedStatement);
+        }
+    }
+
+    private void closeStatement(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }

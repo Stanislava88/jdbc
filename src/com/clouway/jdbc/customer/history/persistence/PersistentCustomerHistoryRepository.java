@@ -36,20 +36,7 @@ public class PersistentCustomerHistoryRepository implements CustomerHistoryRepos
         } catch (SQLException e) {
             throw new ExecutionException("Could not load last update history of Customer with id: " + id);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
         }
     }
 
@@ -65,13 +52,7 @@ public class PersistentCustomerHistoryRepository implements CustomerHistoryRepos
         } catch (SQLException e) {
             throw new ExecutionException("Could not find update record with id: " + id);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
         }
     }
 
@@ -88,13 +69,7 @@ public class PersistentCustomerHistoryRepository implements CustomerHistoryRepos
         } catch (SQLException e) {
             throw new ExecutionException("Could not load the update history");
         } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(statement);
         }
     }
 
@@ -113,6 +88,16 @@ public class PersistentCustomerHistoryRepository implements CustomerHistoryRepos
             return customerRecords;
         } finally {
             resultSet.close();
+        }
+    }
+
+    private void closeStatement(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
