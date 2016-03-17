@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d8844fe5-b56f-459f-bd65-82410ec7aa54" name="Default" comment="some changes">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripImplTest.java" afterPath="$PROJECT_DIR$/test/com/clouway/secondtask/dataaccesslayer/PeopleTripImplTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbcImpl.java" afterPath="$PROJECT_DIR$/src/com/clouway/secondtask/dataaccesslayer/PeopleTripJdbcImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clouway/secondtask/core/PersonRepository.java" afterPath="$PROJECT_DIR$/src/com/clouway/secondtask/core/PersonRepository.java" />
+    <list default="true" id="d8844fe5-b56f-459f-bd65-82410ec7aa54" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="jdbc.iws" />
@@ -831,7 +828,13 @@
       <option name="project" value="LOCAL" />
       <updated>1458142478139</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="last changes">
+      <created>1458221015531</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1458221015531</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -853,7 +856,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22609176" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28229168" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28229168" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960325" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -882,7 +885,8 @@
     <MESSAGE value="add rows between logic in Tests" />
     <MESSAGE value="used guava Lists.newArrayList();" />
     <MESSAGE value="some changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="some changes" />
+    <MESSAGE value="last changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="last changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
