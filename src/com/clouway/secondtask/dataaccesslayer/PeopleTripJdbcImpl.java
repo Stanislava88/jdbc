@@ -256,7 +256,7 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
     }
 
     @Override
-    public List<Person> findAllPeopleInTheSameCityAtTheSameTime(java.util.Date arrival, java.util.Date departure) {
+    public List<Person> findAllPeopleInTheSameCityAtTheSameTime(String city, java.util.Date arrival, java.util.Date departure) {
 
         List<Person> people = new ArrayList<Person>();
 
@@ -265,7 +265,7 @@ public class PeopleTripJdbcImpl implements PersonRepository, TripRepository {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM people INNER JOIN trip ON people.egn=trip.egn WHERE arrival>='" + arrival + "' AND departure<='" + departure + "'");
+            resultSet = statement.executeQuery("SELECT * FROM people INNER JOIN trip ON people.egn=trip.egn WHERE city='"+city+"' AND arrival>='" + arrival + "' AND departure<='" + departure + "'");
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String egn = resultSet.getString("egn");

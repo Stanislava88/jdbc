@@ -16,7 +16,7 @@ public interface PersonRepository {
 
     List<Person> findByPartialName(String phrase);
 
-    List<Person> findAllPeopleInTheSameCityAtTheSameTime(Date arrival, Date departure);
+    List<Person> findAllPeopleInTheSameCityAtTheSameTime(String city, Date arrival, Date departure);
 
     void delete();
 }

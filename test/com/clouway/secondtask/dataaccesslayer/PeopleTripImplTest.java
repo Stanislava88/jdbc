@@ -62,7 +62,7 @@ public class PeopleTripImplTest {
         peopleTripJdbc.update(trip2);
 
         List<Trip> actual = peopleTripJdbc.getAll();
-        List<Trip> expected =  Lists.newArrayList(trip2);
+        List<Trip> expected = Lists.newArrayList(trip2);
 
         assertThat(actual, is(expected));
     }
@@ -83,7 +83,7 @@ public class PeopleTripImplTest {
     }
 
     @After
-    public void disconnecT() {
+    public void disconnect() {
         peopleTripJdbc.closeConnection();
     }
 }
