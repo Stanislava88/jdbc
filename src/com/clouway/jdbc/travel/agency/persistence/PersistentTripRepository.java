@@ -31,13 +31,7 @@ public class PersistentTripRepository implements TripRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not register a trip: " + trip.id);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
         }
     }
 
@@ -60,20 +54,7 @@ public class PersistentTripRepository implements TripRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not find trip with ID: " + id);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
         }
     }
 
@@ -94,13 +75,7 @@ public class PersistentTripRepository implements TripRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not update trip [ID:" + trip.id + "]");
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
         }
     }
 
@@ -124,20 +99,7 @@ public class PersistentTripRepository implements TripRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not gather the Trips list");
         } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(statement);
         }
     }
 
@@ -158,20 +120,7 @@ public class PersistentTripRepository implements TripRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not load the cities by trip popularity");
         } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(statement);
         }
     }
 
@@ -201,19 +150,16 @@ public class PersistentTripRepository implements TripRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not load the people whose trips overlap");
         } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            closeStatement(statement);
+        }
+    }
+
+    private void closeStatement(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }

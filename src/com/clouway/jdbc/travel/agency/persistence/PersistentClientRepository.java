@@ -31,13 +31,7 @@ public class PersistentClientRepository implements ClientRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not register client");
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
         }
     }
 
@@ -59,20 +53,7 @@ public class PersistentClientRepository implements ClientRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not find client with such egn: " + egn);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
         }
     }
 
@@ -93,13 +74,7 @@ public class PersistentClientRepository implements ClientRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not update client with egn " + client.egn);
         } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(preparedStatement);
         }
     }
 
@@ -128,19 +103,16 @@ public class PersistentClientRepository implements ClientRepository {
         } catch (SQLException e) {
             throw new ExecutionException("Could not find clients whose names begin with: " + nameBeginning);
         } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            closeStatement(statement);
+        }
+    }
+
+    private void closeStatement(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
