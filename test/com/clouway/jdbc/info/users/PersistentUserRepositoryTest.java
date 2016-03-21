@@ -1,6 +1,6 @@
 package com.clouway.jdbc.info.users;
 
-import com.clouway.jdbc.ConnectionManager;
+import com.clouway.jdbc.ConnectionProvider;
 import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.ExecutionException;
 import com.clouway.jdbc.info.users.persistence.ConnectionPool;
@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.clouway.jdbc.ConnectionProvider.getConnection;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -26,17 +27,13 @@ public class PersistentUserRepositoryTest {
 
     @Before
     public void setUp() {
-        ConnectionManager connectionManager = new ConnectionManager();
         ConnectionPool connectionPool = ConnectionPool.getInstance();
-        connectionPool.initialSetUp(connectionManager);
-        connectionPool.connectionInfoSetUp("user_info", "postgres", "clouway.com");
         userRepository = new PersistentUserRepository(connectionPool);
     }
 
     @After
     public void tearDown() throws SQLException {
-        ConnectionManager connectionManager = new ConnectionManager();
-        Connection connection = connectionManager.getConnection("user_info", "postgres", "clouway.com");
+        Connection connection = getConnection("user_info", "postgres", "clouway.com");
         DatabaseTableTool tableTool = new DatabaseTableTool();
         tableTool.clearTable(connection, "users");
         connection.close();

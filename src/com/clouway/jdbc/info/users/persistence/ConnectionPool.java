@@ -1,12 +1,13 @@
 package com.clouway.jdbc.info.users.persistence;
 
-import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.ExecutionException;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static com.clouway.jdbc.ConnectionProvider.getConnection;
 
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
@@ -16,24 +17,11 @@ public class ConnectionPool {
     private final int maxConnections = 3;
     private ConcurrentLinkedQueue<Connection> availableConnections = new ConcurrentLinkedQueue<Connection>();
     private List<Connection> busyConnections = new ArrayList<Connection>();
-    private ConnectionManager connectionManager;
-    private String database;
-    private String userName;
-    private String password;
 
     public static ConnectionPool getInstance() {
         return ourInstance;
     }
 
-    public void initialSetUp(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
-    }
-
-    public void connectionInfoSetUp(String database, String userName, String password) {
-        this.database = database;
-        this.userName = userName;
-        this.password = password;
-    }
 
     public Connection aquire() {
         if (availableConnections.size() > 0) {
@@ -41,7 +29,7 @@ public class ConnectionPool {
             busyConnections.add(connection);
             return connection;
         } else if (busyConnections.size() < maxConnections) {
-            Connection connection = connectionManager.getConnection(database, userName, password);
+            Connection connection = getConnection("user_info", "postgres", "clouway.com");
             busyConnections.add(connection);
             return connection;
         } else {

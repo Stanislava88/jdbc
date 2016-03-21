@@ -75,7 +75,7 @@ public class PersistentUserRepository implements UserRepository {
             }
             return userList;
         } catch (SQLException e) {
-            throw new ExecutionException("Could not get the list of addresses");
+            throw new ExecutionException("Could not getConnection the list of addresses");
         } finally {
             closeStatement(statement);
             connectionPool.release(connection);
