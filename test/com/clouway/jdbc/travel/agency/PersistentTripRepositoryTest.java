@@ -1,5 +1,6 @@
 package com.clouway.jdbc.travel.agency;
 
+
 import com.clouway.jdbc.ConnectionManager;
 import com.clouway.jdbc.DatabaseTableTool;
 import com.clouway.jdbc.ExecutionException;
@@ -17,6 +18,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
+
 
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
