@@ -22,9 +22,9 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentTripRepositoryTest {
-    ClientRepository clientRepository = null;
-    TripRepository tripRepository = null;
-    Connection connection = null;
+    ClientRepository clientRepository;
+    TripRepository tripRepository;
+    Connection connection;
 
     @Before
     public void setUp() {
@@ -51,6 +51,7 @@ public class PersistentTripRepositoryTest {
         tripRepository.register(trip);
 
         Trip tripActual = tripRepository.getById(1);
+
         assertThat(tripActual, is(equalTo(trip)));
     }
 
@@ -67,6 +68,7 @@ public class PersistentTripRepositoryTest {
 
         Trip tripActual = tripRepository.getById(1);
         Trip anotherTripActual = tripRepository.getById(2);
+
         assertThat(tripActual, is(equalTo(trip)));
         assertThat(anotherTripActual, is(equalTo(anotherTrip)));
     }
@@ -111,6 +113,7 @@ public class PersistentTripRepositoryTest {
         tripRepository.update(tripUpdated);
 
         Trip tripActual = tripRepository.getById(1);
+
         assertThat(tripActual.arrival, is(equalTo(Date.valueOf("2015-10-19"))));
     }
 
@@ -158,7 +161,6 @@ public class PersistentTripRepositoryTest {
         expected.add(client);
         expected.add(secondClient);
 
-
         assertThat(tripRepository.clientTripsOverlapBetween(Date.valueOf("2016-7-4"), Date.valueOf("2016-7-20"), "Rom"), is(equalTo(expected)));
     }
 
@@ -182,7 +184,6 @@ public class PersistentTripRepositoryTest {
         List<Client> expected = new ArrayList<Client>();
         expected.add(client);
         expected.add(secondClient);
-
 
         assertThat(tripRepository.clientTripsOverlapBetween(Date.valueOf("2016-7-4"), Date.valueOf("2016-7-20"), "Rom"), is(equalTo(expected)));
     }
@@ -240,6 +241,7 @@ public class PersistentTripRepositoryTest {
                 new Trip(6, "6", Date.valueOf("2015-05-31"), Date.valueOf("2015-06-10"), "Sofia"));
 
         List<Client> people = tripRepository.clientTripsOverlapBetween(Date.valueOf("2015-05-06"), Date.valueOf("2015-05-30"), "Sofia");
+
         assertThat(people.size(), is(3));
         assertThat(people.get(0).name, is("Petar"));
         assertThat(people.get(1).name, is("Dimitar"));
@@ -257,6 +259,7 @@ public class PersistentTripRepositoryTest {
 
 
         List<Client> people = tripRepository.clientTripsOverlapBetween(Date.valueOf("2015-05-10"), Date.valueOf("2015-05-20"), "Sofia");
+
         assertThat(people.size(), is(2));
     }
 

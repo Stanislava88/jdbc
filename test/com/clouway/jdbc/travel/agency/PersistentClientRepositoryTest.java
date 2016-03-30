@@ -23,8 +23,8 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class PersistentClientRepositoryTest {
-    ClientRepository clientRepository = null;
-    Connection connection = null;
+    ClientRepository clientRepository;
+    Connection connection;
 
     @Before
     public void setUp() {
@@ -45,6 +45,7 @@ public class PersistentClientRepositoryTest {
         Client client = new Client("John", "1", 25, "john@johm.com");
         clientRepository.register(client);
         Client johnReturned = clientRepository.getByEgn("1");
+
         assertThat(johnReturned, is(equalTo(client)));
     }
 
@@ -58,6 +59,7 @@ public class PersistentClientRepositoryTest {
 
         Client clientActual = clientRepository.getByEgn("1");
         Client secondClientActual = clientRepository.getByEgn("2");
+
         assertThat(clientActual, is(equalTo(client)));
         assertThat(secondClientActual, is(equalTo(secondClient)));
     }
@@ -84,6 +86,7 @@ public class PersistentClientRepositoryTest {
         clientRepository.update(clientUpdated);
 
         Client markUpdatedReturned = clientRepository.getByEgn("123");
+
         assertThat(markUpdatedReturned.email, is(equalTo(newEmail)));
     }
 
@@ -124,7 +127,7 @@ public class PersistentClientRepositoryTest {
         expectedClients.add(secondClient);
         expectedClients.add(thirdClient);
 
-        registerToRepository(client, secondClient, thirdClient);
+        pretendRegisteredClientsAre(client, secondClient, thirdClient);
 
         assertThat(clientRepository.getAll(), is(equalTo(expectedClients)));
     }
@@ -145,7 +148,7 @@ public class PersistentClientRepositoryTest {
         peopleWithK.add(client);
         peopleWithK.add(secondClient);
 
-        registerToRepository(client, secondClient, thirdClient);
+        pretendRegisteredClientsAre(client, secondClient, thirdClient);
 
         assertThat(clientRepository.getWithNameBeggining("K"), is(equalTo(peopleWithK)));
     }
@@ -153,12 +156,13 @@ public class PersistentClientRepositoryTest {
     @Test
     public void emptyListPeoplesNamesBeginningWith() {
         List<Client> expectedClients = new ArrayList<Client>();
+
         assertThat(clientRepository.getWithNameBeggining("S"), is(equalTo(expectedClients)));
     }
 
-    private void registerToRepository(Client... people) {
-        for (Client client : people) {
-            clientRepository.register(client);
+    private void pretendRegisteredClientsAre(Client... client) {
+        for (Client client1 : client) {
+            clientRepository.register(client1);
         }
     }
 }
