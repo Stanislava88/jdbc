@@ -2,7 +2,7 @@ CREATE DATABASE university;
 
 CREATE TABLE students(
 id int;
-fisrt_name text;
-last_name  text;
+firstName text;
+lastName  text;
 age int;
 );
