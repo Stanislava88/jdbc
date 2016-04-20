@@ -40,10 +40,9 @@ public class StudentRepositoryTest {
     Student student = new Student(1, "Ivan", "Ivanov", 23);
     repository.register(student);
 
-    List<Student> actual = repository.selectAll();
-    List<Student> expected = Lists.newArrayList(student);
+    Student actual = repository.findByID(1);
 
-    assertThat(expected, is(actual));
+    assertThat(student, is(actual));
   }
 
   @Test
@@ -54,7 +53,7 @@ public class StudentRepositoryTest {
     repository.register(student1);
     repository.register(student2);
 
-    List<Student> actual = repository.selectAll();
+    List<Student> actual = repository.findAll();
     List<Student> expected = Lists.newArrayList(student1, student2);
 
     assertThat(expected, is(actual));
@@ -85,8 +84,8 @@ public class StudentRepositoryTest {
     repository.register(student);
     repository.update(new Student(1, "Lilia", "Angelova", 28));
 
-    List<Student> actual = repository.selectAll();
-    List<Student> expected = Lists.newArrayList(new Student(1, "Lilia", "Angelova", 28));
+    Student actual = repository.findByID(1);
+    Student expected = new Student(1, "Lilia", "Angelova", 28);
 
     assertThat(actual, is(expected));
   }
@@ -100,7 +99,7 @@ public class StudentRepositoryTest {
     repository.register(student2);
     repository.deleteByID(2);
 
-    List<Student> actual = repository.selectAll();
+    List<Student> actual = repository.findAll();
     List<Student> expected = Lists.newArrayList(student1);
 
     assertThat(actual, is(expected));

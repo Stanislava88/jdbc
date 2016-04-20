@@ -45,7 +45,7 @@ public class StudentRepository {
     }
   }
 
-  public List<Student> selectAll() throws SQLException {
+  public List<Student> findAll() throws SQLException {
     List<Student> students = new ArrayList<Student>();
 
     try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM students")) {
