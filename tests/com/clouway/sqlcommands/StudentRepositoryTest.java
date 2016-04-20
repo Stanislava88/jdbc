@@ -46,7 +46,7 @@ public class StudentRepositoryTest {
   }
 
   @Test
-  public void registerMultipleStudent() throws Exception {
+  public void registerMultiple() throws Exception {
     Student student1 = new Student(1, "Lilia", "Angelova", 24);
     Student student2 = new Student(2, "Katia", "Ivanova", 25);
 
