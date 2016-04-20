@@ -54,11 +54,11 @@ public class StudentRepository {
       while (resultSet.next()) {
 
         int id = resultSet.getInt("id");
-        String first_name = resultSet.getString("firstName");
-        String last_name = resultSet.getString("lastName");
+        String firstName = resultSet.getString("firstName");
+        String lastName = resultSet.getString("lastName");
         int age = resultSet.getInt("age");
 
-        students.add(new Student(id, first_name, last_name, age));
+        students.add(new Student(id, firstName, lastName, age));
       }
       return students;
     }
