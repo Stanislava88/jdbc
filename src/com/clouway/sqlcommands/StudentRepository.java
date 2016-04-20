@@ -64,7 +64,7 @@ public class StudentRepository {
     }
   }
 
-  public void updateAgeByID(int age, int id) throws SQLException {
+  public void updateAgeByID(int id, int age) throws SQLException {
     try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE students set age=? where id=?")) {
       preparedStatement.setInt(1, age);
       preparedStatement.setInt(2, id);

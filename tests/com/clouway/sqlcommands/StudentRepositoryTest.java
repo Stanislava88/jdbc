@@ -60,17 +60,6 @@ public class StudentRepositoryTest {
   }
 
   @Test
-  public void findByID() throws Exception {
-    Student student = new Student(1, "Lilia", "Angelova", 24);
-
-    repository.register(student);
-
-    Student expected = repository.findByID(1);
-
-    assertThat(expected, is(student));
-  }
-
-  @Test
   public void findUnregisterStudent() throws Exception {
     Student expected = repository.findByID(1);
 
@@ -82,7 +71,7 @@ public class StudentRepositoryTest {
     Student student = new Student(1, "Lilia", "Angelova", 24);
 
     repository.register(student);
-    repository.updateAgeByID(28, 1);
+    repository.updateAgeByID(1, 28);
 
     Student actual = repository.findByID(1);
     Student expected = new Student(1, "Lilia", "Angelova", 28);
