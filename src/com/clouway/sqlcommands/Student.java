@@ -5,14 +5,14 @@ package com.clouway.sqlcommands;
  */
 public class Student {
   public final int id;
-  public final String first_name;
-  public final String last_name;
+  public final String firstName;
+  public final String lastName;
   public final int age;
 
-  public Student(int id, String first_name, String last_name, int age) {
+  public Student(int id, String firstName, String lastName, int age) {
     this.id = id;
-    this.first_name = first_name;
-    this.last_name = last_name;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.age = age;
   }
 
@@ -25,16 +25,16 @@ public class Student {
 
     if (id != student.id) return false;
     if (age != student.age) return false;
-    if (first_name != null ? !first_name.equals(student.first_name) : student.first_name != null) return false;
-    return last_name != null ? last_name.equals(student.last_name) : student.last_name == null;
+    if (firstName != null ? !firstName.equals(student.firstName) : student.firstName != null) return false;
+    return lastName != null ? lastName.equals(student.lastName) : student.lastName == null;
 
   }
 
   @Override
   public int hashCode() {
     int result = id;
-    result = 31 * result + (first_name != null ? first_name.hashCode() : 0);
-    result = 31 * result + (last_name != null ? last_name.hashCode() : 0);
+    result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+    result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
     result = 31 * result + age;
     return result;
   }

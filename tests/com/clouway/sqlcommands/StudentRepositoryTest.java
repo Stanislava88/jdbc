@@ -78,11 +78,11 @@ public class StudentRepositoryTest {
   }
 
   @Test
-  public void update() throws Exception {
+  public void updateAge() throws Exception {
     Student student = new Student(1, "Lilia", "Angelova", 24);
 
     repository.register(student);
-    repository.update(new Student(1, "Lilia", "Angelova", 28));
+    repository.updateAge(new Student(1, "Lilia", "Angelova", 28));
 
     Student actual = repository.findByID(1);
     Student expected = new Student(1, "Lilia", "Angelova", 28);

@@ -20,8 +20,8 @@ public class StudentRepository {
   public void register(Student student) throws SQLException {
     try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT into students VALUES (?,?,?,?)")) {
       preparedStatement.setInt(1, student.id);
-      preparedStatement.setString(2, student.first_name);
-      preparedStatement.setString(3, student.last_name);
+      preparedStatement.setString(2, student.firstName);
+      preparedStatement.setString(3, student.lastName);
       preparedStatement.setInt(4, student.age);
 
       preparedStatement.executeUpdate();
@@ -35,8 +35,8 @@ public class StudentRepository {
       ResultSet resultSet = preparedStatement.executeQuery();
 
       while (resultSet.next()) {
-        String first_name = resultSet.getString("first_name");
-        String last_name = resultSet.getString("last_name");
+        String first_name = resultSet.getString("firstName");
+        String last_name = resultSet.getString("lastName");
         int age = resultSet.getInt("age");
 
         return new Student(id, first_name, last_name, age);
@@ -54,8 +54,8 @@ public class StudentRepository {
       while (resultSet.next()) {
 
         int id = resultSet.getInt("id");
-        String first_name = resultSet.getString("first_name");
-        String last_name = resultSet.getString("last_name");
+        String first_name = resultSet.getString("firstName");
+        String last_name = resultSet.getString("lastName");
         int age = resultSet.getInt("age");
 
         students.add(new Student(id, first_name, last_name, age));
@@ -64,7 +64,7 @@ public class StudentRepository {
     }
   }
 
-  public void update(Student student) throws SQLException {
+  public void updateAge(Student student) throws SQLException {
     try (PreparedStatement preparedStatement = connection.prepareStatement("Update students set age=? where id=?")) {
 
       preparedStatement.setInt(1, student.age);
