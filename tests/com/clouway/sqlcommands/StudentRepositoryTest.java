@@ -46,7 +46,7 @@ public class StudentRepositoryTest {
   }
 
   @Test
-  public void registerMultipleStudent() throws Exception {//multiple
+  public void registerMultipleStudent() throws Exception {
     Student student1 = new Student(1, "Lilia", "Angelova", 24);
     Student student2 = new Student(2, "Katia", "Ivanova", 25);
 
@@ -60,7 +60,7 @@ public class StudentRepositoryTest {
   }
 
   @Test
-  public void find() throws Exception {
+  public void findByID() throws Exception {
     Student student = new Student(1, "Lilia", "Angelova", 24);
 
     repository.register(student);
