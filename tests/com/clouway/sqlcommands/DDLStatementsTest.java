@@ -16,7 +16,7 @@ import static org.hamcrest.core.Is.is;
 /**
  * @author Stanislava Kaukova(sisiivanovva@gmail.com)
  */
-public class DDLCommand {
+public class DDLStatementsTest {
   private Connection connection;
   private PreparedStatement statement;
 
@@ -24,22 +24,22 @@ public class DDLCommand {
   public void setUp() throws Exception {
     connection = DriverManager.getConnection("jdbc:postgresql://localhost/university", "postgres", "clouway.com");
 
-    statement = connection.prepareStatement("CREATE TABLE table1(id int, name text,phone int)");
+    statement = connection.prepareStatement("drop table IF EXISTS teachers");
+    statement.executeUpdate();
+
+    statement = connection.prepareStatement("CREATE TABLE teachers(id int, name text,phone int)");
     statement.executeUpdate();
   }
 
   @After
   public void tearDown() throws Exception {
-    statement = connection.prepareStatement("drop table table1");
-    statement.executeUpdate();
-
     statement.close();
     connection.close();
   }
 
   @Test
   public void alter() throws Exception {
-    statement = connection.prepareStatement("Alter TABLE table1 add COLUMN egn int");
+    statement = connection.prepareStatement("Alter TABLE teachers add COLUMN egn int");
     statement.executeUpdate();
 
     int numberRow = countRow();
@@ -48,7 +48,7 @@ public class DDLCommand {
   }
 
   private int countRow() throws Exception {
-    ResultSet resultSet = connection.createStatement().executeQuery("select * from table1");
+    ResultSet resultSet = connection.createStatement().executeQuery("select * from teachers");
     ResultSetMetaData rsmd = resultSet.getMetaData();
 
     return rsmd.getColumnCount();

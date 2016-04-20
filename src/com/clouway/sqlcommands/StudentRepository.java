@@ -18,47 +18,67 @@ public class StudentRepository {
   }
 
   public void register(Student student) throws SQLException {
-    PreparedStatement statement = connection.prepareStatement("INSERT  into students VALUES (?,?,?,?)");
+    try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT into students VALUES (?,?,?,?)")) {
+      preparedStatement.setInt(1, student.id);
+      preparedStatement.setString(2, student.first_name);
+      preparedStatement.setString(3, student.last_name);
+      preparedStatement.setInt(4, student.age);
 
-    statement.setInt(1, student.id);
-    statement.setString(2, student.first_name);
-    statement.setString(3, student.last_name);
-    statement.setInt(4, student.age);
+      preparedStatement.executeUpdate();
+    }
+  }
 
-    statement.executeUpdate();
+  public Student findByID(int id) throws SQLException {
+    try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM students WHERE id=?")) {
+      preparedStatement.setInt(1, id);
+
+      ResultSet resultSet = preparedStatement.executeQuery();
+
+      while (resultSet.next()) {
+        String first_name = resultSet.getString("first_name");
+        String last_name = resultSet.getString("last_name");
+        int age = resultSet.getInt("age");
+
+        return new Student(id, first_name, last_name, age);
+      }
+      return null;
+    }
   }
 
   public List<Student> selectAll() throws SQLException {
     List<Student> students = new ArrayList<Student>();
 
-    PreparedStatement statement = connection.prepareStatement("SELECT * FROM students");
-    ResultSet resultSet = statement.executeQuery();
+    try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM students")) {
+      ResultSet resultSet = statement.executeQuery();
 
-    while (resultSet.next()) {
+      while (resultSet.next()) {
 
-      int id = resultSet.getInt("id");
-      String first_name = resultSet.getString("first_name");
-      String last_name = resultSet.getString("last_name");
-      int age = resultSet.getInt("age");
+        int id = resultSet.getInt("id");
+        String first_name = resultSet.getString("first_name");
+        String last_name = resultSet.getString("last_name");
+        int age = resultSet.getInt("age");
 
-      students.add(new Student(id, first_name, last_name, age));
+        students.add(new Student(id, first_name, last_name, age));
+      }
+      return students;
     }
-    return students;
   }
 
   public void update(Student student) throws SQLException {
-    PreparedStatement preparedStatement = connection.prepareStatement("Update students set age=? where id=?");
+    try (PreparedStatement preparedStatement = connection.prepareStatement("Update students set age=? where id=?")) {
 
-    preparedStatement.setInt(1, student.age);
-    preparedStatement.setInt(2, student.id);
+      preparedStatement.setInt(1, student.age);
+      preparedStatement.setInt(2, student.id);
 
-    preparedStatement.executeUpdate();
+      preparedStatement.executeUpdate();
+    }
   }
 
-  public void delete(int id) throws SQLException {
-    PreparedStatement preparedStatement = connection.prepareStatement("DELETE from students WHERE id=?");
-    preparedStatement.setInt(1, id);
+  public void deleteByID(int id) throws SQLException {
+    try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE from students WHERE id=?")) {
+      preparedStatement.setInt(1, id);
 
-    preparedStatement.executeUpdate();
+      preparedStatement.executeUpdate();
+    }
   }
 }

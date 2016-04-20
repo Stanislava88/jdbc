@@ -12,61 +12,80 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
  * @author Stanislava Kaukova(sisiivanovva@gmail.com)
  */
 public class StudentRepositoryTest {
-  private StudentRepository studentRepository;
+  private StudentRepository repository;
   private Connection connection;
 
   @Before
   public void setUp() throws Exception {
     connection = DriverManager.getConnection("jdbc:postgresql://localhost/university", "postgres", "clouway.com");
-    studentRepository = new StudentRepository(connection);
+    repository = new StudentRepository(connection);
+
+    PreparedStatement preparedStatement = connection.prepareStatement("TRUNCATE students");
+    preparedStatement.executeUpdate();
   }
 
   @After
   public void tearDown() throws Exception {
-    PreparedStatement preparedStatement = connection.prepareStatement("TRUNCATE students");
-    preparedStatement.executeUpdate();
-
     connection.close();
   }
 
   @Test
   public void happyPath() throws Exception {
     Student student = new Student(1, "Ivan", "Ivanov", 23);
-    studentRepository.register(student);
+    repository.register(student);
 
-    List<Student> actual = studentRepository.selectAll();
+    List<Student> actual = repository.selectAll();
     List<Student> expected = Lists.newArrayList(student);
 
     assertThat(expected, is(actual));
   }
 
   @Test
-  public void registerAnotherStudent() throws Exception {
+  public void registerMultipleStudent() throws Exception {//multiple
     Student student1 = new Student(1, "Lilia", "Angelova", 24);
     Student student2 = new Student(2, "Katia", "Ivanova", 25);
 
-    studentRepository.register(student1);
-    studentRepository.register(student2);
+    repository.register(student1);
+    repository.register(student2);
 
-    List<Student> actual = studentRepository.selectAll();
+    List<Student> actual = repository.selectAll();
     List<Student> expected = Lists.newArrayList(student1, student2);
 
     assertThat(expected, is(actual));
   }
 
   @Test
+  public void find() throws Exception {
+    Student student = new Student(1, "Lilia", "Angelova", 24);
+
+    repository.register(student);
+
+    Student expected = repository.findByID(1);
+
+    assertThat(expected, is(student));
+  }
+
+  @Test
+  public void findUnregisterStudent() throws Exception {
+    Student expected = repository.findByID(1);
+
+    assertThat(expected, is(equalTo(null)));
+  }
+
+  @Test
   public void update() throws Exception {
     Student student = new Student(1, "Lilia", "Angelova", 24);
 
-    studentRepository.register(student);
-    studentRepository.update(new Student(1, "Lilia", "Angelova", 28));
+    repository.register(student);
+    repository.update(new Student(1, "Lilia", "Angelova", 28));
 
-    List<Student> actual = studentRepository.selectAll();
+    List<Student> actual = repository.selectAll();
     List<Student> expected = Lists.newArrayList(new Student(1, "Lilia", "Angelova", 28));
 
     assertThat(actual, is(expected));
@@ -77,14 +96,13 @@ public class StudentRepositoryTest {
     Student student1 = new Student(1, "Lilia", "Angelova", 24);
     Student student2 = new Student(2, "Ivan", "Ivanov", 23);
 
-    studentRepository.register(student1);
-    studentRepository.register(student2);
-    studentRepository.delete(2);
+    repository.register(student1);
+    repository.register(student2);
+    repository.deleteByID(2);
 
-    List<Student> actual = studentRepository.selectAll();
+    List<Student> actual = repository.selectAll();
     List<Student> expected = Lists.newArrayList(student1);
 
     assertThat(actual, is(expected));
-
   }
 }
