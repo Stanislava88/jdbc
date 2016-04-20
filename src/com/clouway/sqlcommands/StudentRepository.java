@@ -64,11 +64,10 @@ public class StudentRepository {
     }
   }
 
-  public void updateAge(Student student) throws SQLException {
-    try (PreparedStatement preparedStatement = connection.prepareStatement("Update students set age=? where id=?")) {
-
-      preparedStatement.setInt(1, student.age);
-      preparedStatement.setInt(2, student.id);
+  public void updateAgeByID(int age, int id) throws SQLException {
+    try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE students set age=? where id=?")) {
+      preparedStatement.setInt(1, age);
+      preparedStatement.setInt(2, id);
 
       preparedStatement.executeUpdate();
     }
