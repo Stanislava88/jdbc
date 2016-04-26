@@ -54,7 +54,7 @@ public class PersistentVendorRepository implements VendorRepository {
   }
 
   @Override
-  public void update(int id, Vendor vendor) {
+  public void updateById(int id, Vendor vendor) {
     try (PreparedStatement preparedStatement = provider.provide().prepareStatement("UPDATE vendor SET firstName=?,lastName=?,age=? WHERE idVendor=?")) {
 
       preparedStatement.setString(1, vendor.firstName);

@@ -53,7 +53,7 @@ public class PersistentVendorRepositoryTest {
     Vendor updatedVendor = new Vendor(1, "Maria", "Ivanova", 24);
 
     repository.register(vendor);
-    repository.update(1,updatedVendor);
+    repository.updateById(1,updatedVendor);
 
     Vendor actual = repository.findById(1);
 
