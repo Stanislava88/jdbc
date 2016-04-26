@@ -3,6 +3,7 @@ package com.clouway.trigger.adapter.jdbc;
 import com.clouway.trigger.core.BackupVendor;
 import com.clouway.trigger.core.BackupVendorRepository;
 import com.clouway.trigger.core.Provider;
+import com.clouway.trigger.core.Vendor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,7 +23,7 @@ public class PersistentBackupVendorRepository implements BackupVendorRepository 
   }
 
   @Override
-  public BackupVendor findBackupById(int id) {
+  public Vendor findBackupById(int id) {
     try (PreparedStatement preparedStatement = provider.provide().prepareStatement("SELECT * FROM backupVendor WHERE idvendor=?")) {
       preparedStatement.setInt(1, id);
 
@@ -32,7 +33,7 @@ public class PersistentBackupVendorRepository implements BackupVendorRepository 
         String lastName = resultSet.getString("lastName");
         int age = resultSet.getInt("age");
 
-        return new BackupVendor(id, firstName, lastName, age);
+        return new Vendor(id, firstName, lastName, age);
       }
     } catch (SQLException e) {
       e.printStackTrace();

@@ -15,9 +15,9 @@ age int
 );
 
 create function updateFunction() returns trigger as 'BEGIN
-insert into backupVendor(idvendor, firstname,lastname,age) values(old.idVendor,old.firstName,old.lastname,old.age);
+insert into backupVendor(idvendor, firstname, lastname, age) values(old.idVendor,old.firstName,old.lastname,old.age);
 return new;
-end;
-'language plpgsql;
+end;'
+language plpgsql;
 
-create trigger backup after update on vendor for each row execute procedure updateFunction();
+create trigger backup after INSERT,UPDATE,DELETE on vendor for each row execute procedure updateFunction();
