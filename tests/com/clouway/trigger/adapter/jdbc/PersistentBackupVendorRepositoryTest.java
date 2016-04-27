@@ -52,7 +52,6 @@ public class PersistentBackupVendorRepositoryTest {
     assertThat(actual, is(equalTo(null)));
   }
 
-
   @Test
   public void findAllBackups() throws Exception {
     Vendor vendor1 = new Vendor(1, "Lilia", "angelova", 18);
@@ -80,7 +79,7 @@ public class PersistentBackupVendorRepositoryTest {
 
     List<Vendor> actual = repository.findAll();
     List<Vendor> expected = Lists.newArrayList(new Vendor(1, "Lilia", "angelova", 18), new Vendor(1, "Lilia", "angelova", 20));
-    
+
     assertThat(actual, is(expected));
   }
 
