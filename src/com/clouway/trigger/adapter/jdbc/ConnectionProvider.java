@@ -13,24 +13,21 @@ public class ConnectionProvider implements Provider {
   private String database = "jdbc:postgresql://localhost/store";
   private String user = "postgres";
   private String pass = "clouway.com";
-  private Connection connection;
 
   @Override
-  public Object provide() {
+  public Connection provide() {
+    Connection connection = null;
     try {
-      return connection = DriverManager.getConnection(database, user, pass);
-    } catch (SQLException e) {
-    }
-    return null;
-  }
 
-  @Override
-  public void close() {
-    if (connection != null) {
+      return connection = DriverManager.getConnection(database, user, pass);
+
+    } catch (SQLException e) {
       try {
+
         connection.close();
-      } catch (SQLException e) {
+      } catch (SQLException e1) {
       }
     }
+    return null;
   }
 }

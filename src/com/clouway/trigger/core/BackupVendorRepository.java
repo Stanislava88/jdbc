@@ -3,7 +3,7 @@ package com.clouway.trigger.core;
 import java.util.List;
 
 /**
- * The implementation of this interface will be used to save and retrieve backup for vendors
+ * The implementation of this interface will be used to retrieve backup for vendors
  *
  * @author Stanislava Kaukova(sisiivanovva@gmail.com)
  */

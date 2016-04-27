@@ -12,9 +12,4 @@ public interface Provider<T> {
    * @return provided resource
    */
   T provide();
-
-  /**
-   * Will close resource
-   */
-  void close();
 }

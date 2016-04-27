@@ -3,7 +3,6 @@ package com.clouway.trigger.adapter.jdbc;
 import com.clouway.trigger.core.Provider;
 import com.clouway.trigger.core.Vendor;
 import com.clouway.trigger.core.VendorRepository;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,11 +30,6 @@ public class PersistentVendorRepositoryTest {
     preparedStatement.executeUpdate();
   }
 
-  @After
-  public void tearDown() throws Exception {
-    provider.close();
-  }
-
   @Test
   public void happyPath() throws Exception {
     Vendor vendor = new Vendor(1, "Maria", "Petrova", 20);
@@ -53,7 +47,7 @@ public class PersistentVendorRepositoryTest {
     Vendor updatedVendor = new Vendor(1, "Maria", "Ivanova", 24);
 
     repository.register(vendor);
-    repository.updateById(1,updatedVendor);
+    repository.updateById(1, updatedVendor);
 
     Vendor actual = repository.findById(1);
 
