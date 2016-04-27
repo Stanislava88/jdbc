@@ -35,7 +35,7 @@ public class PersistentVendorRepository implements VendorRepository {
 
   @Override
   public Vendor findById(int id) {
-    try (PreparedStatement preparedStatement = provider.provide().prepareStatement("SELECT * FROM vendor WHERE idVendor=?")) {
+    try (PreparedStatement preparedStatement = provider.provide().prepareStatement("SELECT * FROM vendor WHERE id=?")) {
       preparedStatement.setInt(1, id);
 
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -55,7 +55,7 @@ public class PersistentVendorRepository implements VendorRepository {
 
   @Override
   public void updateById(int id, Vendor vendor) {
-    try (PreparedStatement preparedStatement = provider.provide().prepareStatement("UPDATE vendor SET firstName=?,lastName=?,age=? WHERE idVendor=?")) {
+    try (PreparedStatement preparedStatement = provider.provide().prepareStatement("UPDATE vendor SET firstName=?,lastName=?,age=? WHERE id=?")) {
 
       preparedStatement.setString(1, vendor.firstName);
       preparedStatement.setString(2, vendor.lastName);

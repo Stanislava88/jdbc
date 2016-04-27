@@ -14,12 +14,12 @@ public interface BackupVendorRepository {
    * @param id id at the vendor
    * @return backup for the vendor
    */
-  Vendor findBackupById(int id);//todo findById
+  Vendor findById(int id);
 
   /**
    * Will return list of all vendors before change
    *
    * @return list of backup vendors
    */
-  List<BackupVendor> findAllBackups();
+  List<Vendor> findAll();
 }

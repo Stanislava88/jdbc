@@ -1,6 +1,5 @@
 package com.clouway.trigger.adapter.jdbc;
 
-import com.clouway.trigger.core.BackupVendor;
 import com.clouway.trigger.core.BackupVendorRepository;
 import com.clouway.trigger.core.Provider;
 import com.clouway.trigger.core.Vendor;
@@ -23,12 +22,14 @@ public class PersistentBackupVendorRepository implements BackupVendorRepository 
   }
 
   @Override
-  public Vendor findBackupById(int id) {
-    try (PreparedStatement preparedStatement = provider.provide().prepareStatement("SELECT * FROM backupVendor WHERE idvendor=?")) {
+  public Vendor findById(int id) {
+    try (PreparedStatement preparedStatement = provider.provide().prepareStatement("SELECT * FROM backupVendor WHERE id=?")) {
       preparedStatement.setInt(1, id);
 
       ResultSet resultSet = preparedStatement.executeQuery();
+
       while (resultSet.next()) {
+
         String firstName = resultSet.getString("firstName");
         String lastName = resultSet.getString("lastName");
         int age = resultSet.getInt("age");
@@ -36,25 +37,24 @@ public class PersistentBackupVendorRepository implements BackupVendorRepository 
         return new Vendor(id, firstName, lastName, age);
       }
     } catch (SQLException e) {
-      e.printStackTrace();
     }
     return null;
   }
 
   @Override
-  public List<BackupVendor> findAllBackups() {
-    List<BackupVendor> vendors = new ArrayList<>();
+  public List<Vendor> findAll() {
+    List<Vendor> vendors = new ArrayList<>();
     try (PreparedStatement preparedStatement = provider.provide().prepareStatement("SELECt * FROM  backupVendor")) {
 
       ResultSet resultSet = preparedStatement.executeQuery();
 
       while (resultSet.next()) {
-        int id = resultSet.getInt("idvendor");
+        int id = resultSet.getInt("id");
         String firstName = resultSet.getString("firstName");
         String lastName = resultSet.getString("lastName");
         int age = resultSet.getInt("age");
 
-        vendors.add(new BackupVendor(id, firstName, lastName, age));
+        vendors.add(new Vendor(id, firstName, lastName, age));
       }
 
       return vendors;

@@ -2,7 +2,6 @@ package com.clouway.trigger.adapter.jdbc;
 
 import com.clouway.trigger.core.Provider;
 
-import java.security.ProviderException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,8 +20,8 @@ public class ConnectionProvider implements Provider {
     try {
       return connection = DriverManager.getConnection(database, user, pass);
     } catch (SQLException e) {
-      throw new ProviderException();
     }
+    return null;
   }
 
   @Override
@@ -31,7 +30,6 @@ public class ConnectionProvider implements Provider {
       try {
         connection.close();
       } catch (SQLException e) {
-        e.printStackTrace();
       }
     }
   }

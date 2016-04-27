@@ -1,6 +1,5 @@
 package com.clouway.trigger.adapter.jdbc;
 
-import com.clouway.trigger.core.BackupVendor;
 import com.clouway.trigger.core.BackupVendorRepository;
 import com.clouway.trigger.core.Provider;
 import com.clouway.trigger.core.Vendor;
@@ -28,7 +27,6 @@ public class PersistentBackupVendorRepositoryTest {
   @Before
   public void setUp() throws Exception {
     provider = new ConnectionProvider();
-
     repository = new PersistentBackupVendorRepository(provider);
 
     cleanUp();
@@ -39,86 +37,80 @@ public class PersistentBackupVendorRepositoryTest {
     Vendor vendor = new Vendor(1, "Lilia", "angelova", 18);
     insertInVendor(vendor);
 
-    update(1, new Vendor(1, "Lilia", "angelova", 18));
+    Vendor updatedVendor = new Vendor(1, "Lilia", "angelova", 20);
+    updateVendor(1, updatedVendor);
 
-    Vendor actual = repository.findBackupById(1);
+    Vendor actual = repository.findById(1);
 
     assertThat(actual, is(vendor));
   }
 
-//  @Test
-//  public void findBackupNoChange() throws Exception {
-//    BackupVendor actual = repository.findBackupById(1);
-//
-//    assertThat(actual, is(equalTo(null)));
-//  }
-//
-//  @Test
-//  public void findAllBackups() throws Exception {
-//    insertInVendor(new Vendor(1, "Lilia", "angelova", 18));
-//    insertInVendor(new Vendor(2, "Marina", "Ivanova", 20));
-//    insertInVendor(new Vendor(3, "Ivan", "Petrov", 22));
-//
-//    update(1, new Vendor(1, "Lilia", "angelova", 20));
-//    update(3, new Vendor(3, "Petyr", "Petrov", 25));
-//
-//    List<BackupVendor> actual = repository.findAllBackups();
-//    List<BackupVendor> expected = Lists.newArrayList(new BackupVendor(1, "Lilia", "angelova", 18), new BackupVendor(3, "Ivan", "Petrov", 22));
-//
-//    assertThat(actual, is(equalTo(expected)));
-//  }
-//
-//  @Test
-//  public void findVendorChangeTwice() throws Exception {
-//    insertInVendor(new Vendor(1, "Lilia", "angelova", 18));
-//
-//    update(1, new Vendor(1, "Lilia", "angelova", 20));
-//    update(1, new Vendor(1, "Petyr", "Petrov", 25));
-//
-//    List<BackupVendor> actual = repository.findAllBackups();
-//    List<BackupVendor> expected = Lists.newArrayList(new BackupVendor(1, "Lilia", "angelova", 18), new BackupVendor(1, "Lilia", "angelova", 20));
-//
-//
-//    assertThat(actual, is(expected));
-//  }
-//
-//  @Test
-//  public void findAllBackupsNoChange() throws Exception {
-//    insertInVendor(new Vendor(1, "Lilia", "angelova", 18));
-//    insertInVendor(new Vendor(2, "Marina", "Ivanova", 20));
-//    insertInVendor(new Vendor(3, "Ivan", "Petrov", 22));
-//
-//    List<BackupVendor> actual = repository.findAllBackups();
-//    List<BackupVendor> expected = Lists.newArrayList();
-//
-//    assertThat(actual, is(expected));
-//  }
+  @Test
+  public void findBackupNoChange() throws Exception {
+    Vendor actual = repository.findById(1);
 
-  private void insertInVendor(Vendor vendor) {
+    assertThat(actual, is(equalTo(null)));
+  }
+
+
+  @Test
+  public void findAllBackups() throws Exception {
+    Vendor vendor1 = new Vendor(1, "Lilia", "angelova", 18);
+    Vendor vendor2 = new Vendor(2, "Marina", "Ivanova", 20);
+    Vendor vendor3 = new Vendor(3, "Ivan", "Petrov", 22);
+
+    insertInVendor(vendor1, vendor2, vendor3);
+
+    updateVendor(1, new Vendor(1, "Lilia", "angelova", 18));
+    updateVendor(3, new Vendor(3, "Ivan", "Petrov", 26));
+
+    List<Vendor> actual = repository.findAll();
+    List<Vendor> expected = Lists.newArrayList(vendor1, vendor3);
+
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void findVendorChangeTwice() throws Exception {
+    Vendor vendor1 = new Vendor(1, "Lilia", "angelova", 18);
+    insertInVendor(vendor1);
+
+    updateVendor(1, new Vendor(1, "Lilia", "angelova", 20));
+    updateVendor(1, new Vendor(1, "Petyr", "Petrov", 25));
+
+    List<Vendor> actual = repository.findAll();
+    List<Vendor> expected = Lists.newArrayList(new Vendor(1, "Lilia", "angelova", 18), new Vendor(1, "Lilia", "angelova", 20));
+    
+    assertThat(actual, is(expected));
+  }
+
+
+  private void insertInVendor(Vendor... vendors) {
     try (PreparedStatement preparedStatement = provider.provide().prepareStatement("INSERT INTO vendor VALUES(?,?,?,?)")) {
 
-      preparedStatement.setInt(1, vendor.id);
-      preparedStatement.setString(2, vendor.firstName);
-      preparedStatement.setString(3, vendor.lastName);
-      preparedStatement.setInt(4, vendor.age);
+      for (Vendor vendor : vendors) {
+        preparedStatement.setInt(1, vendor.id);
+        preparedStatement.setString(2, vendor.firstName);
+        preparedStatement.setString(3, vendor.lastName);
+        preparedStatement.setInt(4, vendor.age);
 
-      preparedStatement.executeUpdate();
+        preparedStatement.executeUpdate();
+      }
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  private void update(int id, Vendor vendor) {
-    try (PreparedStatement preparedStatement = provider.provide().prepareStatement("UPDATE vendor set firstName=?,lastName=?,age=? WHERE idVendor=?")) {
-
+  private void updateVendor(int id, Vendor vendor) {
+    try (PreparedStatement preparedStatement = provider.provide().prepareStatement("UPDATE vendor set firstName=?,lastName=?,age=? WHERE id=?")) {
       preparedStatement.setString(1, vendor.firstName);
       preparedStatement.setString(2, vendor.lastName);
       preparedStatement.setInt(3, vendor.age);
       preparedStatement.setInt(4, id);
 
       preparedStatement.executeUpdate();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    } catch (SQLException e1) {
+      e1.printStackTrace();
     }
   }
 

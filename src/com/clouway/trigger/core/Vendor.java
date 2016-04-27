@@ -38,4 +38,14 @@ public class Vendor {
     result = 31 * result + age;
     return result;
   }
+
+  @Override
+  public String toString() {
+    return "Vendor{" +
+            "id=" + id +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", age=" + age +
+            '}';
+  }
 }
