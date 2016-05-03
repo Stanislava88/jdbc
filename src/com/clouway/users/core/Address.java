@@ -1,4 +1,4 @@
-package com.clouway.crm.core;
+package com.clouway.users.core;
 
 /**
  * @author Stanislava Kaukova(sisiivanovva@gmail.com)
