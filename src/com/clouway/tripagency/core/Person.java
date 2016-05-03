@@ -3,13 +3,13 @@ package com.clouway.tripagency.core;
 /**
  * @author Stanislava Kaukova(sisiivanovva@gmail.com)
  */
-public class People {
+public class Person {
   public final String name;
   public final String egn;
   public final int age;
   public final String email;
 
-  public People(String name, String egn, int age, String email) {
+  public Person(String name, String egn, int age, String email) {
     this.name = name;
     this.egn = egn;
     this.age = age;
@@ -21,12 +21,12 @@ public class People {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    People people = (People) o;
+    Person person = (Person) o;
 
-    if (age != people.age) return false;
-    if (!name.equals(people.name)) return false;
-    if (!egn.equals(people.egn)) return false;
-    return email.equals(people.email);
+    if (age != person.age) return false;
+    if (!name.equals(person.name)) return false;
+    if (!egn.equals(person.egn)) return false;
+    return email.equals(person.email);
 
   }
 
@@ -37,5 +37,15 @@ public class People {
     result = 31 * result + age;
     result = 31 * result + email.hashCode();
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return "Person{" +
+            "name='" + name + '\'' +
+            ", egn='" + egn + '\'' +
+            ", age=" + age +
+            ", email='" + email + '\'' +
+            '}';
   }
 }

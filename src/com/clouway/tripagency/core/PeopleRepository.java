@@ -1,19 +1,44 @@
 package com.clouway.tripagency.core;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
+ * The implementation of this interface will be used to save and retrieval people information
+ *
  * @author Stanislava Kaukova(sisiivanovva@gmail.com)
  */
 public interface PeopleRepository {
-  void register(People people) throws SQLException;
+  /**
+   * @param person registered person
+   */
+  void register(Person person);
 
-  People findByEgn(String egn) throws SQLException;
+  /**
+   * Will return person
+   *
+   * @param egn egn of the person
+   * @return person
+   */
+  Person findByEgn(String egn);
 
-  void updateEmailByEgn(String email, String egn) throws SQLException;
+  /**
+   * @param egn    egn of the person
+   * @param person person
+   */
+  void updateByEgn(String egn, Person person);
 
-  List<People> findAll() throws SQLException;
+  /**
+   * Will return list of all people
+   *
+   * @return list of people
+   */
+  List<Person> findAll();
 
-  List<People> findNamesLikeSymbol(String symbol) throws SQLException;
+  /**
+   * Will return list of people meeting certain requirements
+   *
+   * @param pattern matched values
+   * @return list of people
+   */
+  List<Person> findMatching(String pattern);
 }

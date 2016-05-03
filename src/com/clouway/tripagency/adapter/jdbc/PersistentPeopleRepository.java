@@ -1,6 +1,7 @@
 package com.clouway.tripagency.adapter.jdbc;
 
-import com.clouway.tripagency.core.People;
+import com.clouway.tripagency.core.Provider;
+import com.clouway.tripagency.core.Person;
 import com.clouway.tripagency.core.PeopleRepository;
 
 import java.sql.Connection;
@@ -14,27 +15,29 @@ import java.util.List;
  * @author Stanislava Kaukova(sisiivanovva@gmail.com)
  */
 public class PersistentPeopleRepository implements PeopleRepository {
-  private Connection connection;
+  private Provider<Connection> provider;
 
-  public PersistentPeopleRepository(Connection connection) {
-    this.connection = connection;
+  public PersistentPeopleRepository(Provider provider) {
+    this.provider = provider;
   }
 
   @Override
-  public void register(People people) throws SQLException {
-    try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO people VALUES (?,?,?,?)")) {
-      preparedStatement.setString(1, people.name);
-      preparedStatement.setString(2, people.egn);
-      preparedStatement.setInt(3, people.age);
-      preparedStatement.setString(4, people.email);
+  public void register(Person person) {
+    try (PreparedStatement preparedStatement = provider.get().prepareStatement("INSERT INTO people VALUES (?,?,?,?)")) {
+
+      preparedStatement.setString(1, person.name);
+      preparedStatement.setString(2, person.egn);
+      preparedStatement.setInt(3, person.age);
+      preparedStatement.setString(4, person.email);
 
       preparedStatement.executeUpdate();
+    } catch (SQLException e) {
     }
   }
 
   @Override
-  public People findByEgn(String egn) throws SQLException {
-    try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM people WHERE egn=?")) {
+  public Person findByEgn(String egn) {
+    try (PreparedStatement preparedStatement = provider.get().prepareStatement("SELECT * FROM people WHERE egn=?")) {
       preparedStatement.setString(1, egn);
 
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -44,51 +47,66 @@ public class PersistentPeopleRepository implements PeopleRepository {
         int age = resultSet.getInt("age");
         String email = resultSet.getString("email");
 
-        return new People(name, egn, age, email);
+        return new Person(name, egn, age, email);
       }
-      return null;
+    } catch (SQLException e) {
     }
+    return null;
   }
 
   @Override
-  public void updateEmailByEgn(String email, String egn) throws SQLException {
-    try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE people SET email=? WHERE egn=?")) {
-      preparedStatement.setString(1, email);
-      preparedStatement.setString(2, egn);
+  public void updateByEgn(String egn, Person person) {
+    try (PreparedStatement preparedStatement = provider.get().prepareStatement("UPDATE people SET name=?,email=?,age=? WHERE egn=?")) {
+
+      preparedStatement.setString(1, person.name);
+      preparedStatement.setString(2, person.email);
+      preparedStatement.setInt(3, person.age);
+      preparedStatement.setString(4, egn);
 
       preparedStatement.executeUpdate();
+    } catch (SQLException e) {
     }
   }
 
   @Override
-  public List<People> findAll() throws SQLException {
-    List<People> peoples = new ArrayList<>();
-    try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM people")) {
-      getResultSet(peoples, preparedStatement);
+  public List<Person> findAll() {
+    List<Person> people = new ArrayList<>();
+
+    try (PreparedStatement preparedStatement = provider.get().prepareStatement("SELECT * FROM people")) {
+
+      getResultSet(people, preparedStatement);
+    } catch (SQLException e) {
     }
-    return peoples;
+    return people;
   }
 
   @Override
-  public List<People> findNamesLikeSymbol(String symbol) throws SQLException {
-    List<People> peoples = new ArrayList<>();
-    try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM people WHERE name LIKE ?")) {
-      preparedStatement.setString(1, symbol + "%");
-      getResultSet(peoples, preparedStatement);
+  public List<Person> findMatching(String pattern) {
+    List<Person> people = new ArrayList<>();
+
+    try (PreparedStatement preparedStatement = provider.get().prepareStatement("SELECT * FROM people WHERE name LIKE ?")) {
+      preparedStatement.setString(1, pattern + "%");
+
+      getResultSet(people, preparedStatement);
+    } catch (SQLException e) {
     }
-    return peoples;
+    return people;
   }
 
-  private void getResultSet(List<People> peoples, PreparedStatement preparedStatement) throws SQLException {
-    ResultSet resultSet = preparedStatement.executeQuery();
+  private void getResultSet(List<Person> people, PreparedStatement preparedStatement) {
+    ResultSet resultSet = null;
+    try {
+      resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
 
-    while (resultSet.next()) {
+        String name = resultSet.getString("name");
+        String egn = resultSet.getString("egn");
+        int age = resultSet.getInt("age");
+        String email = resultSet.getString("email");
 
-      String name = resultSet.getString("name");
-      String egn = resultSet.getString("egn");
-      int age = resultSet.getInt("age");
-      String email = resultSet.getString("email");
-      peoples.add(new People(name, egn, age, email));
+        people.add(new Person(name, egn, age, email));
+      }
+    } catch (SQLException e) {
     }
   }
 }

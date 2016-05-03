@@ -1,12 +1,28 @@
 package com.clouway.tripagency.core;
 
-import java.sql.SQLException;
-
 /**
+ * The implementation of this interface will be used to save and retrieve trips
+ *
  * @author Stanislava Kaukova(sisiivanovva@gmail.com)
  */
 public interface TripRepository {
-  void register(Trip trip) throws SQLException;
+  /**
+   * @param trip registered trip
+   */
+  void register(Trip trip);
 
-  Trip findByEgn(String egn);
+  /**
+   * Will return trip for the person
+   *
+   * @param id egn of the person
+   * @return trip for the person
+   */
+
+  Trip findById(int id);
+
+  /**
+   * @param id   id at the trip
+   * @param trip trip
+   */
+  void updateById(int id, Trip trip);
 }

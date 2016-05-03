@@ -4,12 +4,14 @@ package com.clouway.tripagency.core;
  * @author Stanislava Kaukova(sisiivanovva@gmail.com)
  */
 public class Trip {
+  public final int id;
   public final String egn;
   public final long dateArrived;
   public final long dateDeparture;
   public final String city;
 
-  public Trip(String egn, long dateArrived, long dateDeparture, String city) {
+  public Trip(int id, String egn, long dateArrived, long dateDeparture, String city) {
+    this.id = id;
     this.egn = egn;
     this.dateArrived = dateArrived;
     this.dateDeparture = dateDeparture;
@@ -37,5 +39,15 @@ public class Trip {
     result = 31 * result + (int) (dateDeparture ^ (dateDeparture >>> 32));
     result = 31 * result + (city != null ? city.hashCode() : 0);
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return "Trip{" +
+            "egn='" + egn + '\'' +
+            ", dateArrived=" + dateArrived +
+            ", dateDeparture=" + dateDeparture +
+            ", name='" + city + '\'' +
+            '}';
   }
 }
